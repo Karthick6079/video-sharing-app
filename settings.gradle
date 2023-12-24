@@ -1,0 +1,4 @@
+rootProject.name = 'youtube-clone'
+include 'backend'
+include 'frontend'
+

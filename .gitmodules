@@ -1,0 +1,3 @@
+[submodule "frontend/youtube-clone-ui"]
+	path = frontend/youtube-clone-ui
+	url = https://github.com/Karthick6079/youtube-clone.git

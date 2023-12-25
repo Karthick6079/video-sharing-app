@@ -47,3 +47,4 @@ bin/
 youtube-clone-ui/node/.angular/
 youtube-clone-ui/node/.vscode/
 youtube-clone-ui/node/node_modules/
+frontend/node/

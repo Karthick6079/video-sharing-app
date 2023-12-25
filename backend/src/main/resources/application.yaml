@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      schema: youtube-clone
+      database: youtube-clone
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  services:
+    path: /api/youtube
+  cloud:
+    aws:
+      region:
+        static: ap-south-1
+      stack:
+        auto: false
+
+

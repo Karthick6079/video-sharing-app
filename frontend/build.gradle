@@ -1,17 +1,20 @@
 plugins {
-    id 'java'
+    id("org.siouan.frontend-jdk17") version "8.0.0"
+}
+
+frontend {
+    nodeVersion.set("18.17.1")
+    assembleScript.set("run build")
+    cleanScript.set("run clean")
+    checkScript.set("run check")
+    verboseModeEnabled.set(true)
+}
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
 }
 
 
 group = 'org.karthick'
 version = '0.0.1-SNAPSHOT'
 
-
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
-}

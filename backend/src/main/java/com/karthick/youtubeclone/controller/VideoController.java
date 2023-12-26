@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("${spring.services.path}/video")
 @RequiredArgsConstructor
+@CrossOrigin
 public class VideoController {
 
     private final VideoService videoService;

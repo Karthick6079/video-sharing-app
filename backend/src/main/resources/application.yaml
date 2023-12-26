@@ -17,5 +17,9 @@ spring:
         static: ap-south-1
       stack:
         auto: false
+  security:
+    oauth2:
+      resourceserver:
+        issuer-uri: https://karthick-v.us.auth0.com/
 
 

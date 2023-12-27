@@ -8,12 +8,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import {
-  AuthInterceptor,
-  AuthModule,
-  LogLevel,
-} from 'angular-auth-oidc-client';
+import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'angular-auth-oidc-client';
 import { UploadComponent } from './components/upload/upload.component';
 import { EditVideoMetadataComponent } from './components/edit-video-metadata/edit-video-metadata.component';
 
@@ -42,7 +39,10 @@ import { EditVideoMetadataComponent } from './components/edit-video-metadata/edi
         silentRenew: true,
         useRefreshToken: true,
         logLevel: LogLevel.Debug,
-        secureRoutes: ['http://localshot:4200'],
+        secureRoutes: ['http://localhost:8080/'],
+        customParamsAuthRequest: {
+          audience: 'http://localhost:8080',
+        },
       },
     }),
   ],

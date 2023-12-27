@@ -28,7 +28,7 @@ export class UploadComponent {
           console.log(droppedFile.relativePath, file);
 
           this.formData = new FormData();
-          this.formData.append('logo', file, file.name);
+          this.formData.append('file', file, file.name);
           /**
           // You could upload it like this:
           const formData = new FormData()

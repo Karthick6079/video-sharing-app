@@ -1,0 +1,15 @@
+.page{
+    display: flex
+}
+
+.preview-player{
+    width: 50%;
+    height: 400px;
+    border: 1px blue solid;
+}
+
+.edit-form{
+    width: 50%;
+    height: 400px;
+    border: 1px black solid;
+}

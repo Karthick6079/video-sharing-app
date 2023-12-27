@@ -4,6 +4,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { EditVideoMetadataComponent } from './components/edit-video-metadata/edit-video-metadata.component';
 import { StudioComponent } from './components/studio/studio.component';
 import { ReviewAndPublishComponent } from './components/review-and-publish/review-and-publish.component';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
         component: ReviewAndPublishComponent,
       },
     ],
+  },
+  {
+    path: 'video-player',
+    component: VideoPlayerComponent,
   },
 ];
 

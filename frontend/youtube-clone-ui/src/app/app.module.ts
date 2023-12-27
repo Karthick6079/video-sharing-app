@@ -21,6 +21,13 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 
 @NgModule({
   declarations: [
@@ -30,6 +37,7 @@ import { MatMenuModule } from '@angular/material/menu';
     EditVideoMetadataComponent,
     StudioComponent,
     StepsComponent,
+    VideoPlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +51,12 @@ import { MatMenuModule } from '@angular/material/menu';
     FileUploadModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    InputTextModule,
+    InputTextareaModule,
+    VgBufferingModule,
+    VgControlsModule,
+    VgCoreModule,
+    VgOverlayPlayModule,
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',

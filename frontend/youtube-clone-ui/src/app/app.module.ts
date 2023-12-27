@@ -13,6 +13,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'angular-auth-oidc-client';
 import { UploadComponent } from './components/upload/upload.component';
 import { EditVideoMetadataComponent } from './components/edit-video-metadata/edit-video-metadata.component';
+import { StudioComponent } from './components/studio/studio.component';
+import { StepsComponent } from './components/steps/steps.component';
+import { StepsModule } from 'primeng/steps';
+import { ToastModule } from 'primeng/toast';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -20,6 +28,8 @@ import { EditVideoMetadataComponent } from './components/edit-video-metadata/edi
     HeaderComponent,
     UploadComponent,
     EditVideoMetadataComponent,
+    StudioComponent,
+    StepsComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +38,11 @@ import { EditVideoMetadataComponent } from './components/edit-video-metadata/edi
     MatIconModule,
     MatButtonModule,
     NgxFileDropModule,
+    StepsModule,
+    ToastModule,
+    FileUploadModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',
@@ -48,6 +63,7 @@ import { EditVideoMetadataComponent } from './components/edit-video-metadata/edi
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

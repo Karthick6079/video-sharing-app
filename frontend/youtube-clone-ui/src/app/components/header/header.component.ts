@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import {
+  ConfigUserDataResult,
+  OidcSecurityService,
+  UserDataResult,
+} from 'angular-auth-oidc-client';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +14,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
 
+  userData!: Observable<UserDataResult>;
+
   constructor(private oidcSecurityService: OidcSecurityService) {}
   ngOnInit(): void {
     this.oidcSecurityService.isAuthenticated$.subscribe(
@@ -16,6 +23,8 @@ export class HeaderComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    this.userData = this.oidcSecurityService.userData$;
   }
 
   login() {

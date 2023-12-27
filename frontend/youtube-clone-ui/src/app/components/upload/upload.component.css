@@ -1,0 +1,15 @@
+:host ::ng-deep .p-fileupload-buttonbar{
+    display: flex;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+}
+
+
+:host ::ng-deep .p-fileupload-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20rem;
+    border: 2px solid #e5e7eb;
+}
+

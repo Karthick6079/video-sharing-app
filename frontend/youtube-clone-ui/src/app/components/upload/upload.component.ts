@@ -1,64 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { VideoService } from '../../services/video/video.service';
+import { MessageService } from 'primeng/api';
+import { FileUploadHandlerEvent } from 'primeng/fileupload';
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
+  encapsulation: ViewEncapsulation.Emulated,
+  providers: [MessageService],
 })
 export class UploadComponent {
   videoId!: string;
   videoUrl!: string;
 
-  constructor(private videoService: VideoService) {}
+  fileUploaded: boolean = false;
+
+  uploadedFiles: any[] = [];
+
+  constructor(
+    private videoService: VideoService,
+    private messageService: MessageService
+  ) {}
 
   private formData: FormData | undefined;
 
-  public files: NgxFileDropEntry[] = [];
-
-  public dropped(files: NgxFileDropEntry[]) {
-    this.files = files;
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-          // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
-
-          this.formData = new FormData();
-          this.formData.append('file', file, file.name);
-          /**
-          // You could upload it like this:
-          const formData = new FormData()
-          formData.append('logo', file, relativePath)
-
-          // Headers
-          const headers = new HttpHeaders({
-            'security-token': 'mytoken'
-          })
-
-          this.http.post('https://mybackend.com/api/upload/sanitize-and-save-logo', formData, { headers: headers, responseType: 'blob' })
-          .subscribe(data => {
-            // Sanitized logo returned from backend
-          })
-          **/
-        });
-      } else {
-        // It was a directory (empty directories are added, otherwise only files)
-        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
-      }
+  onUpload(event: FileUploadHandlerEvent) {
+    console.log(event);
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
+      this.fileUploaded = true;
+      this.formData = new FormData();
+      this.formData.append('file', file, file.name);
     }
+
+    this.uploadVideo();
   }
 
-  public fileOver(event: any) {
-    console.log(event);
+  onSelectFile() {
+    this.fileUploaded = true;
   }
 
-  public fileLeave(event: any) {
-    console.log(event);
+  onClear() {
+    this.fileUploaded = false;
   }
 
   uploadVideo() {
@@ -66,7 +56,16 @@ export class UploadComponent {
       this.videoService.uploadVideo(this.formData).subscribe((response) => {
         this.videoId = response.videoId;
         this.videoUrl = response.videoUrl;
+        this.successMessage();
       });
     }
+  }
+
+  successMessage() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'File uploaded',
+    });
   }
 }

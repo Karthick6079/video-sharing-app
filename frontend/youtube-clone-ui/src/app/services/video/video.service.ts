@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
-import { UploadVideoResponse } from '../../components/dto/upload-video-response';
+import { UploadVideoResponse } from '../../dto/upload-video-response';
 @Injectable({
   providedIn: 'root',
 })

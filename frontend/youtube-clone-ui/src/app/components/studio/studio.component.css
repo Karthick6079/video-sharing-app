@@ -1,0 +1,24 @@
+.page{
+    display: flex;
+    flex-direction: column;
+}
+
+.stepper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 3rem auto;
+}
+
+.items{
+    width: 10%;
+}
+
+.main-stepper{
+    width: 80%;
+}
+
+.page .container{
+    width: 80%;
+    margin:0 auto
+}

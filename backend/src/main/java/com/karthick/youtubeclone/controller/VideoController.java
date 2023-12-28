@@ -3,7 +3,6 @@ package com.karthick.youtubeclone.controller;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.VideoDto;
 import com.karthick.youtubeclone.service.VideoService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class VideoController {
 
     @PostMapping(path = "/thumbnail")
     @ResponseStatus(HttpStatus.CREATED)
-    public String uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam String videoId){
+    public UploadVideoResponse uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam String videoId){
        return videoService.uploadThumbnail(file, videoId);
     }
 

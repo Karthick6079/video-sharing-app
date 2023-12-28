@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -7,6 +8,8 @@ import { MenuItem } from 'primeng/api';
   styleUrl: './studio.component.css',
 })
 export class StudioComponent implements OnInit {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+
   items: MenuItem[] | undefined;
 
   ngOnInit(): void {
@@ -17,12 +20,18 @@ export class StudioComponent implements OnInit {
       },
       {
         label: 'Edit Video Details',
-        routerLink: 'editMetadata',
+        routerLink: 'edit-video-info',
       },
-      {
-        label: 'Review and Publish',
-        routerLink: 'review-and-publish',
-      },
+      // {
+      //   label: 'Review and Publish',
+      //   routerLink: 'review-and-publish',
+      // },
     ];
+    console.log(this.router.url);
+    this.router
+      .navigate(['./upload'], { relativeTo: this.activatedRoute })
+      .then((value) => {
+        console.log('Navigate successfull');
+      });
   }
 }

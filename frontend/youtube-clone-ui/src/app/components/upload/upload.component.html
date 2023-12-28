@@ -1,11 +1,17 @@
-<p-toast styleClass="add-color" sticky=true ></p-toast>
+<div class="file-upload-ui">
+    <p-toast styleClass="add-color" sticky=true></p-toast>
+    
+    <p-fileUpload name="file[]" (uploadHandler)="onUpload($event)" accept="video/*" [maxFileSize]=104857600 [fileLimit]="1"
+        [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true" [previewWidth]="50"
+        chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button" life="3000">
+        <ng-template pTemplate="content">
+            <div *ngIf="!fileUploaded" class="file-upload-info">Drop (or) Browse file </div>
+            <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+            </ul>
+        </ng-template>
+    </p-fileUpload>
 
-<p-fileUpload name="file[]" (uploadHandler)="onUpload($event)"  accept="video/*" [maxFileSize]=104857600 [fileLimit]="1"
-[showCancelButton]="false" (onSelect) = "onSelectFile()" [customUpload]="true" [previewWidth]="50" chooseLabel="Browse"  [multiple]="false">
-    <ng-template pTemplate="content">
-        <div *ngIf="!fileUploaded" class="file-upload-info">Drop file here (or) Browse file </div>
-        <ul *ngIf="uploadedFiles.length">
-            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-        </ul>
-    </ng-template>
-</p-fileUpload>
+    <!-- <button (click)="navigateToNext()">Next</button> -->
+
+</div>

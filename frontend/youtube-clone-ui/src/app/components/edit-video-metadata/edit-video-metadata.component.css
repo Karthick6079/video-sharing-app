@@ -3,13 +3,60 @@
 }
 
 .preview-player{
-    width: 50%;
-    height: 400px;
-    border: 1px blue solid;
+    width: 60%;
+    /* height: 100vh; */
+    /* border: 2px red solid; */
 }
 
 .edit-form{
-    width: 50%;
-    height: 400px;
-    border: 1px black solid;
+    width: 40%;
+    padding-left: 1.7rem;
+    /* height: 100vh; */
+    /* border: 2px black solid; */
 }
+
+.edit-form .form-items{
+    margin-top: 1.7rem;
+    display: block;
+}
+
+.thumbnail{
+    margin-bottom: 10px;
+}
+
+:host ::ng-deep .p-fileupload-buttonbar{
+    display: flex;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+}
+
+
+:host ::ng-deep .p-fileupload-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    border: 2px solid #e5e7eb;
+}
+
+:host ::ng-deep .p-toast-message-content{
+    background: white;
+}
+
+.preview-player{
+    padding: 1.7rem;
+}
+
+.submit-container{
+    margin-top: 1.7rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+:host ::ng-deep .p-fileupload-filename{
+    display: none;
+}
+
+:host ::ng-deep .remove-cancel-button{
+    display: none;
+} 

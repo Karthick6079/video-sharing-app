@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+  RouterModule,
+  Routes,
+  provideRouter,
+  withComponentInputBinding,
+} from '@angular/router';
 import { UploadComponent } from './components/upload/upload.component';
 import { EditVideoMetadataComponent } from './components/edit-video-metadata/edit-video-metadata.component';
 import { StudioComponent } from './components/studio/studio.component';
@@ -16,7 +21,7 @@ const routes: Routes = [
         component: UploadComponent,
       },
       {
-        path: 'editMetadata',
+        path: 'edit-video-info/:videoId',
         component: EditVideoMetadataComponent,
       },
       {
@@ -34,5 +39,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [provideRouter(routes, withComponentInputBinding())],
 })
 export class AppRoutingModule {}

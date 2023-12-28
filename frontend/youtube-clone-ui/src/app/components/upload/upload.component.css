@@ -9,7 +9,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20rem;
+    height: 12rem;
     border: 2px solid #e5e7eb;
+}
+
+.file-upload-ui{
+    width: 80%;
+    margin: 0 auto;
+}
+
+:host ::ng-deep .remove-cancel-button{
+    display: none;
+}
+
+:host ::ng-deep .p-toast-message-content{
+    background: white;
 }
 

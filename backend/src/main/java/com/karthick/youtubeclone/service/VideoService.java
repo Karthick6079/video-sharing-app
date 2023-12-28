@@ -30,7 +30,7 @@ public class VideoService {
 
     }
 
-    public String uploadThumbnail(MultipartFile file, String videoId) {
+    public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {
         String url = s3Service.uploadFile(file);
 
         Video savedVideo = savedVideo(videoId)
@@ -39,7 +39,7 @@ public class VideoService {
 
         videoRepository.save(savedVideo);
 
-        return url;
+        return new UploadVideoResponse(url, savedVideo.getId());
 
     }
 

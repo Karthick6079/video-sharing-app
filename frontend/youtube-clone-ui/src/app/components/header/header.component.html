@@ -16,10 +16,10 @@
                   <mat-icon>perm_identity</mat-icon>
                   <span>{{(userData | async)?.userData.name}}</span>
                 </button>
-                <button mat-menu-item>
+                <!-- <button mat-menu-item>
                   <mat-icon>email</mat-icon>
                   <span>{{(userData | async)?.userData.email}}</span>
-                </button>
+                </button> -->
                 <button mat-menu-item (click)="logout()">
                   <mat-icon>logout</mat-icon>
                   <span>Logout</span>

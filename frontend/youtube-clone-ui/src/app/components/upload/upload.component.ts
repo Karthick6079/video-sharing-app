@@ -1,8 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NgxFileDropEntry } from 'ngx-file-drop';
 import { VideoService } from '../../services/video/video.service';
 import { MessageService } from 'primeng/api';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UploadVideoResponse } from '../../dto/upload-video-response';
+import { VideoDataService } from '../../data/video-data.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -21,18 +23,21 @@ export class UploadComponent {
   videoUrl!: string;
 
   fileUploaded: boolean = false;
+  showCancel: boolean = true;
 
   uploadedFiles: any[] = [];
 
   constructor(
     private videoService: VideoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private dataService: VideoDataService
   ) {}
 
   private formData: FormData | undefined;
 
   onUpload(event: FileUploadHandlerEvent) {
-    console.log(event);
     for (let file of event.files) {
       this.uploadedFiles.push(file);
       this.fileUploaded = true;
@@ -52,13 +57,27 @@ export class UploadComponent {
   }
 
   uploadVideo() {
+    this.showCancel = false;
     if (this.formData) {
-      this.videoService.uploadVideo(this.formData).subscribe((response) => {
-        this.videoId = response.videoId;
-        this.videoUrl = response.videoUrl;
-        this.successMessage();
-      });
+      this.videoService
+        .uploadVideo(this.formData)
+        .subscribe((response: UploadVideoResponse) => {
+          this.videoId = response.videoId;
+          this.dataService.setVideoUploadResonse(response);
+          this.successMessage();
+          this.navigateToEditVideoMetaData();
+        });
     }
+  }
+
+  navigateToEditVideoMetaData() {
+    this.router
+      .navigate(['../edit-video-info', this.videoId], {
+        relativeTo: this.activatedRoute,
+      })
+      .then((value) => {
+        console.log('Navigate successfull');
+      });
   }
 
   successMessage() {
@@ -67,5 +86,10 @@ export class UploadComponent {
       summary: 'Success',
       detail: 'File uploaded',
     });
+  }
+
+  navigateToNext() {
+    this.videoId = '05ef9cf2-d5e1-4772-835b-85dc3c4a5cf5';
+    this.navigateToEditVideoMetaData();
   }
 }

@@ -28,6 +28,10 @@ import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { ChipsModule } from 'primeng/chips';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -57,6 +61,10 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
     VgControlsModule,
     VgCoreModule,
     VgOverlayPlayModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    ChipsModule,
+    ButtonModule,
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',

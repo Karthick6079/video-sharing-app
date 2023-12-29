@@ -71,7 +71,8 @@ import { ButtonModule } from 'primeng/button';
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
         clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
-        scope: 'openid profile email offline_access',
+        scope:
+          'openid profile email offline_access given_name family_name nickname phone address picture',
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,

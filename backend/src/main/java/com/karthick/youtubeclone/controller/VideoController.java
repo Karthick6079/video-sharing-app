@@ -35,4 +35,23 @@ public class VideoController {
     }
 
 
+
+    @GetMapping("/watch/{videoId}")
+    @ResponseStatus(HttpStatus.OK)
+    public VideoDto getVideoForWatch(@PathVariable String videoId){
+        return videoService.getVideo(videoId);
+    }
+
+    @PutMapping("/watch/{videoId}/like")
+    @ResponseStatus(HttpStatus.CREATED)
+    public VideoDto likeVideo(@PathVariable String videoId){
+        return videoService.likeVideo(videoId);
+    }
+
+    @PutMapping("/watch/{videoId}/dislike")
+    @ResponseStatus(HttpStatus.CREATED)
+    public VideoDto dislikeVideo(@PathVariable String videoId){
+        return videoService.dislikeVideo(videoId);
+    }
+
 }

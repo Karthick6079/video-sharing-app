@@ -22,6 +22,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://karthick-v.us.auth0.com/
+  auth:
+    user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
 
 
 

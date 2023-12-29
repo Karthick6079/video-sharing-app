@@ -16,8 +16,8 @@ public class Comment {
     @Id
     private String id;
     private String text;
-    private String authorId;
+    private String userId;
     private Long likes;
     private Long disLikes;
-//    private List<Comment> reply;
+    private List<Comment> reply;
 }

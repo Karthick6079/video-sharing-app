@@ -10,7 +10,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoDto {
+public class VideoDTO {
 
     private String id;
     private String title;

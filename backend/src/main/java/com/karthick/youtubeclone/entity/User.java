@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Document("User")
 @Data
@@ -35,14 +37,32 @@ public class User {
     private String nickname;
     @JsonIgnore
     private Set<String> subscribedToUsers = ConcurrentHashMap.newKeySet();
+    private AtomicLong subscribedToCount = new AtomicLong(0);
     @JsonIgnore
     private Set<String> subscribers = ConcurrentHashMap.newKeySet();
+    private AtomicLong subscribersCount = new AtomicLong(0);
     @JsonIgnore
-    private Set<String> videoHistory = ConcurrentHashMap.newKeySet();
+    private List<String> videoHistory = new CopyOnWriteArrayList<>();
     @JsonIgnore
     private Set<String> likedVideos = ConcurrentHashMap.newKeySet();
     @JsonIgnore
     private Set<String> dislikedVideos = ConcurrentHashMap.newKeySet();
+
+    public void incrementSubscriberCount(){
+        this.subscribersCount.incrementAndGet();
+    }
+
+    public void decrementSubscriberCount(){
+        this.subscribersCount.decrementAndGet();
+    }
+
+    public void incrementSubscribedToCount(){
+        this.subscribedToCount.incrementAndGet();
+    }
+
+    public void decrementSubscribedToCount(){
+        this.subscribedToCount.decrementAndGet();
+    }
 
     public void addToLikedVideo(String videoId){
         this.likedVideos.add(videoId);
@@ -65,6 +85,10 @@ public class User {
     }
     public boolean isVideoDisLikedByUser(String id){
         return this.getDislikedVideos().stream().anyMatch( videoId -> videoId.equals(id));
+    }
+
+    public void addToVideoHistory(String videoId){
+        this.videoHistory.add(videoId);
     }
 
 

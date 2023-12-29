@@ -1,7 +1,9 @@
 package com.karthick.youtubeclone.service;
 
+import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
-import com.karthick.youtubeclone.dto.VideoDto;
+import com.karthick.youtubeclone.dto.VideoDTO;
+import com.karthick.youtubeclone.entity.Comment;
 import com.karthick.youtubeclone.entity.User;
 import com.karthick.youtubeclone.entity.Video;
 import com.karthick.youtubeclone.repository.VideoRepository;
@@ -11,7 +13,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +57,7 @@ public class VideoService {
 
     }
 
-    public VideoDto editVideoMetaData(VideoDto videoDto) {
+    public VideoDTO editVideoMetaData(VideoDTO videoDto) {
         Video savedVideo = getVideoFromDB(videoDto.getId());
 
         savedVideo.setVideoStatus(videoDto.getVideoStatus());
@@ -81,17 +85,18 @@ public class VideoService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find video by Id" + id));
     }
 
-    public VideoDto getVideo(String videoId) {
+    public VideoDTO getVideo(String videoId) {
         Video video = getVideoFromDB(videoId);
 
         video.increaseViewCount();
+        userService.addToWatchHistory(videoId);
         videoRepository.save(video);
 
-        return mapper.map(video, VideoDto.class);
+        return mapper.map(video, VideoDTO.class);
 
     }
 
-    public VideoDto likeVideo(String videoId) {
+    public VideoDTO likeVideo(String videoId) {
 
         // Get Video and user entity from DB
         Video video = getVideoFromDB(videoId);
@@ -105,11 +110,11 @@ public class VideoService {
         videoRepository.save(video);
         userService.saveUser(user);
 
-        return mapper.map(video, VideoDto.class);
+        return mapper.map(video, VideoDTO.class);
 
 
     }
-    public VideoDto dislikeVideo(String videoId) {
+    public VideoDTO dislikeVideo(String videoId) {
 
         // Get Video and user entity from DB
         Video video = getVideoFromDB(videoId);
@@ -123,9 +128,34 @@ public class VideoService {
         videoRepository.save(video);
         userService.saveUser(user);
 
-        return mapper.map(video, VideoDto.class);
+        return mapper.map(video, VideoDTO.class);
 
 
     }
 
+    public void addComment(CommentDTO commentDto, String videoId) {
+
+        Video video = getVideoFromDB(videoId);
+        Comment comment = mapper.map(commentDto, Comment.class);
+        video.addComment(comment);
+        videoRepository.save(video);
+
+    }
+
+    public List<CommentDTO> getAllComments(String videoId) {
+        Video video = getVideoFromDB(videoId);
+        List<Comment> commentList = video.getCommentList();
+        return mapToList(commentList, CommentDTO.class);
+    }
+
+    public List<VideoDTO> getAllVideos(){
+       return mapToList(videoRepository.findAll(), VideoDTO.class);
+    }
+
+
+    public <S, T> List<T> mapToList(List<S> source, Class<T> targetClassType){
+        return source.stream()
+                .map( sourceItem -> mapper.map(sourceItem, targetClassType))
+                .collect(Collectors.toList());
+    }
 }

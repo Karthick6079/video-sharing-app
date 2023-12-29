@@ -1,12 +1,15 @@
 package com.karthick.youtubeclone.controller;
 
+import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
-import com.karthick.youtubeclone.dto.VideoDto;
+import com.karthick.youtubeclone.dto.VideoDTO;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${spring.services.path}/video")
@@ -30,7 +33,7 @@ public class VideoController {
 
     @PutMapping("/editMetadata")
     @ResponseStatus(HttpStatus.OK)
-    public VideoDto editVideoMetaData(@RequestBody VideoDto videoDto){
+    public VideoDTO editVideoMetaData(@RequestBody VideoDTO videoDto){
       return videoService.editVideoMetaData(videoDto);
     }
 
@@ -38,20 +41,39 @@ public class VideoController {
 
     @GetMapping("/watch/{videoId}")
     @ResponseStatus(HttpStatus.OK)
-    public VideoDto getVideoForWatch(@PathVariable String videoId){
+    public VideoDTO getVideoForWatch(@PathVariable String videoId){
         return videoService.getVideo(videoId);
     }
 
     @PutMapping("/watch/{videoId}/like")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDto likeVideo(@PathVariable String videoId){
+    public VideoDTO likeVideo(@PathVariable String videoId){
         return videoService.likeVideo(videoId);
     }
 
+
     @PutMapping("/watch/{videoId}/dislike")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDto dislikeVideo(@PathVariable String videoId){
+    public VideoDTO dislikeVideo(@PathVariable String videoId){
         return videoService.dislikeVideo(videoId);
     }
+
+    @PostMapping("/watch/{videoId}/comment")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addComment(@PathVariable String videoId,  @RequestBody CommentDTO commentDto){
+         videoService.addComment(commentDto, videoId);
+    }
+
+    @GetMapping("/watch/{videoId}/comments")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CommentDTO> getAllComments(@PathVariable String videoId){
+        return videoService.getAllComments(videoId);
+    }
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VideoDTO> getAllVideos(){
+        return videoService.getAllVideos();
+    }
+
 
 }

@@ -1,9 +1,10 @@
 package com.karthick.youtubeclone.service;
 
 
-import com.karthick.youtubeclone.dto.UserDto;
+import com.karthick.youtubeclone.dto.UserDTO;
 import com.karthick.youtubeclone.entity.User;
 import com.karthick.youtubeclone.repository.UserRepository;
+import com.karthick.youtubeclone.servicelogic.UserLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -13,21 +14,26 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-
     @Value("${spring.auth.user-info-endpoint}")
     private String userInfoEndpoint;
 
+    private final UserRepository userRepository;
+
     private final ModelMapper mapper;
 
+    private final UserLogic userLogic;
 
-    public void registerUser(String token){
+
+    public UserDTO registerUser(String token){
         User user = null;
 
+        // Get User information from auth provider using jwt token
         RestClient restClient = RestClient.create();
         try{
              user = restClient.get()
@@ -39,10 +45,11 @@ public class UserService {
         }
 
         assert user != null;
-        userRepository.save(user);
+       User savedUser =  userRepository.save(user);
+       return convertUsertoUserDto(savedUser);
     }
 
-    public UserDto getUserProfileInformation(){
+    public UserDTO getUserProfileInformation(){
        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
        User savedUser = getUserFromDB(jwt.getSubject());
@@ -50,13 +57,13 @@ public class UserService {
        return convertUsertoUserDto(savedUser);
     }
 
-    private UserDto convertUsertoUserDto(User user){
-        if(this.mapper.getTypeMap(User.class, UserDto.class) == null){
-            TypeMap<User, UserDto> typeMapper = this.mapper.createTypeMap(User.class, UserDto.class);
-            typeMapper.addMapping(User::getGivenName, UserDto::setFirstName);
-            typeMapper.addMapping(User::getFamilyName, UserDto::setLastName);
+    private UserDTO convertUsertoUserDto(User user){
+        if(this.mapper.getTypeMap(User.class, UserDTO.class) == null){
+            TypeMap<User, UserDTO> typeMapper = this.mapper.createTypeMap(User.class, UserDTO.class);
+            typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
+            typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
         }
-        return mapper.map(user, UserDto.class);
+        return mapper.map(user, UserDTO.class);
     }
 
     public User getCurrentUser(){
@@ -69,7 +76,36 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User cannot find using sub - " + sub));
     }
 
+    public User getUserById(String userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User cannot find using id - " + userId));
+    }
+
     public void saveUser(User user){
         userRepository.save(user);
     }
+
+    public void subscribe(String userId) {
+        User currentUser = getCurrentUser();
+        User subscribeToUser = getUserById(userId);
+
+        userLogic.subscribe(currentUser, subscribeToUser);
+
+        userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
+    }
+    public void unsubscribe(String userId) {
+        User currentUser = getCurrentUser();
+        User unsubscribeToUser = getUserById(userId);
+
+        userLogic.unsubscribe(currentUser, unsubscribeToUser);
+
+        userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
+    }
+
+    public void addToWatchHistory(String videoId){
+        User user = getCurrentUser();
+        user.addToVideoHistory(videoId);
+        userRepository.save(user);
+    }
+
 }

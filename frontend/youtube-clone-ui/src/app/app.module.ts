@@ -32,6 +32,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { ChipsModule } from 'primeng/chips';
 import { ButtonModule } from 'primeng/button';
+import { HomeComponent } from './components/home/home.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { FeaturedComponent } from './components/featured/featured.component';
+import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
+import { HistoryComponent } from './components/history/history.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { VideoCardComponent } from './components/video-card/video-card.component';
+import { MenuModule } from 'primeng/menu';
+import { DividerModule } from 'primeng/divider';
+import { ChipModule } from 'primeng/chip';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { WatchComponent } from './components/watch/watch.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +55,14 @@ import { ButtonModule } from 'primeng/button';
     StudioComponent,
     StepsComponent,
     VideoPlayerComponent,
+    HomeComponent,
+    SidebarComponent,
+    FeaturedComponent,
+    SubscriptionsComponent,
+    HistoryComponent,
+    UserProfileComponent,
+    VideoCardComponent,
+    WatchComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +86,11 @@ import { ButtonModule } from 'primeng/button';
     DropdownModule,
     ChipsModule,
     ButtonModule,
+    MenuModule,
+    DividerModule,
+    ChipModule,
+    AvatarModule,
+    AvatarGroupModule,
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',

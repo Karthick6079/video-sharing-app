@@ -1,0 +1,64 @@
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 16px;
+    gap:1em
+}
+
+.video-card{
+    max-width: 400px;
+    display: flex;
+    border-radius: 12px;
+}
+.thumbnail img{
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 12px;
+}
+
+.video-title{
+    font-family: var(--app-font-family);
+    font-size: 1rem;
+    max-height: 4.4rem;
+    font-weight: 500;
+    line-height: 2.2em;
+    margin-left: 0.7em;
+}
+
+.video-title2{
+    /* font-family: "Roboto","Arial",sans-serif; */
+    font-size: 1.2rem;
+    max-height: 4.4rem;
+    font-weight: 500;
+    line-height: 2.2em;
+}
+.logo-container {
+    margin-top: 0.6em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.channal-name-container{
+    margin-left: 2.65rem;
+}
+
+.channal-name{
+    margin-bottom: 2px;
+}
+
+.small-info-text{
+    font-size: 14px;
+    font-family: var(--app-font-family);
+    color: var(--app-channal-font-color);
+}
+
+.splitter{
+    margin: 0px 4px;
+    height: 4px;
+    width: 4px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: var(--app-channal-font-color);
+}

@@ -2,6 +2,6 @@
     flex: 1 1 auto;
   }
 
-  .host ::ng-deep .mat-mdc-menu-trigger .mat-mdc-menu-panel{
-    max-width: 500px;
+  .app-logo{
+    cursor: pointer;
   }

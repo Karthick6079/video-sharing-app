@@ -1,0 +1,14 @@
+.p-element{
+    margin-right: 10px;
+}
+
+.topics{
+    margin-bottom: 10px;
+}
+
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 16px;
+    gap:1em
+}

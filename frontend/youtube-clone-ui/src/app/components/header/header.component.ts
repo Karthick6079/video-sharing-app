@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
+  name!: string;
 
   userData!: Observable<UserDataResult>;
 
@@ -24,7 +25,9 @@ export class HeaderComponent implements OnInit {
       }
     );
 
-    this.userData = this.oidcSecurityService.userData$;
+    this.oidcSecurityService.userData$.subscribe((response) => {
+      this.name = response.userData.name;
+    });
   }
 
   login() {

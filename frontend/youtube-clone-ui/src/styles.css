@@ -1,3 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+
+/* *{
+    margin: 0;
+    padding: 0;
+} */
+
+:root{
+    --app-font-color: #0f0f0f;
+    --app-channal-font-color: #606060;
+    --app-font-family: "Roboto","Arial",sans-serif;
+}

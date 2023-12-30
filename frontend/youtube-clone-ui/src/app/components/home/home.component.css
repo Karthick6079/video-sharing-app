@@ -1,0 +1,13 @@
+.home-container{
+    display: flex;
+}
+
+.sidebar{
+    width: 15%;
+    height: 100vh;
+}
+
+.featured{
+    flex : 1;
+    height: 100vh;
+}

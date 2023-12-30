@@ -2,7 +2,6 @@
     <!--Edit Video Meta data form-->
     <form class="edit-form" [formGroup]="editVideoDetailsForm">
 
-
         <div class="card flex justify-content-center" >
             <p-toast styleClass="add-color" sticky=true></p-toast>
             <!--Title-->
@@ -39,19 +38,19 @@
             <div class="form-items">
                 <p-chips  formControlName="tags" placeholder="Video Tags" [showClear]="true"></p-chips>
             </div>
-            
+
         </div>
 
-        
+
     </form>
     <div class="preview-player">
         <app-video-player [url]="videoUrl"></app-video-player>
-                    
-        <!--Submit Button-->   
+
+        <!--Submit Button-->
        <div class="submit-container">
         <p-button label="Submit"  [loading]="loading" [disabled]="!editVideoDetailsForm.valid" (click)="submit()"></p-button>
        </div>
 
-         
+
     </div>
 </div>

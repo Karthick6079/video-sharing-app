@@ -1,0 +1,43 @@
+
+.uploaded-user-info{
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    justify-content: space-between;
+}
+
+.channal-container{
+    display: flex;
+    align-items: center;
+}
+
+
+.channal-name{
+    margin: 0 16px;
+}
+
+.channal-name .name{
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--app-font-color);
+}
+
+.channal-name .subscribers-count{
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--app-channal-font-color);
+}
+
+.share-button{
+    margin-left: 1.6em;
+}
+
+:host::ng-deep .like-button{
+    margin-right: 0.5em;
+}
+
+:host::ng-deep .dislike-button{
+    font-size: 2rem;
+    padding: 0.9em;
+}
+

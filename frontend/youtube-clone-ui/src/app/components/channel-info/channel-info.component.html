@@ -1,0 +1,35 @@
+<div class="uploaded-user-info">
+    <!--Channal logo and Name--> 
+    <div class="channal-container">
+        <p-avatar image="../../../assets/Image3.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        <div class="channal-name items">
+             <!--Name and Subs count--> 
+           <div class="name">A2D Channal</div>
+           <div class="subscribers-count">1.01M Subscribers</div>
+        </div>
+         <!--Subscribe button--> 
+        <div class="subscribe-button">
+        
+            @if (!subscribed) {
+               <p-button [rounded]="true" size="large" label="Subscribe" (click)="subscribe()" styleClass="items"></p-button>
+           }@else {
+               
+               <p-button [rounded]="true" [outlined]="true" label="unsubscribe" styleClass="items" (click)="unsubscribe()"></p-button>
+           }
+       </div>
+    </div>
+    <!--Like and share button-->
+    <div class="likes-nd-share-container">
+        <span class="channal-button like-share-button">
+            <p-button icon="pi pi-thumbs-up" label="Like" size="large" severity="primary" (click)="likeVideo()" 
+                [rounded]="true" styleClass="like-button"/>
+
+            <p-button icon="pi pi-thumbs-down" [rounded]="true" [outlined]="true" 
+                size="large" styleClass="dislike-button"/>
+        </span>
+        <span class="channal-button share-button">
+            <!--Share button-->
+            <p-button icon="pi pi-share-alt" label="Share" [rounded]="true" size="large" severity="primary"></p-button>
+        </span>
+    </div>
+</div>

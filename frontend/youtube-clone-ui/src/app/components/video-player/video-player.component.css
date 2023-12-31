@@ -1,21 +1,17 @@
 .video-player-wrapper {
-    max-width: 800px;
+    /* max-width: 90%; */
     text-align: center;
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    /* border-radius: 12px; */
 }
-.player-list {
-   margin: 0;
-   padding: 0;
-}
-.player-list li {
-   list-style: none;
-   padding: 15px 35px;
-   display: block;
-   background: #cccc;
-   cursor: pointer;
-   text-align: left;
-   margin-bottom: 1px;
-}
-li.selected {
-    background: #03A9F4 !important;
-}
+
+/* video {
+    max-width: 64rem;
+    width: 100%;
+    max-height: 30.875rem;
+    height: 100%;
+    margin: 1.25rem auto;
+    padding: 1.051%;
+    background-color: #666;
+    border-radius: 12px;
+  } */

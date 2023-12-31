@@ -45,6 +45,12 @@ import { ChipModule } from 'primeng/chip';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { WatchComponent } from './components/watch/watch.component';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { ChannelInfoComponent } from './components/channel-info/channel-info.component';
+import { InplaceModule } from 'primeng/inplace';
+import { CommentComponent } from './components/comment/comment.component';
+import { MatInputModule } from '@angular/material/input';
+import { ShowCommentsComponent } from './components/show-comments/show-comments.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +69,9 @@ import { WatchComponent } from './components/watch/watch.component';
     UserProfileComponent,
     VideoCardComponent,
     WatchComponent,
+    ChannelInfoComponent,
+    CommentComponent,
+    ShowCommentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +100,9 @@ import { WatchComponent } from './components/watch/watch.component';
     ChipModule,
     AvatarModule,
     AvatarGroupModule,
+    SplitButtonModule,
+    InplaceModule,
+    MatInputModule,
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',

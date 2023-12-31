@@ -1,5 +1,10 @@
 .p-element{
     margin-right: 10px;
+    font-size: 1.6rem;
+}
+
+:host::ng-deep .video-topics .p-chip-text{
+    font-size: 1.6rem;
 }
 
 .topics{
@@ -10,5 +15,5 @@
     display: flex;
     flex-wrap: wrap;
     margin: 0 16px;
-    gap:1em
+    gap: 1.6rem
 }

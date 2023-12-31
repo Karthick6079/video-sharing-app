@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import "primeicons/primeicons.css";
 
 *,
 *::before,
@@ -12,8 +13,16 @@
     padding: 0;
 } */
 
+html{
+    font-size: 10px;
+    font-family: 'Roboto', 'Arial', sans-serif;
+}
+
 :root{
     --app-font-color: #0f0f0f;
     --app-channal-font-color: #606060;
     --app-font-family: "Roboto","Arial",sans-serif;
+    --video-description-color: #131313;
+    --app-second-color: #ddd6fe;
+    --app-light-background: #efefef;
 }

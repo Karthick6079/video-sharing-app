@@ -1,0 +1,18 @@
+<div class="comment-section">
+    <div class="comment-conatiner">
+        <p-avatar image="../../../assets/Image1.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        <mat-form-field class="example-full-width">
+            <!-- <mat-label>Add a comment</mat-label> -->
+            <textarea matInput placeholder="Add a comment..."></textarea>
+        </mat-form-field>
+    </div>
+    <div class="comment-button-container">
+        <p-button [rounded]="true" [outlined]="true" [text]="true" size="large" label="Cancel" (click)="cancelComment()" styleClass="items"></p-button>
+        <p-button [rounded]="true" size="large" label="Comment" (click)="addComment()" styleClass="comment-button"></p-button>
+    </div>
+
+    <h2>Comments</h2>
+    <app-show-comments></app-show-comments>
+    
+</div>
+

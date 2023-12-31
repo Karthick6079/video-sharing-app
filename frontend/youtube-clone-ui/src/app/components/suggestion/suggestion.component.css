@@ -1,0 +1,31 @@
+.suggestion-section{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5em;
+}
+
+.suggestion-thumbnail{
+    margin-right: 1.2em;
+}
+
+.suggestion-thumbnail img{
+    max-width: 18.5rem;
+    display: block;
+    border-radius: 10px;
+    /* max-height: 7rem; */
+}
+
+.video-title{
+    font-size: 1.6rem;
+    color: var(--app-font-color);
+    font-weight: 500;
+    margin-bottom: 0 0 4px 0;
+}
+
+.view-and-posted-time, .channal-name {
+    margin-top:0.5em;
+    font-size: 1.4rem;
+    color: var(--app-channal-font-color);
+    font-weight: 400;
+}
+

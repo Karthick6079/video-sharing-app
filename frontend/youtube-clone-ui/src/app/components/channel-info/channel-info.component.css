@@ -34,10 +34,19 @@
 
 :host::ng-deep .like-button{
     margin-right: 0.5em;
+    width: 9rem;
 }
 
 :host::ng-deep .dislike-button{
     font-size: 2rem;
     padding: 0.9em;
+}
+
+:host::ng-deep .like-count{
+    background-color: transparent;
+    font-size: 1.6rem;
+    /* height: 1.6rem; */
+    color: aliceblue;
+    text-align: center;
 }
 

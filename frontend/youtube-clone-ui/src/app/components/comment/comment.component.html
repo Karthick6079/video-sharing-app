@@ -1,10 +1,20 @@
 <div class="comment-section">
     <div class="comment-conatiner">
         <p-avatar image="../../../assets/Image1.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
-        <mat-form-field class="example-full-width">
-            <!-- <mat-label>Add a comment</mat-label> -->
+        <!-- <mat-form-field class="example-full-width">
             <textarea matInput placeholder="Add a comment..."></textarea>
-        </mat-form-field>
+        </mat-form-field> -->
+
+        <div class="comment-area">
+            <textarea id="float-input" rows="5" cols="30" pInputTextarea placeholder="Add a comment..."></textarea>
+            <!-- <label for="float-input">Summary</label> -->
+        </div>
+        
+    </div>
+    <div>
+        <!-- <span class="p-float-label">
+            
+        </span> -->
     </div>
     <div class="comment-button-container">
         <p-button [rounded]="true" [outlined]="true" [text]="true" size="large" label="Cancel" (click)="cancelComment()" styleClass="items"></p-button>

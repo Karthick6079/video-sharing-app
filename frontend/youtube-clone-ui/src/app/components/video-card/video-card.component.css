@@ -48,11 +48,3 @@
     color: var(--app-channal-font-color);
 }
 
-.splitter{
-    margin: 0px 4px;
-    height: 4px;
-    width: 4px;
-    display: inline-block;
-    border-radius: 50%;
-    background-color: var(--app-channal-font-color);
-}

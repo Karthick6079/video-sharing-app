@@ -17,7 +17,7 @@
 }
 
 .suggestion-bar{
-    width: 35%;
+    width: 30%;
     margin-top: 1em;
 }
 
@@ -75,4 +75,11 @@ figure {
     margin-top: 1.2em;
 }
 
+.suggestion-bar{
+    margin-left:3rem
+}
+
+.suggest-title{
+    margin-top:0;
+}
 

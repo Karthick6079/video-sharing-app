@@ -51,6 +51,7 @@ import { InplaceModule } from 'primeng/inplace';
 import { CommentComponent } from './components/comment/comment.component';
 import { MatInputModule } from '@angular/material/input';
 import { ShowCommentsComponent } from './components/show-comments/show-comments.component';
+import { SuggestionComponent } from './components/suggestion/suggestion.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { ShowCommentsComponent } from './components/show-comments/show-comments.
     ChannelInfoComponent,
     CommentComponent,
     ShowCommentsComponent,
+    SuggestionComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,15 @@
-<div class="suggestion-section" *ngFor="let num of [1,2,3,4,5,6,7,8,9]">
+<div class="suggestion-section" *ngFor="let num of [1,2,3,4,5,6,7,8,9]" (mouseover)="playVideo()">
     <div class="suggestion-thumbnail">
         <img src="../../../assets/Image1.jpg" alt="Image1">
+        <!-- <div class="thumb-video">
+            @if(playThumbnailVideo){
+                <app-thumbnail-video-player [url]="url"></app-thumbnail-video-player>
+            }
+        </div> -->
+
+       
+       
+        <!-- <app-video-player [url]="url"></app-video-player> -->
     </div>
     <div class="video-and-channal-info">
         <div class="video-title">New Video</div>

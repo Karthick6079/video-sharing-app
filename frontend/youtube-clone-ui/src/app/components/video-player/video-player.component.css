@@ -15,3 +15,16 @@
     background-color: #666;
     border-radius: 12px;
   } */
+
+  vg-player{
+    border-radius: 12px;
+    margin-bottom: 1em;
+    font-size: 1.6rem;
+  }
+
+  :host::ng-deep vg-scrub-bar-current-time .background{
+    background-color: var(--primary-400);
+  }
+
+ 
+  

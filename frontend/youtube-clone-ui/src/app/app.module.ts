@@ -52,6 +52,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { MatInputModule } from '@angular/material/input';
 import { ShowCommentsComponent } from './components/show-comments/show-comments.component';
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
+import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
     CommentComponent,
     ShowCommentsComponent,
     SuggestionComponent,
+    ThumbnailVideoPlayerComponent,
   ],
   imports: [
     BrowserModule,

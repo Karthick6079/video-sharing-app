@@ -7,15 +7,21 @@
 
 .video-card{
     max-width: 400px;
-    display: flex;
-    border-radius: 12px;
+    /* display: flex;
+    border-radius: 12px; */
 }
+
+.thumbnail-div{
+    position: relative;
+}
+
 .thumbnail img{
   display: block;
   max-width: 100%;
   max-height: 310px;
   border-radius: 12px;
 }
+
 
 .video-title{
     font-family: var(--app-font-family);
@@ -47,4 +53,6 @@
     font-family: var(--app-font-family);
     color: var(--app-channal-font-color);
 }
+
+
 

@@ -7,8 +7,8 @@
 
 .video-card{
     max-width: 400px;
-    /* display: flex;
-    border-radius: 12px; */
+    display: flex;
+    border-radius: 12px;
 }
 
 .thumbnail-div{
@@ -22,6 +22,9 @@
   border-radius: 12px;
 }
 
+.thumbnail-player{
+    position: absolute;
+}
 
 .video-title{
     font-family: var(--app-font-family);

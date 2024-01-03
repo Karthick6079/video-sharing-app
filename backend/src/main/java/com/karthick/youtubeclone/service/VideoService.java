@@ -2,6 +2,7 @@ package com.karthick.youtubeclone.service;
 
 import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
+import com.karthick.youtubeclone.dto.UserDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
 import com.karthick.youtubeclone.entity.Comment;
 import com.karthick.youtubeclone.entity.User;
@@ -10,9 +11,13 @@ import com.karthick.youtubeclone.repository.VideoRepository;
 import com.karthick.youtubeclone.servicelogic.VideoServiceLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,11 +65,16 @@ public class VideoService {
     public VideoDTO editVideoMetaData(VideoDTO videoDto) {
         Video savedVideo = getVideoFromDB(videoDto.getId());
 
+        User currerntUser = userService.getCurrentUser();
+
         savedVideo.setVideoStatus(videoDto.getVideoStatus());
         savedVideo.setTags(videoDto.getTags());
         savedVideo.setThumbnailUrl(videoDto.getThumbnailUrl());
         savedVideo.setDescription(videoDto.getDescription());
         savedVideo.setTitle(videoDto.getTitle());
+        savedVideo.setPublishedDateAndTime(LocalDateTime.now());
+        savedVideo.setUserId(currerntUser.getId());
+//        savedVideo.setUser(currerntUser);
 
         //update video url to video dto
         videoDto.setVideoUrl(savedVideo.getVideoUrl());
@@ -90,9 +100,16 @@ public class VideoService {
 
         video.increaseViewCount();
         userService.addToWatchHistory(videoId);
-        videoRepository.save(video);
+        // Get channel information about video
+        User videoUploadedUser =  userService.getUserById(video.getUserId());
+        UserDTO userDTO = mapper.map(videoUploadedUser, UserDTO.class);
 
-        return mapper.map(video, VideoDTO.class);
+
+        videoRepository.save(video);
+        VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
+        videoDTO.setUserDTO(userDTO);
+
+        return videoDTO;
 
     }
 
@@ -149,7 +166,31 @@ public class VideoService {
     }
 
     public List<VideoDTO> getAllVideos(){
-       return mapToList(videoRepository.findAll(), VideoDTO.class);
+
+        List<Video> videos;
+        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
+
+
+        //        videos.stream().map( video -> video.set)
+//        if(this.mapper.getTypeMap(User.class, UserDTO.class) == null){
+//            TypeMap<User, UserDTO> typeMapper = this.mapper.createTypeMap(User.class, UserDTO.class);
+//            typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
+//            typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
+//        }
+
+        return getVideosAndUser(videos);
+    }
+
+    private List<VideoDTO> getVideosAndUser(List<Video> videos) {
+        return videos.stream().map(video -> {
+            VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
+            if(video.getUserId() != null){
+                User user = userService.getUserById(video.getUserId());
+                UserDTO userDTO = userService.convertUsertoUserDto(user, mapper);
+                videoDTO.setUserDTO(userDTO);
+            }
+            return videoDTO;
+        }).toList();
     }
 
 

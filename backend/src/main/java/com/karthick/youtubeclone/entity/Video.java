@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,7 @@ public class Video {
     private String thumbnailUrl;
     private List<Comment> commentList = new CopyOnWriteArrayList<>();
     private AtomicLong viewCount = new AtomicLong(0);
+    private LocalDateTime publishedDateAndTime;
 
     public void increaseViewCount(){
         this.getViewCount().incrementAndGet();

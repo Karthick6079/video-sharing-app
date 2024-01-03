@@ -22,6 +22,7 @@ public class VideoDTO {
     private Long likes;
     private Long dislikes;
     private Long viewCount;
+    private UserDTO userDTO;
 
 
 }

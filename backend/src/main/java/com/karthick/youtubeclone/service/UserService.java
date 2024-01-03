@@ -46,7 +46,7 @@ public class UserService {
 
         assert user != null;
        User savedUser =  userRepository.save(user);
-       return convertUsertoUserDto(savedUser);
+       return convertUsertoUserDto(savedUser, mapper);
     }
 
     public UserDTO getUserProfileInformation(){
@@ -54,12 +54,12 @@ public class UserService {
 
        User savedUser = getUserFromDB(jwt.getSubject());
 
-       return convertUsertoUserDto(savedUser);
+       return convertUsertoUserDto(savedUser, mapper);
     }
 
-    private UserDTO convertUsertoUserDto(User user){
-        if(this.mapper.getTypeMap(User.class, UserDTO.class) == null){
-            TypeMap<User, UserDTO> typeMapper = this.mapper.createTypeMap(User.class, UserDTO.class);
+    public UserDTO convertUsertoUserDto(User user, ModelMapper mapper){
+        if(mapper.getTypeMap(User.class, UserDTO.class) == null){
+            TypeMap<User, UserDTO> typeMapper = mapper.createTypeMap(User.class, UserDTO.class);
             typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
             typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
         }

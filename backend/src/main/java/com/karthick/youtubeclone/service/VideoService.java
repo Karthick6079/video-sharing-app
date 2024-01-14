@@ -168,7 +168,7 @@ public class VideoService {
     public List<VideoDTO> getAllVideos(){
 
         List<Video> videos;
-        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
+        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,5)).toList();
 
 
         //        videos.stream().map( video -> video.set)

@@ -22,7 +22,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO register(Authentication authentication){
         Jwt jwt = (Jwt) authentication.getPrincipal();
-        return userService.registerUser(jwt.getTokenValue());
+        return userService.registerUser(jwt);
     }
     @GetMapping("/profile-info")
     @ResponseStatus(HttpStatus.OK)

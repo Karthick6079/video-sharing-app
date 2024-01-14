@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
@@ -17,6 +18,8 @@ import java.util.UUID;
 public class S3Service implements FileService{
 
     private final S3Template s3Template;
+
+    private final S3AsyncClient s3AsyncClient;
 
     private final String BUCKET_NAME = "youtube-clone-avk";
 
@@ -33,6 +36,9 @@ public class S3Service implements FileService{
                 .contentType(file.getContentType())
                 .acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
+
+
+//        s3AsyncClient.cre
 
 
         try {

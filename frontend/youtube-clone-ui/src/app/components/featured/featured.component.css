@@ -12,8 +12,9 @@
 }
 
 .content{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 16px;
-    gap: 1.6rem
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(340px,1fr));
+   grid-gap: 2em;
+   cursor: pointer;
+   padding: 1.6em 0;
 }

@@ -35,7 +35,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-resource-server'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.modelmapper:modelmapper:3.2.0'
-
+    implementation 'software.amazon.awssdk:s3-transfer-manager'
+    implementation 'software.amazon.awssdk.crt:aws-crt'
 }
 
 tasks.named('test') {

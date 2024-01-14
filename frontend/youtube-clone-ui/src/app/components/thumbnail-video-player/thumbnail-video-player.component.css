@@ -1,4 +1,11 @@
-.player{
-    object-fit: cover;
-    border-radius: 12px;
-}
+.video-container{
+    display: flex;
+    height: 100%;
+ }
+ 
+ .player{
+     width: 100%;
+     height: auto; /* spec says no percent allowed here */
+     border-radius: 12px;
+     object-fit: cover;
+ }

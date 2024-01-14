@@ -1,25 +1,19 @@
 <div class="video-card" routerLink="../../watch">
-    <div class="thumbnail">
-        <div class="image-container" (mouseover)="displayVideo = true" (mouseleave)="displayVideo = false">
-            @if(displayVideo){
-                <app-thumbnail-video-player [url]="url" width="400" height="225" ></app-thumbnail-video-player>
-            }@else {
-                <img src="../../../assets/Image1.jpg" alt="Image1" class="thumbnail-div">
-            }
+    <div class="image-container" (mouseover)="displayVideoOnOver(true)" (mouseleave)="displayVideoOnOver(false)">
+        <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
+    </div>
+    
+    <div>
+        <div class="logo-container">
+            <p-avatar [image]="video.userDTO.picture" styleClass="mr-2" shape="circle" size="large"></p-avatar>
+            <span class="video-title">{{video.title}}</span>
         </div>
-        
-        <div>
-            <div class="logo-container">
-                <p-avatar image="../../../assets/Image3.jpg" styleClass="mr-2" shape="circle" size="large"></p-avatar>
-                <span class="video-title">Tiger in jungle</span>
-            </div>
-            <div class="channal-name-container">
-                <div class="small-info-text channal-name">Capture nature</div>
-                <div>
-                    <span class="small-info-text">1.1M Views</span>
-                    <span class="splitter"></span>
-                    <span class="small-info-text">1 Month ago</span>
-                </div>
+        <div class="channal-name-container">
+            <div class="small-info-text channal-name">{{video.userDTO.name}}</div>
+            <div>
+                <span class="small-info-text">{{video.viewCount}}</span>
+                <span class="splitter"></span>
+                <span class="small-info-text">{{video.publishedAtRelative}}</span>
             </div>
         </div>
     </div>

@@ -53,6 +53,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ShowCommentsComponent } from './components/show-comments/show-comments.component';
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { LoadingAnimationComponent } from './components/loading-animation/loading-animation.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-play
     ShowCommentsComponent,
     SuggestionComponent,
     ThumbnailVideoPlayerComponent,
+    RegisterUserComponent,
+    LoadingAnimationComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,8 +114,8 @@ import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-play
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',
-        redirectUrl: window.location.origin,
-        postLogoutRedirectUri: window.location.origin,
+        redirectUrl: 'http://localhost:4200/register-user',
+        postLogoutRedirectUri: 'http://localhost:4200/home',
         clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
         scope:
           'openid profile email offline_access given_name family_name nickname phone address picture',

@@ -30,35 +30,43 @@ public class UserService {
     private final UserLogic userLogic;
 
 
-    public UserDTO registerUser(String token){
-        User user = null;
-
-        // Get User information from auth provider using jwt token
-        RestClient restClient = RestClient.create();
-        try{
-             user = restClient.get()
-                     .uri(userInfoEndpoint)
-                    .header("Authorization", "Bearer " + token)
-                    .retrieve().body(User.class);
-        } catch (Exception exp){
-            throw new RuntimeException("Exception occurred while registering the user");
+    public UserDTO registerUser(Jwt jwt) {
+        User user;
+        user = getUserFromDB(jwt.getSubject());
+        if (user != null) {
+            return convertUsertoUserDto(user, mapper);
         }
 
-        assert user != null;
-       User savedUser =  userRepository.save(user);
-       return convertUsertoUserDto(savedUser, mapper);
+        // Get User information from auth provider using jwt token
+        user = getUserInfoFromAuthProvider(jwt);
+        User savedUser = userRepository.save(user);
+        return convertUsertoUserDto(savedUser, mapper);
     }
 
-    public UserDTO getUserProfileInformation(){
-       Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-       User savedUser = getUserFromDB(jwt.getSubject());
-
-       return convertUsertoUserDto(savedUser, mapper);
+    private User getUserInfoFromAuthProvider(Jwt jwt) {
+        User user;
+        RestClient restClient = RestClient.create();
+        try {
+            user = restClient.get()
+                    .uri(userInfoEndpoint)
+                    .header("Authorization", "Bearer " + jwt.getTokenValue())
+                    .retrieve().body(User.class);
+        } catch (Exception exp) {
+            throw new RuntimeException("Exception occurred while registering the user");
+        }
+        return user;
     }
 
-    public UserDTO convertUsertoUserDto(User user, ModelMapper mapper){
-        if(mapper.getTypeMap(User.class, UserDTO.class) == null){
+    public UserDTO getUserProfileInformation() {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User savedUser = getUserFromDB(jwt.getSubject());
+
+        return convertUsertoUserDto(savedUser, mapper);
+    }
+
+    public UserDTO convertUsertoUserDto(User user, ModelMapper mapper) {
+        if (mapper.getTypeMap(User.class, UserDTO.class) == null) {
             TypeMap<User, UserDTO> typeMapper = mapper.createTypeMap(User.class, UserDTO.class);
             typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
             typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
@@ -66,22 +74,22 @@ public class UserService {
         return mapper.map(user, UserDTO.class);
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return getUserFromDB(jwt.getSubject());
     }
 
-    public User getUserFromDB(String sub){
+    public User getUserFromDB(String sub) {
         return userRepository.findBySub(sub)
                 .orElseThrow(() -> new RuntimeException("User cannot find using sub - " + sub));
     }
 
-    public User getUserById(String userId){
+    public User getUserById(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User cannot find using id - " + userId));
     }
 
-    public void saveUser(User user){
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 
@@ -93,6 +101,7 @@ public class UserService {
 
         userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
     }
+
     public void unsubscribe(String userId) {
         User currentUser = getCurrentUser();
         User unsubscribeToUser = getUserById(userId);
@@ -102,7 +111,7 @@ public class UserService {
         userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
     }
 
-    public void addToWatchHistory(String videoId){
+    public void addToWatchHistory(String videoId) {
         User user = getCurrentUser();
         user.addToVideoHistory(videoId);
         userRepository.save(user);

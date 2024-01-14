@@ -18,6 +18,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { HistoryComponent } from './components/history/history.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
         component: HistoryComponent,
       },
     ],
+  },
+  {
+    path: 'register-user',
+    component: RegisterUserComponent,
   },
 
   {

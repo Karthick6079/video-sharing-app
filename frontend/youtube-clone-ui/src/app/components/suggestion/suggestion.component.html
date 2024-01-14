@@ -1,19 +1,19 @@
 <div class="suggestion-section">
     <div class="suggestion-thumbnail" (mouseover)="displayVideo = true" (mouseleave)="displayVideo = false">
         @if(displayVideo){
-            <app-thumbnail-video-player [url]="url" width="185" height="104" ></app-thumbnail-video-player>
+            <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
         }@else {
-            <img src="../../../assets/Image1.jpg" alt="Image1">
+            <img [src]="video.thumbnailUrl" alt="Image1">
         }
         
     </div>
     <div class="video-and-channal-info">
-        <div class="video-title">New Video</div>
-        <div class="channal-name">Tomorrow starts today</div>
+        <div class="video-title">{{video.title}}</div>
+        <div class="channal-name">{{video.userDTO.name}}</div>
         <div class="view-and-posted-time">
-            <span>1.7M Views</span>
+            <span>{{video.viewCount}}</span>
             <span class="splitter"></span>
-            <span>3 hour    s ago</span>
+            <span>{{video.publishedAtRelative}}</span>
         </div>
 
     </div>

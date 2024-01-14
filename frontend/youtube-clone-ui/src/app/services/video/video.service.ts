@@ -9,17 +9,19 @@ import { VideoDto } from '../../dto/video-dto';
   providedIn: 'root',
 })
 export class VideoService {
-  private uploadUrl: string = '/upload';
+  private UPLOAD_URL: string = '/upload';
 
-  private thumbnailUrl: string = '/thumbnail';
+  private ThUMBNAIL_URL: string = '/thumbnail';
 
-  private editMetadataUrl: string = '/editMetadata';
+  private EDIT_META_DATA_URL: string = '/editMetadata';
+
+  private ALL_VIDEOS_URL: string = '/all';
 
   constructor(private http: HttpClient) {}
 
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {
     return this.http.post<UploadVideoResponse>(
-      this.getUrl() + this.uploadUrl,
+      this.getVideoBaseUrl() + this.UPLOAD_URL,
       formData
     );
   }
@@ -30,7 +32,7 @@ export class VideoService {
   ): Observable<UploadVideoResponse> {
     formData.append('videoId', videoId);
     return this.http.post<UploadVideoResponse>(
-      this.getUrl() + this.thumbnailUrl,
+      this.getVideoBaseUrl() + this.ThUMBNAIL_URL,
       formData
     );
   }
@@ -43,13 +45,19 @@ export class VideoService {
     };
 
     return this.http.put<VideoDto>(
-      this.getUrl() + this.editMetadataUrl,
+      this.getVideoBaseUrl() + this.EDIT_META_DATA_URL,
       requestBody,
       httpOptions
     );
   }
 
-  getUrl(): string {
+  getVideoBaseUrl(): string {
     return AppSettings.HOST + AppSettings.SERVICE_NAME + '/video';
+  }
+
+  getVideos(): Observable<VideoDto[]> {
+    return this.http.get<VideoDto[]>(
+      this.getVideoBaseUrl() + this.ALL_VIDEOS_URL
+    );
   }
 }

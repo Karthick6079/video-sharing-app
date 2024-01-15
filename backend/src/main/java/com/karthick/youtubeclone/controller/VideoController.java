@@ -3,6 +3,7 @@ package com.karthick.youtubeclone.controller;
 import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.VideoDTO;
+import com.karthick.youtubeclone.service.CommentService;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
+
+    private final CommentService commentService;
 
     @PostMapping(path = "/upload")
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,14 +63,14 @@ public class VideoController {
 
     @PostMapping("/watch/{videoId}/comment")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addComment(@PathVariable String videoId,  @RequestBody CommentDTO commentDto){
-         videoService.addComment(commentDto, videoId);
+    public CommentDTO addComment(@PathVariable String videoId,  @RequestBody CommentDTO commentDto){
+        return commentService.addComment(commentDto);
     }
 
     @GetMapping("/watch/{videoId}/comments")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentDTO> getAllComments(@PathVariable String videoId){
-        return videoService.getAllComments(videoId);
+        return commentService.getAllComments(videoId);
     }
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)

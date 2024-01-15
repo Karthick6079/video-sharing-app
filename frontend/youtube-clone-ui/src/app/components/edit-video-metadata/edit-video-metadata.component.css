@@ -8,6 +8,11 @@
     /* border: 2px red solid; */
 }
 
+:host::ng-deep .p-component{
+    font-size: 1.6rem;
+}
+
+
 .edit-form{
     width: 40%;
     padding-left: 1.7rem;

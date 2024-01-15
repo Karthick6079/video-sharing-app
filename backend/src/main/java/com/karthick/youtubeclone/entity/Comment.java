@@ -16,8 +16,12 @@ public class Comment {
     @Id
     private String id;
     private String text;
+    private String videoId;
     private String userId;
+    private String username;
+    private String picture;
     private Long likes;
     private Long disLikes;
     private List<Comment> reply;
+    private Long commentCreatedTime;
 }

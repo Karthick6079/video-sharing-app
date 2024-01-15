@@ -57,6 +57,8 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { LoadingAnimationComponent } from './components/loading-animation/loading-animation.component';
 import { RelativeTimeFilterPipe } from './pipes/relative-time-filter.pipe';
 import { TimeagoModule } from 'ngx-timeago';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './services/custom-routing-strategy';
 
 @NgModule({
   declarations: [
@@ -119,7 +121,7 @@ import { TimeagoModule } from 'ngx-timeago';
       config: {
         authority: 'https://karthick-v.us.auth0.com',
         redirectUrl: 'http://localhost:4200/register-user',
-        postLogoutRedirectUri: 'http://localhost:4200/home',
+        postLogoutRedirectUri: 'http://localhost:4200/home/featured',
         clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
         scope:
           'openid profile email offline_access given_name family_name nickname phone address picture',

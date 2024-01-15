@@ -9,13 +9,12 @@
         }
     </div>
     <div class="video-and-channal-info">
-        <div class="video-title">{{video.title}}</div>
+        <div class="video-title" [title]="video.title">{{video.title}}</div>
         <div class="channal-name">{{video.userDTO.name}}</div>
         <div class="view-and-posted-time">
             <span>{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
             <span class="splitter"></span>
             <span>{{video.publishedDateAndTime | timeago}}</span>
         </div>
-
     </div>
 </div>

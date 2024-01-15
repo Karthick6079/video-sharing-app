@@ -38,8 +38,8 @@
 }
 
 :host::ng-deep .dislike-button{
-    font-size: 2rem;
-    padding: 0.9em;
+    font-size: 3rem;
+    padding: 1.3em;
 }
 
 :host::ng-deep .like-count{
@@ -48,5 +48,19 @@
     /* height: 1.6rem; */
     color: aliceblue;
     text-align: center;
+}
+
+:host::ng-deep .p-component{
+    font-size: 1.4rem;
+}
+
+:host::ng-deep .p-toast .p-toast-message.p-toast-message-info{
+    background-color: white;
+    /* color: #8b5cf6; */
+}
+
+:host::ng-deep .p-toast {
+    width: 50rem;
+    /* color: #8b5cf6; */
 }
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommentDTO } from '../../dto/video-dto';
 
 @Component({
   selector: 'app-show-comments',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './show-comments.component.css',
 })
 export class ShowCommentsComponent {
+  @Input()
+  comment!: CommentDTO;
+
   disLikeComment() {
     throw new Error('Method not implemented.');
   }

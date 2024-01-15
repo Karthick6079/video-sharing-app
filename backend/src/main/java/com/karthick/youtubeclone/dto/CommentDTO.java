@@ -14,7 +14,12 @@ public class CommentDTO {
     private String text;
     @NonNull
     private String userId;
+    @NonNull
+    private String videoId;
+    private String username;
+    private String picture;
     private Long likes;
     private Long disLikes;
+    private Long commentCreatedTime;
 
 }

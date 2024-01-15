@@ -33,13 +33,15 @@ public class UserController {
 
     @PutMapping("/subscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void subscribe(@RequestParam String userId){
+    public boolean subscribe(@RequestParam String userId){
         userService.subscribe(userId);
+        return true;
     }
     @PutMapping("/unsubscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void unsubscribe(@RequestParam String userId){
+    public boolean  unsubscribe(@RequestParam String userId){
         userService.unsubscribe(userId);
+        return true;
     }
 
 }

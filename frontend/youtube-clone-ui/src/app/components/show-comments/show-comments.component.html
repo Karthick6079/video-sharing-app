@@ -1,11 +1,11 @@
-<div class="show-comment-section" *ngFor="let num of [1,2,3,4,5,6,7,8]">
+<div class="show-comment-section">
     <div class="comment-conatiner">
-        <p-avatar image="../../../assets/Image4.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        <p-avatar [image]="comment.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
         <div class="user-and-comment">
-            <div class="name">Karthic V</div>
-            <div class="comment">Good Movie sir.. Keep doing like this!!</div>
+            <div class="name">{{comment.username}}</div>
+            <div class="comment">{{comment.text}}</div>
             <div class="comment-button-container">
-                <p-button icon="pi pi-thumbs-up" [rounded]="true" badge="8" [outlined]="true" [text]="true" size="large" (click)="likeComment()" styleClass="comment-like-button"></p-button>
+                <p-button icon="pi pi-thumbs-up" [rounded]="true" badge="{{comment.likes}}" [outlined]="true" [text]="true" size="large" (click)="likeComment()" styleClass="comment-like-button"></p-button>
                 <p-button icon="pi pi-thumbs-down" [rounded]="true"  [outlined]="true"  [text]="true" size="large"(click)="disLikeComment()" styleClass="comment-dislike-button"></p-button>
             </div>
         </div>

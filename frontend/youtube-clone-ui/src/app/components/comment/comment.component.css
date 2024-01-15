@@ -46,3 +46,15 @@
     font-size: 1.4rem;
     height: 4em;
 }
+
+:host::ng-deep .p-component{
+    font-size: 1.4rem;
+}
+
+:host::ng-deep .p-toast .p-toast-message.p-toast-message-info{
+    background-color: white;
+}
+
+:host::ng-deep .p-toast {
+    width: 50rem;
+}

@@ -38,3 +38,7 @@ html{
     border-radius: 50%;
     background-color: var(--app-channal-font-color);
 }
+
+:host::ng-deep .p-component{
+    font-size: 1.6rem;
+}

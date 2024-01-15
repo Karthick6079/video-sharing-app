@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { VideoDto } from '../../dto/video-dto';
 import { VideoService } from '../../services/video/video.service';
 import {
@@ -40,10 +40,18 @@ export class WatchComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe((data) => {
       this.video = data['video'];
     });
-    this.getSuggestionVideos();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSuggestionVideos();
+
+    this.activatedRoute.params.subscribe((params) =>
+      console.log(params['videoId'])
+    );
+
+    console.log(this.video);
+  }
 
   descPanalOpen = false;
 

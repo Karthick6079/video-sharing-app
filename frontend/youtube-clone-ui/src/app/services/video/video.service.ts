@@ -4,7 +4,7 @@ import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
 import { UploadVideoResponse } from '../../dto/upload-video-response';
 import { FormGroup } from '@angular/forms';
-import { VideoDto } from '../../dto/video-dto';
+import { CommentDTO, VideoDto } from '../../dto/video-dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -66,6 +66,27 @@ export class VideoService {
   getVideo(videoId: string): Observable<VideoDto> {
     return this.http.get<VideoDto>(
       this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId
+    );
+  }
+
+  likeVideo(videoId: string): Observable<VideoDto> {
+    return this.http.put<VideoDto>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/like',
+      null
+    );
+  }
+
+  dislikeVideo(videoId: string): Observable<VideoDto> {
+    return this.http.put<VideoDto>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike',
+      null
+    );
+  }
+
+  addComment(videoId: string, commentBody: any) {
+    return this.http.post<CommentDTO>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/comment',
+      commentBody
     );
   }
 }

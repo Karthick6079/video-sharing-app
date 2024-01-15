@@ -8,6 +8,8 @@ export interface VideoDto {
   thumbnailUrl: string;
   userDTO: UserDto;
   viewCount: number;
+  likes: number;
+  dislikes: number;
   publishedDateAndTime: string;
 }
 
@@ -25,6 +27,18 @@ export interface UserDto {
   videoHistory: any[];
   likedVideos: any[];
   dislikedVideos: any[];
+}
+
+export interface CommentDTO {
+  id: string;
+  text: string;
+  userId: string;
+  likes: number;
+  dislikes: number;
+  videoId: string;
+  picture: string;
+  username: string;
+  commentCreatedTime: number;
 }
 
 export interface VideoStatus {

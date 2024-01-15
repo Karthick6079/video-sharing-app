@@ -1,7 +1,9 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
 <div class="uploaded-user-info">
     <!--Channal logo and Name--> 
     <div class="channal-container">
-        <p-avatar image="../../../assets/Image3.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        <p-avatar [image]="user?.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
         <div class="channal-name items">
              <!--Name and Subs count--> 
            <div class="name">{{user?.name}}</div>
@@ -11,20 +13,21 @@
         <div class="subscribe-button">
         
             @if (!subscribed) {
-               <p-button [rounded]="true" size="large" label="Subscribe" (click)="subscribe()" styleClass="items"></p-button>
-           }@else {
-               
-               <p-button [rounded]="true" [outlined]="true" label="unsubscribe" styleClass="items" (click)="unsubscribe()"></p-button>
-           }
-       </div>
+            <p-button [rounded]="true" size="large" label="Subscribe" (click)="subscribe()" styleClass="items"></p-button>
+            }
+            @else{
+            <p-button [rounded]="true" [outlined]="true" label="unsubscribe" styleClass="items"
+                (click)="unsubscribe()"></p-button>
+            }
+        </div>
     </div>
     <!--Like and share button-->
     <div class="likes-nd-share-container">
         <span class="channal-button like-share-button">
-            <p-button icon="pi pi-thumbs-up" label="1.3K"  size="large" severity="primary" (click)="likeVideo()" 
+            <p-button icon="pi pi-thumbs-up" label="{{video?.likes}}"  size="large" severity="primary" (click)="likeVideo()" 
                 [rounded]="true" styleClass="like-button"/>
 
-            <p-button icon="pi pi-thumbs-down" [rounded]="true" [outlined]="true" 
+            <p-button icon="pi pi-thumbs-down" [rounded]="true" [outlined]="true" (click)="dislikeVideo()"
                 size="large" styleClass="dislike-button"/>
         </span>
         <span class="channal-button share-button">

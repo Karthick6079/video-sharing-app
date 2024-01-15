@@ -21,7 +21,7 @@ export class RegisterUserComponent implements OnInit {
     this.userService.registerUser().subscribe((userDto) => {
       if (userDto) {
         console.log(userDto);
-        this.router.navigate(['home']);
+        this.router.navigate(['../']);
       }
     });
   }

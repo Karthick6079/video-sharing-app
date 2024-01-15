@@ -152,25 +152,12 @@ public class VideoService {
 
     }
 
-    public void addComment(CommentDTO commentDto, String videoId) {
 
-        Video video = getVideoFromDB(videoId);
-        Comment comment = mapper.map(commentDto, Comment.class);
-        video.addComment(comment);
-        videoRepository.save(video);
-
-    }
-
-    public List<CommentDTO> getAllComments(String videoId) {
-        Video video = getVideoFromDB(videoId);
-        List<Comment> commentList = video.getCommentList();
-        return mapToList(commentList, CommentDTO.class);
-    }
 
     public List<VideoDTO> getAllVideos(){
 
         List<Video> videos;
-        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,5)).toList();
+        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
 
 //        Collections.shuffle(videos);
 

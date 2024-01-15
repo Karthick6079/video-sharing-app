@@ -5,6 +5,7 @@ import {
   UserDataResult,
 } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
+import { LoginService } from '../../services/login/login.service';
 
 @Component({
   selector: 'app-header',
@@ -17,28 +18,28 @@ export class HeaderComponent implements OnInit {
 
   userData!: Observable<UserDataResult>;
 
-  constructor(private oidcSecurityService: OidcSecurityService) {}
+  constructor(
+    private oidcSecurityService: OidcSecurityService,
+    private loginService: LoginService
+  ) {}
   ngOnInit(): void {
-    this.oidcSecurityService.isAuthenticated$.subscribe(
-      ({ isAuthenticated }) => {
-        this.isAuthenticated = isAuthenticated;
-      }
-    );
-
     this.oidcSecurityService.userData$.subscribe((response) => {
       if (response.userData) {
         this.name = response.userData.name;
       }
     });
+
+    this.oidcSecurityService.isAuthenticated$.subscribe(
+      ({ isAuthenticated }) => {
+        this.isAuthenticated = isAuthenticated;
+      }
+    );
   }
 
   login() {
-    this.oidcSecurityService.authorize();
+    this.loginService.login();
   }
-
   logout() {
-    console.log('Logoff method called');
-    this.oidcSecurityService.logoffAndRevokeTokens();
-    this.oidcSecurityService.logoffLocal();
+    this.loginService.logout();
   }
 }

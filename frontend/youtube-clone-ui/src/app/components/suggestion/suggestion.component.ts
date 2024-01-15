@@ -11,7 +11,11 @@ export class SuggestionComponent implements OnInit {
   @Input()
   video!: VideoDto;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    // this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    //   return false;
+    // };
+  }
 
   ngOnInit(): void {
     console.log(this.displayVideo);
@@ -33,6 +37,9 @@ export class SuggestionComponent implements OnInit {
   watchVideo() {
     console.log('The navigate method called from suggestion bar');
     // this.router.navigateByUrl('/watch/' + this.video.id);
+    // this.router
+    //   .navigateByUrl('/', { skipLocationChange: true })
+    //   .then(() => this.router.navigate(['./watch', this.video.id]));
     this.router.navigate(['../../watch', this.video.id]);
   }
 }

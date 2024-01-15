@@ -2,24 +2,21 @@
     <div class="video-container">
         <div class="video-player">
             <div class="video-loading-area">
-                <app-video-player [url]="url"></app-video-player>
+                <app-video-player  [url]="video.videoUrl" [autoplay]="true"></app-video-player>
             </div>
             
             <!--Video Title-->
             <div class="video-title">
-                Laptop for GANESHA! 💻 - Lenovo Ideapad Slim 5i New Year Gift🤯🎁 | 2023 Best Student Laptop?🤔
+                {{video.title }}
             </div>
-            <app-channel-info></app-channel-info>
+            <app-channel-info [video]="video"></app-channel-info>
             <div class="video-description">
                 <p-inplace styleClass="description" [active]="false" [closable]="true">
                     <ng-template pTemplate="display">
-                        <div class="short-description"><p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, minus ipsam. Dolorem, eos velit fugit repellendus rem aliquam atque ex esse aperiam aut magnam fuga adipisci! Placeat quisquam aspernatur dolor.</p></div>
+                        <div class="short-description"><p>{{video.description }}</p></div>
                     </ng-template>
                     <ng-template pTemplate="content">
-                        <div class="isClick"(click)="closeDesc()">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </div>
+                        <div class="isClick"(click)="closeDesc()">{{video.description}} </div>
                     </ng-template>
                 </p-inplace>
             </div>
@@ -33,7 +30,7 @@
     <div class="suggestion-bar">
         <h2 class="suggest-title">Suggestions</h2>
         <div class="rightside-section">
-            <app-suggestion *ngFor="let num of [1,2,3,4,5,6,7,8,9]" ></app-suggestion>
+            <app-suggestion *ngFor="let video of suggestionVideos$ | async"  [video]="video"></app-suggestion>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class UserService {
     private final ModelMapper mapper;
 
     private final UserLogic userLogic;
+
+    private final String ANONYMOUS_USER = "anonymousUser";
 
 
     public UserDTO registerUser(Jwt jwt) {
@@ -75,6 +78,12 @@ public class UserService {
     }
 
     public User getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+
+        if(securityContext != null && ANONYMOUS_USER.equals(securityContext.getAuthentication().getPrincipal())){
+            return null;
+        }
+
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return getUserFromDB(jwt.getSubject());
     }
@@ -113,8 +122,11 @@ public class UserService {
 
     public void addToWatchHistory(String videoId) {
         User user = getCurrentUser();
-        user.addToVideoHistory(videoId);
-        userRepository.save(user);
+        if(user != null){
+            user.addToVideoHistory(videoId);
+            userRepository.save(user);
+        }
+
     }
 
 }

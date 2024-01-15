@@ -19,6 +19,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { videoDataResolverResolver } from './resolver/video-data-resolver.resolver';
 
 const routes: Routes = [
   {
@@ -49,8 +50,9 @@ const routes: Routes = [
   },
 
   {
-    path: 'watch',
+    path: 'watch/:videoId',
     component: WatchComponent,
+    resolve: { video: videoDataResolverResolver },
   },
 
   {

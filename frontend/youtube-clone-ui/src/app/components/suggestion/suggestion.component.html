@@ -1,19 +1,20 @@
-<div class="suggestion-section">
-    <div class="suggestion-thumbnail" (mouseover)="displayVideo = true" (mouseleave)="displayVideo = false">
+<div class="suggestion-section" >
+    <div class="suggestion-thumbnail" (click)="watchVideo()" (mouseover)="displayVideoOrThumbnail(true)" (mouseleave)="displayVideoOrThumbnail(false)">
         @if(displayVideo){
-            <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
+            @if(video){
+                <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
+            }
         }@else {
-            <img [src]="video.thumbnailUrl" alt="Image1">
+            <img [src]="video.thumbnailUrl" [alt]="video.title">
         }
-        
     </div>
     <div class="video-and-channal-info">
         <div class="video-title">{{video.title}}</div>
         <div class="channal-name">{{video.userDTO.name}}</div>
         <div class="view-and-posted-time">
-            <span>{{video.viewCount}}</span>
+            <span>{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
             <span class="splitter"></span>
-            <span>{{video.publishedAtRelative}}</span>
+            <span>{{video.publishedDateAndTime | timeago}}</span>
         </div>
 
     </div>

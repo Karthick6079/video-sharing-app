@@ -7,8 +7,8 @@ export interface VideoDto {
   videoUrl: string;
   thumbnailUrl: string;
   userDTO: UserDto;
-  viewCount: BigInteger;
-  publishedAtRelative: string;
+  viewCount: number;
+  publishedDateAndTime: string;
 }
 
 export interface UserDto {

@@ -1,38 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VideoDto } from '../../dto/video-dto';
+import { VideoService } from '../../services/video/video.service';
+import {
+  Observable,
+  Subscription,
+  filter,
+  map,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 
 @Component({
   selector: 'app-watch',
   templateUrl: './watch.component.html',
   styleUrl: './watch.component.css',
 })
-export class WatchComponent {
+export class WatchComponent implements OnInit, OnDestroy {
+  video!: VideoDto;
+
+  videoOb$: Observable<VideoDto | null> = of(null);
+
+  suggestionVideos$!: Observable<VideoDto[]>;
+
+  url!: string;
+
+  sub: Subscription | undefined;
+
+  videoId!: string;
+  videoUrl!: string;
+  isVideoAvailable: boolean = false;
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private videoService: VideoService
+  ) {
+    this.activatedRoute.data.subscribe((data) => {
+      this.video = data['video'];
+    });
+    this.getSuggestionVideos();
+  }
+
+  ngOnInit(): void {}
+
   descPanalOpen = false;
 
   closeDesc() {
     this.descPanalOpen = false;
     console.log('Deactivate method called from closeDesc');
   }
-  likeVideo() {
-    throw new Error('Method not implemented.');
-  }
-  dislikeVideo() {
-    throw new Error('Method not implemented.');
-  }
-  unsubscribe() {
-    throw new Error('Method not implemented.');
-  }
-  subscribe() {
-    throw new Error('Method not implemented.');
-  }
-  ubsubscribe() {
-    throw new Error('Method not implemented.');
-  }
-  url: string =
-    'https://youtube-clone-avk.s3.ap-south-1.amazonaws.com/2adfcab6-dc28-47eb-af60-2e200ff5ce70.mp4';
 
   subsribed: boolean = false;
 
   onDeactivate(event: Event) {
     console.log('Deactivate method called');
+  }
+
+  getSuggestionVideos() {
+    this.suggestionVideos$ = this.videoService.getVideos();
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 }

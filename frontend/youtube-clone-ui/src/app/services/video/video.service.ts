@@ -17,6 +17,8 @@ export class VideoService {
 
   private ALL_VIDEOS_URL: string = '/all';
 
+  private GET_VIDEDO_URL: string = '/watch/';
+
   constructor(private http: HttpClient) {}
 
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {
@@ -58,6 +60,12 @@ export class VideoService {
   getVideos(): Observable<VideoDto[]> {
     return this.http.get<VideoDto[]>(
       this.getVideoBaseUrl() + this.ALL_VIDEOS_URL
+    );
+  }
+
+  getVideo(videoId: string): Observable<VideoDto> {
+    return this.http.get<VideoDto>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId
     );
   }
 }

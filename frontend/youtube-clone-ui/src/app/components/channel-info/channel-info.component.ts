@@ -1,11 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { UserDto, VideoDto } from '../../dto/video-dto';
 
 @Component({
   selector: 'app-channel-info',
   templateUrl: './channel-info.component.html',
   styleUrl: './channel-info.component.css',
 })
-export class ChannelInfoComponent {
+export class ChannelInfoComponent implements OnInit {
+  @Input()
+  video: VideoDto | undefined;
+
+  user: UserDto | undefined;
+
+  ngOnInit(): void {
+    this.user = this.video?.userDTO;
+  }
+
   likeVideo() {
     throw new Error('Method not implemented.');
   }

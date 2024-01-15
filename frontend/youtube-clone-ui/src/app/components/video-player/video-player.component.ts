@@ -9,6 +9,9 @@ export class VideoPlayerComponent {
   @Input()
   url!: string;
 
+  @Input()
+  autoplay: boolean = false;
+
   data: any;
   constructor() {}
   ngOnInit(): void {}

@@ -55,6 +55,8 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
 import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { LoadingAnimationComponent } from './components/loading-animation/loading-animation.component';
+import { RelativeTimeFilterPipe } from './pipes/relative-time-filter.pipe';
+import { TimeagoModule } from 'ngx-timeago';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import { LoadingAnimationComponent } from './components/loading-animation/loadin
     ThumbnailVideoPlayerComponent,
     RegisterUserComponent,
     LoadingAnimationComponent,
+    RelativeTimeFilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +114,7 @@ import { LoadingAnimationComponent } from './components/loading-animation/loadin
     SplitButtonModule,
     InplaceModule,
     MatInputModule,
+    TimeagoModule.forRoot(),
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',

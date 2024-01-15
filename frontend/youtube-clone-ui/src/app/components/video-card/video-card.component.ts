@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-card',
@@ -7,6 +8,8 @@ import { VideoDto } from '../../dto/video-dto';
   styleUrl: './video-card.component.css',
 })
 export class VideoCardComponent implements OnInit {
+  constructor(private router: Router) {}
+
   @Input()
   video!: VideoDto;
 
@@ -25,9 +28,14 @@ export class VideoCardComponent implements OnInit {
   }
 
   displayVideoOnOver(value: boolean) {
-    if (this.isThumbnailAvailable()) {
+    if (!this.isThumbnailAvailable()) {
       this.displayVideo = true;
+    } else {
+      this.displayVideo = value;
     }
-    this.displayVideo = value;
+  }
+
+  watchVideo() {
+    this.router.navigate(['../../watch', this.video.id]);
   }
 }

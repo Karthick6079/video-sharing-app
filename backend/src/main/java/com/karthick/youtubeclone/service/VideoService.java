@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -170,20 +172,18 @@ public class VideoService {
         List<Video> videos;
         videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,5)).toList();
 
-
-        //        videos.stream().map( video -> video.set)
-//        if(this.mapper.getTypeMap(User.class, UserDTO.class) == null){
-//            TypeMap<User, UserDTO> typeMapper = this.mapper.createTypeMap(User.class, UserDTO.class);
-//            typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
-//            typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
-//        }
+//        Collections.shuffle(videos);
 
         return getVideosAndUser(videos);
     }
 
     private List<VideoDTO> getVideosAndUser(List<Video> videos) {
         return videos.stream().map(video -> {
+//            mapper.getConfiguration().getMatchingStrategy().
             VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
+            Long publishedInLong = video.getPublishedDateAndTime()
+                    .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+            videoDTO.setPublishedDateAndTime(publishedInLong);
             if(video.getUserId() != null){
                 User user = userService.getUserById(video.getUserId());
                 UserDTO userDTO = userService.convertUsertoUserDto(user, mapper);

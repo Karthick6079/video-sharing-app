@@ -1,6 +1,10 @@
-<div class="video-card" routerLink="../../watch">
+<div class="video-card" (click)="watchVideo()">
     <div class="image-container" (mouseover)="displayVideoOnOver(true)" (mouseleave)="displayVideoOnOver(false)">
-        <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
+        @if(displayVideo){
+            <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
+        }@else {
+            <img [src]="video.thumbnailUrl" [alt]="video.title">
+        }
     </div>
     
     <div>
@@ -11,9 +15,9 @@
         <div class="channal-name-container">
             <div class="small-info-text channal-name">{{video.userDTO.name}}</div>
             <div>
-                <span class="small-info-text">{{video.viewCount}}</span>
+                <span class="small-info-text">{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
                 <span class="splitter"></span>
-                <span class="small-info-text">{{video.publishedAtRelative}}</span>
+                <span class="small-info-text">{{video.publishedDateAndTime | timeago}}</span>
             </div>
         </div>
     </div>

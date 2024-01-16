@@ -2,7 +2,11 @@
     <div class="comment-conatiner">
         <p-avatar [image]="comment.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
         <div class="user-and-comment">
-            <div class="name">{{comment.username}}</div>
+            <div class="user-and-posted-time-container">
+                <div class="name">{{comment.username}}</div>
+                <span class="splitter"></span>
+                <div class="name">{{comment.commentCreatedTime | timeago}}</div>
+            </div>
             <div class="comment">{{comment.text}}</div>
             <div class="comment-button-container">
                 <p-button icon="pi pi-thumbs-up" [rounded]="true" badge="{{comment.likes}}" [outlined]="true" [text]="true" size="large" (click)="likeComment()" styleClass="comment-like-button"></p-button>

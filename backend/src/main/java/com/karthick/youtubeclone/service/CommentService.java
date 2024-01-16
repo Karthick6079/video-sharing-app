@@ -1,13 +1,12 @@
 package com.karthick.youtubeclone.service;
 
-import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.entity.Comment;
 import com.karthick.youtubeclone.entity.User;
-import com.karthick.youtubeclone.entity.Video;
 import com.karthick.youtubeclone.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import com.karthick.youtubeclone.dto.CommentDTO;
 
 import java.time.Instant;
 import java.util.List;

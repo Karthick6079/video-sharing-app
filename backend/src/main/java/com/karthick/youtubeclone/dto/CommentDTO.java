@@ -1,20 +1,22 @@
 package com.karthick.youtubeclone.dto;
 
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDTO {
     private String id;
-    @NonNull
+
+    @NotBlank(message = "Comment should not be empty")
     private String text;
-    @NonNull
+    @NotBlank( message = "User id required")
     private String userId;
-    @NonNull
+    @NotBlank(message = "Video id required")
     private String videoId;
     private String username;
     private String picture;

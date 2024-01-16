@@ -21,6 +21,10 @@ export class VideoService {
 
   constructor(private http: HttpClient) {}
 
+  getVideoBaseUrl(): string {
+    return AppSettings.HOST + AppSettings.SERVICE_NAME + '/video';
+  }
+
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {
     return this.http.post<UploadVideoResponse>(
       this.getVideoBaseUrl() + this.UPLOAD_URL,
@@ -53,10 +57,6 @@ export class VideoService {
     );
   }
 
-  getVideoBaseUrl(): string {
-    return AppSettings.HOST + AppSettings.SERVICE_NAME + '/video';
-  }
-
   getVideos(): Observable<VideoDto[]> {
     return this.http.get<VideoDto[]>(
       this.getVideoBaseUrl() + this.ALL_VIDEOS_URL
@@ -80,13 +80,6 @@ export class VideoService {
     return this.http.put<VideoDto>(
       this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike',
       null
-    );
-  }
-
-  addComment(videoId: string, commentBody: any) {
-    return this.http.post<CommentDTO>(
-      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/comment',
-      commentBody
     );
   }
 }

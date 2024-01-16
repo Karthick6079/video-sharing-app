@@ -58,3 +58,14 @@
 :host::ng-deep .p-toast {
     width: 50rem;
 }
+
+.user-circle{
+    border: 2px solid var(--app-channal-font-color);
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.75;
+}

@@ -34,3 +34,8 @@
 :host::ng-deep .p-button .p-badge{
     font-size: 1rem;
 }
+
+.user-and-posted-time-container{
+    display: flex;
+    align-items: center;
+}

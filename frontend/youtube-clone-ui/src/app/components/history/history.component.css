@@ -1,0 +1,7 @@
+.watched-video-container{
+    width: 65%;
+}
+
+:host::ng-deep .suggestion-section{
+    height: 220px !important;
+}

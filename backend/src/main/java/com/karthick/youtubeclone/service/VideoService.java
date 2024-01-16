@@ -1,28 +1,22 @@
 package com.karthick.youtubeclone.service;
 
-import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.UserDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
-import com.karthick.youtubeclone.entity.Comment;
 import com.karthick.youtubeclone.entity.User;
 import com.karthick.youtubeclone.entity.Video;
 import com.karthick.youtubeclone.repository.VideoRepository;
 import com.karthick.youtubeclone.servicelogic.VideoServiceLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -164,7 +158,7 @@ public class VideoService {
         return getVideosAndUser(videos);
     }
 
-    private List<VideoDTO> getVideosAndUser(List<Video> videos) {
+    public List<VideoDTO> getVideosAndUser(List<Video> videos) {
         return videos.stream().map(video -> {
 //            mapper.getConfiguration().getMatchingStrategy().
             VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
@@ -181,9 +175,9 @@ public class VideoService {
     }
 
 
-    public <S, T> List<T> mapToList(List<S> source, Class<T> targetClassType){
-        return source.stream()
-                .map( sourceItem -> mapper.map(sourceItem, targetClassType))
-                .collect(Collectors.toList());
+
+
+    public List<Video> fetchWatchedVideos(List<String> videoIdList) {
+        return videoRepository.findAllById(videoIdList);
     }
 }

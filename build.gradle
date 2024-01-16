@@ -1,3 +1,13 @@
+plugins{
+    id 'java'
+    id 'maven-publish'
+}
+
 repositories {
     mavenCentral()
 }
+
+dependencies {
+//    implementation 'org.coldis.library:dto:1.0.4'
+}
+

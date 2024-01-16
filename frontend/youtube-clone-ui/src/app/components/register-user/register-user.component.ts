@@ -14,14 +14,14 @@ export class RegisterUserComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.registerUserInDB();
-    }, 1500);
+    }, 1700);
   }
 
   registerUserInDB() {
     this.userService.registerUser().subscribe((userDto) => {
       if (userDto) {
-        console.log(userDto);
-        this.router.navigate(['../']);
+        this.userService.setCurrentUser(userDto);
+        // this.router.navigateByUrl('/');
       }
     });
   }

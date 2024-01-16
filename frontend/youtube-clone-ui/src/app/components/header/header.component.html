@@ -7,7 +7,7 @@
             
             @if (isAuthenticated) {
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Account Info">
-                <mat-icon>account_circle</mat-icon>
+                <p-avatar [image]="(userData | async) ?.userData.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
               </button>
               <mat-menu #menu="matMenu">
                 <button mat-menu-item>

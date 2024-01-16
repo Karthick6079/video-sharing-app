@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
-import { UserDto } from '../../dto/video-dto';
+import { UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class UserService implements OnInit {
   private REGISTER_URL: String = '/register';
   private SUBSCRIBE_URL: String = '/subscribe';
   private UN_SUBSCRIBE_URL: String = '/unsubscribe';
+  private VIDEO_HISTORY_URL: String = '/videos-history';
 
   private loggedInUserData!: UserDataResult;
 
@@ -19,6 +20,8 @@ export class UserService implements OnInit {
     private http: HttpClient,
     private oidcSecurityService: OidcSecurityService
   ) {}
+
+  private currentUserDto!: UserDto;
 
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
@@ -48,6 +51,12 @@ export class UserService implements OnInit {
     );
   }
 
+  getWatchedVideos(): Observable<VideoDto[]> {
+    return this.http.get<VideoDto[]>(
+      this.getUserBaseUrl() + this.VIDEO_HISTORY_URL
+    );
+  }
+
   unsubscribeUser(userId: string): Observable<boolean> {
     var formData = new FormData();
     formData.append('userId', userId);
@@ -59,5 +68,13 @@ export class UserService implements OnInit {
 
   getLoggedInUserData() {
     return this.loggedInUserData;
+  }
+
+  setCurrentUser(userDto: UserDto) {
+    this.currentUserDto = userDto;
+  }
+
+  getCurrentUser() {
+    return this.currentUserDto;
   }
 }

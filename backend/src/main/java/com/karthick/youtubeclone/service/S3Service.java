@@ -19,8 +19,6 @@ public class S3Service implements FileService{
 
     private final S3Template s3Template;
 
-    private final S3AsyncClient s3AsyncClient;
-
     private final String BUCKET_NAME = "youtube-clone-avk";
 
     @Override

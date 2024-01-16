@@ -1,1 +1,9 @@
-<p>history works!</p>
+<div  *ngIf="isAuthenticated">
+    <div *ngIf="isDataAvailable" class="watched-video-container">
+        <app-suggestion *ngFor="let video of watchedVideos" [video]="video"></app-suggestion>
+    </div>
+</div>
+
+<h1 *ngIf="!isAuthenticated">
+    Please login to check your watched videos!!!!
+</h1>

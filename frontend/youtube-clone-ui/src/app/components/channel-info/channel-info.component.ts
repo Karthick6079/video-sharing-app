@@ -39,7 +39,7 @@ export class ChannelInfoComponent implements OnInit {
   }
 
   likeVideo() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
+    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
       this.videoService
         .likeVideo(String(this.video?.id))
         .subscribe((video: VideoDto) => {
@@ -48,7 +48,7 @@ export class ChannelInfoComponent implements OnInit {
     }
   }
   dislikeVideo() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
+    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
       this.videoService
         .dislikeVideo(String(this.video?.id))
         .subscribe((video: VideoDto) => {

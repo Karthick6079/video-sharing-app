@@ -1,9 +1,7 @@
 package com.karthick.youtubeclone.controller;
 
-import com.karthick.youtubeclone.dto.CommentDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.VideoDTO;
-import com.karthick.youtubeclone.service.CommentService;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,7 @@ public class VideoController {
 
     private final VideoService videoService;
 
-    private final CommentService commentService;
+
 
     @PostMapping(path = "/upload")
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,8 +37,6 @@ public class VideoController {
     public VideoDTO editVideoMetaData(@RequestBody VideoDTO videoDto){
       return videoService.editVideoMetaData(videoDto);
     }
-
-
 
     @GetMapping("/watch/{videoId}")
     @ResponseStatus(HttpStatus.OK)
@@ -61,17 +57,7 @@ public class VideoController {
         return videoService.dislikeVideo(videoId);
     }
 
-    @PostMapping("/watch/{videoId}/comment")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CommentDTO addComment(@PathVariable String videoId,  @RequestBody CommentDTO commentDto){
-        return commentService.addComment(commentDto);
-    }
 
-    @GetMapping("/watch/{videoId}/comments")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CommentDTO> getAllComments(@PathVariable String videoId){
-        return commentService.getAllComments(videoId);
-    }
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<VideoDTO> getAllVideos(){

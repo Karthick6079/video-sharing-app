@@ -1,15 +1,28 @@
 <p-toast position="top-center" key="tc"></p-toast>
 <div class="comment-section">
     <div class="comment-conatiner">
-        <p-avatar image="../../../assets/Image1.jpg" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        @if(isAuthenticated){
+            <p-avatar [image]="currentUser.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        }@else {
+            <span class="user-circle">
+                <i class="pi pi-user" style="font-size: 2rem; color:#333333"></i>
+            </span>
+            <!-- <p-avatar icon="pi pi-user" styleClass="mr-2" [style]="{'background-color': '#9c27b0', 'color': '#ffffff'}" shape="circle"></p-avatar> -->
+            <!-- <p-avatar icon="pi pi-user" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar> -->
+        }
+        
+        
         <!-- <mat-form-field class="example-full-width">
             <textarea matInput placeholder="Add a comment..."></textarea>
         </mat-form-field> -->
-
-        <div class="comment-area">
-            <textarea id="float-input" rows="5" cols="30" pInputTextarea  #comment placeholder="Add a comment..." ng-model="comment"></textarea>
-            <!-- <label for="float-input">Summary</label> -->
-        </div>
+       
+            <div class="comment-area">
+                <form [formGroup]="commentForm">
+                <textarea id="float-input" rows="5" cols="30" pInputTextarea #comment placeholder="Add a comment..."
+                    formControlName="comment"></textarea>
+                </form>
+                <!-- <label for="float-input">Summary</label> -->
+            </div>
         
     </div>
     <div>
@@ -18,13 +31,14 @@
         </span> -->
     </div>
     <div class="comment-button-container">
-        <p-button [rounded]="true" [outlined]="true" [text]="true" size="large" label="Cancel" (click)="comment.value = ''" styleClass="items"></p-button>
-        <p-button [rounded]="true" size="large" label="Comment" (click)="addComment(comment.value)" styleClass="comment-button"></p-button>
+        <p-button [rounded]="true" [outlined]="true" [text]="true" size="large" label="Cancel" (click)="cancelComment()"
+            styleClass="items"></p-button>
+        <p-button [rounded]="true" size="large" label="Comment" (click)="addComment()"
+            styleClass="comment-button" [disabled]="!commentForm.get('comment')?.value"></p-button>
     </div>
 
     <h2>Comments</h2>
-    <app-show-comments *ngIf="isNewCommentAdded" [comment]="commentDto"></app-show-comments>
+    <app-show-comments *ngFor="let comment of comments" [comment]="comment"></app-show-comments>
     <!-- <app-show-comments *ngFor="let num of [1,2,3,4,5,6,7,8]"></app-show-comments> -->
-    
-</div>
 
+</div>

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { VideoDto } from '../../dto/video-dto';
+import { UserDto, VideoDto } from '../../dto/video-dto';
 import { VideoService } from '../../services/video/video.service';
 import {
   Observable,
@@ -11,6 +11,7 @@ import {
   switchMap,
   take,
 } from 'rxjs';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-watch',
@@ -19,23 +20,20 @@ import {
 })
 export class WatchComponent implements OnInit, OnDestroy {
   video!: VideoDto;
-
   videoOb$: Observable<VideoDto | null> = of(null);
-
   suggestionVideos$!: Observable<VideoDto[]>;
-
   url!: string;
-
   sub: Subscription | undefined;
-
   videoId!: string;
   videoUrl!: string;
   isVideoAvailable: boolean = false;
+  descPanalOpen = false;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private userSevice: UserService
   ) {
     this.activatedRoute.data.subscribe((data) => {
       this.video = data['video'];
@@ -52,8 +50,6 @@ export class WatchComponent implements OnInit, OnDestroy {
 
     console.log(this.video);
   }
-
-  descPanalOpen = false;
 
   closeDesc() {
     this.descPanalOpen = false;

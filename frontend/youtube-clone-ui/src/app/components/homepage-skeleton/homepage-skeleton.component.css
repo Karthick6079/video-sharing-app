@@ -1,0 +1,40 @@
+.video-thumbnail{
+    height: 240px;
+    background-color: var(--app-skeleton-color);
+    border-radius: 12px;
+    margin-bottom: 1em;
+}
+.user-and-video-info{
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-info{
+    width: 40px;
+    height: 40px;
+    background-color: var(--app-skeleton-color);
+    border-radius: 50%;
+}
+
+.video-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 89%;
+}
+
+.rectangle-1{
+    background-color: var(--app-skeleton-color);
+    width: 100%;
+    height: 12.5px;
+    border-radius: 5px;
+
+}
+
+.rectangle-2{
+    background-color: var(--app-skeleton-color);
+    width: 100%;
+    height: 12.5px;
+    width: 90%;
+    border-radius: 5px;
+}

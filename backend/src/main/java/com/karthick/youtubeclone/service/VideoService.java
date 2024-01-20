@@ -148,16 +148,6 @@ public class VideoService {
 
 
 
-    public List<VideoDTO> getAllVideos(){
-
-        List<Video> videos;
-        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
-
-//        Collections.shuffle(videos);
-
-        return getVideosAndUser(videos);
-    }
-
     public List<VideoDTO> getVideosAndUser(List<Video> videos) {
         return videos.stream().map(video -> {
 //            mapper.getConfiguration().getMatchingStrategy().
@@ -172,6 +162,16 @@ public class VideoService {
             }
             return videoDTO;
         }).toList();
+    }
+
+    public List<VideoDTO> getAllVideos(){
+
+        List<Video> videos;
+        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
+
+//        Collections.shuffle(videos);
+
+        return getVideosAndUser(videos);
     }
 
 

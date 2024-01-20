@@ -59,6 +59,7 @@ import { RelativeTimeFilterPipe } from './pipes/relative-time-filter.pipe';
 import { TimeagoModule } from 'ngx-timeago';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/custom-routing-strategy';
+import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepage-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { CustomRouteReuseStrategy } from './services/custom-routing-strategy';
     RegisterUserComponent,
     LoadingAnimationComponent,
     RelativeTimeFilterPipe,
+    HomepageSkeletonComponent,
   ],
   imports: [
     BrowserModule,

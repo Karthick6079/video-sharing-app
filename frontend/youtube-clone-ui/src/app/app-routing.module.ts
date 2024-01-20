@@ -11,15 +11,14 @@ import { StudioComponent } from './components/studio/studio.component';
 import { ReviewAndPublishComponent } from './components/review-and-publish/review-and-publish.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 import { HomeComponent } from './components/home/home.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FeaturedComponent } from './components/featured/featured.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { HistoryComponent } from './components/history/history.component';
 import { WatchComponent } from './components/watch/watch.component';
-import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-player/thumbnail-video-player.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { videoDataResolverResolver } from './resolver/video-data-resolver.resolver';
+import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepage-skeleton.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {

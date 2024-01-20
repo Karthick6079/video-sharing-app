@@ -13,6 +13,8 @@ export class FeaturedComponent implements OnInit {
 
   videos!: VideoDto[];
 
+  isVideosAvailable: boolean = false;
+
   constructor(private videoService: VideoService) {
     this.topics = [
       'Vijaykanth',
@@ -33,6 +35,7 @@ export class FeaturedComponent implements OnInit {
   ngOnInit(): void {
     this.videoService.getVideos().subscribe((videos) => {
       this.videos = videos;
+      this.isVideosAvailable = true;
       console.log(this.videos);
     });
   }

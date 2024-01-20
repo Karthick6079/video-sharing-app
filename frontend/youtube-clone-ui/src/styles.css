@@ -28,6 +28,7 @@ html{
     --video-description-color: #131313;
     --app-second-color: #ddd6fe;
     --app-light-background: #efefef;
+    --app-skeleton-color: #dedede;
 }
 
 .splitter{

@@ -25,7 +25,8 @@ public class CommentController {
 
     @GetMapping("/watch/{videoId}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDTO> getAllComments(@PathVariable String videoId){
-        return commentService.getAllComments(videoId);
+    public List<CommentDTO> getAllComments(@PathVariable String videoId,
+                                           @RequestParam( name = "page", defaultValue  = "0") int page){
+        return commentService.getAllComments(videoId, page);
     }
 }

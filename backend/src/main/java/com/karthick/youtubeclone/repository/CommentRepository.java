@@ -1,6 +1,7 @@
 package com.karthick.youtubeclone.repository;
 
 import com.karthick.youtubeclone.entity.Comment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,6 @@ import java.util.OptionalLong;
 public interface CommentRepository extends MongoRepository<Comment, String> {
 
     Optional<List<Comment>> findByVideoId(String videoId);
+
+    Optional<List<Comment>> findByVideoId(Pageable pageable);
 }

@@ -1,0 +1,13 @@
+.shorts-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.vid-shorts{
+    width: 400px;
+    height: 560px;
+    border-radius: 12px;
+    /* border: 1px solid darkgray; */
+    margin: 0 auto;
+    margin-bottom: 2em;
+}

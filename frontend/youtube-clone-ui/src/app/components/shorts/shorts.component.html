@@ -1,0 +1,59 @@
+<div class="video-panel">
+    <p-toast position="top-center" key="tc"></p-toast>
+    <div class="shorts-video-info-container">
+        <div class="vid-shorts-player box">
+            <app-shorts-player [url]="video.videoUrl"></app-shorts-player>
+        </div>
+        <div class="video-info-container overlay">
+            <app-shorts-vid-info [video]="video"></app-shorts-vid-info>
+        </div>
+    </div>
+    <div class="engagement-panel">
+     <div class="engage-comp">
+        <p-button icon="pi pi-thumbs-up" size="large" severity="primary" (click)="likeVideo()" [rounded]="true"
+        styleClass="like-button" pTooltip="Likes" />
+        <span class="info-text">{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span> 
+     </div> 
+
+     <div class="engage-comp">
+            <p-button icon="pi pi-thumbs-down" [rounded]="true" [outlined]="true" (click)="dislikeVideo()" size="large"
+            styleClass="dislike-button" pTooltip="DisLikes" />
+            <span class="info-text" >DisLike</span>
+        </div>
+
+        <div class="engage-comp">
+            
+        <p-button icon="pi pi-comments" [rounded]="true" size="large" severity="primary" pTooltip="Comments"
+        (click)="showComments()"></p-button>
+        <span class="info-text" >Comments</span>
+        </div>
+
+        <div class="engage-comp">
+            <p-button icon="pi pi-align-left" [rounded]="true" size="large" severity="primary" (click)="op.toggle($event)"
+            pTooltip="Description"></p-button>
+            <span class="info-text" >Description</span>
+        </div>
+    </div>
+    <p-dialog [header]="video.title" [(visible)]="visible" [modal]="false" [style]="{ width: '50rem', height: '53rem' }"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" position="right">
+        <div class="comments">
+            <div class="add-comment">
+                <app-comment [video]="video"></app-comment>
+            </div>
+        </div>
+    </p-dialog>
+</div>
+
+<p-overlayPanel #op>
+
+    <ng-template pTemplate="content">
+        <h3>{{video.title}}</h3>
+        <hr>
+        <div class="video-infos">
+            <span>{{video.publishedDateAndTime | timeago}}</span> |
+            <span>{{video.viewCount}}{{video.viewCount == 0 ||  video.viewCount == 1 ? ' view' :' views'}}</span> |
+            <span>{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span>
+        </div>
+    </ng-template>
+
+</p-overlayPanel>

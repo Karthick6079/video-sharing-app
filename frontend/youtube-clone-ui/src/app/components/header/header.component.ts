@@ -6,6 +6,7 @@ import {
 } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
 import { LoginService } from '../../services/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
@@ -41,5 +43,9 @@ export class HeaderComponent implements OnInit {
   }
   logout() {
     this.loginService.logout();
+  }
+
+  navigateToHome() {
+    // this.router.navigateByUrl('/home');
   }
 }

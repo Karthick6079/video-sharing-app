@@ -1,0 +1,20 @@
+<!-- <p>shorts-vid-info works!</p> -->
+
+<div class="container">
+    <p-avatar [image]="user.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+    <span class="channal-name">{{user.name}}</span>
+    <div class="subscribe-button">
+        
+        @if (!subscribed) {
+        <p-button [rounded]="true" size="small" label="Subscribe" (click)="subscribe()" styleClass="items"></p-button>
+        }
+        @else{
+        <p-button [rounded]="true" [outlined]="true" size="small" label="Subscribed" styleClass="items"
+            (click)="unsubscribe()"></p-button>
+        }
+    </div>
+</div>
+<div class="video-desc">
+    <div class="video-title" [title]="video.title">{{video.title}}</div>
+</div>
+

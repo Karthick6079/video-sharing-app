@@ -1,0 +1,23 @@
+.video-container{
+    display: flex;
+    height: 100%;
+ }
+ 
+ .player{
+     width: 100%;
+     height: auto; /* spec says no percent allowed here */
+     border-radius: 12px;
+     object-fit: cover;
+ }
+
+
+ :host::ng-deep vg-controls{
+    justify-content: space-between;
+    top: 0;
+    background-color: transparent;
+ }
+
+ :host::ng-deep vg-overlay-play .vg-overlay-play{
+    height: 80%;
+ }
+

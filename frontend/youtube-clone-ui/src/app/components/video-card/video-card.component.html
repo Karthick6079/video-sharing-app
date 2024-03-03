@@ -15,7 +15,7 @@
         <div class="channal-name-container">
             <div class="small-info-text channal-name">{{video.userDTO.name}}</div>
             <div>
-                <span class="small-info-text">{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
+                <span class="small-info-text">{{video.viewCount}}{{video.viewCount == 0 ||  video.viewCount == 1 ? ' view' :' views'}}</span>
                 <span class="splitter"></span>
                 <span class="small-info-text">{{video.publishedDateAndTime | timeago}}</span>
             </div>

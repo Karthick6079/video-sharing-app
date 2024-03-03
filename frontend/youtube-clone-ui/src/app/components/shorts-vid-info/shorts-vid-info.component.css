@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    align-items: center;
+}
+
+.channal-name{
+    font-size: 1.3em;
+    margin: 0 10px;
+}
+
+.video-title{
+    margin: 5px 5px;
+    font-size: 1.35em;
+    overflow: hidden;
+    line-height: 1.3;
+    height: 35px;
+}

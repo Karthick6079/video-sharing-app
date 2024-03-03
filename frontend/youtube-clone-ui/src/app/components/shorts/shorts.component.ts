@@ -1,43 +1,41 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { LoginService } from '../../services/login/login.service';
+
 import { MessageService } from 'primeng/api';
-import { UserService } from '../../services/user/user.service';
 import { VideoService } from '../../services/video/video.service';
 
 @Component({
-  selector: 'app-channel-info',
-  templateUrl: './channel-info.component.html',
-  styleUrl: './channel-info.component.css',
-  providers: [MessageService],
+  selector: 'app-shorts',
+  templateUrl: './shorts.component.html',
+  styleUrl: './shorts.component.css',
 })
-export class ChannelInfoComponent implements OnInit {
+export class ShortsComponent implements OnInit {
   @Input()
-  video: VideoDto | undefined;
+  video!: VideoDto;
 
   user: UserDto | undefined;
 
   public isAuthenticated: boolean = false;
-  subscribed: boolean = false;
-  unsubscribed: boolean = false;
+
+  visible: boolean = false;
 
   constructor(
-    private loginService: LoginService,
     private messageService: MessageService,
-    private userService: UserService,
     private oidcSecurityService: OidcSecurityService,
     private videoService: VideoService
   ) {}
 
   ngOnInit(): void {
-    this.user = this.video?.userDTO;
-    console.log(this.user);
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
         this.isAuthenticated = isAuthenticated;
       }
     );
+  }
+
+  showComments() {
+    this.visible = true;
   }
 
   likeVideo() {
@@ -55,24 +53,6 @@ export class ChannelInfoComponent implements OnInit {
         .dislikeVideo(String(this.video?.id))
         .subscribe((video: VideoDto) => {
           this.video = video;
-        });
-    }
-  }
-  unsubscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .unsubscribeUser(String(this.user?.id))
-        .subscribe((isUnsubscribed) => {
-          this.subscribed = !isUnsubscribed;
-        });
-    }
-  }
-  subscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .subscribeUser(String(this.user?.id))
-        .subscribe((isSubscribed) => {
-          this.subscribed = isSubscribed;
         });
     }
   }

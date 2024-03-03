@@ -1,0 +1,84 @@
+.video-panel{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.shorts-video-info-container {
+    position: relative;
+    border-radius: 12px;
+}
+
+.box {
+    width: 100%;
+    height: 100%;
+}
+
+.overlay {
+    width: 100%;
+    height: 20%;
+    color: rgb(255, 255, 255);
+    z-index: 20px;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), rgb(0 0 0));
+}
+
+.engagement-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto 10px;
+    height: 350px;
+}
+
+.engage-comp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/*Modifying the primeng styles*/
+
+:host::ng-deep .p-button.p-button-lg .p-button-icon{
+    font-size: 1.5em;
+}
+
+:host::ng-deep .p-button.p-button-icon-only.p-button-rounded{
+    height: 3.75em;
+}
+
+:host::ng-deep .p-button.p-button-icon-only{
+    width: 3.75em;
+}
+
+:host::ng-deep .p-component{
+    font-size: 1.4rem;
+}
+
+:host::ng-deep .p-toast .p-toast-message.p-toast-message-info{
+    background-color: white;
+    /* color: #8b5cf6; */
+}
+
+:host::ng-deep .p-toast {
+    width: 50rem;
+    /* color: #8b5cf6; */
+}
+
+.video-infos{
+    margin-top: 8px;
+}
+
+.info-text{
+    margin-top: 5px;
+    font-size: 1.2em;
+}
+
+span{
+    font-size: 1.1em;
+}

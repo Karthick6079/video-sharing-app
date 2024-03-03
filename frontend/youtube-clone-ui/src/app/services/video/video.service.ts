@@ -19,6 +19,8 @@ export class VideoService {
 
   private GET_VIDEDO_URL: string = '/watch/';
 
+  private GET_SHORT_VIDEDO_URL: string = '/short-video';
+
   constructor(private http: HttpClient) {}
 
   getVideoBaseUrl(): string {
@@ -80,6 +82,12 @@ export class VideoService {
     return this.http.put<VideoDto>(
       this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike',
       null
+    );
+  }
+
+  getShortsVideo(): Observable<VideoDto[]> {
+    return this.http.get<VideoDto[]>(
+      this.getVideoBaseUrl() + this.GET_SHORT_VIDEDO_URL
     );
   }
 }

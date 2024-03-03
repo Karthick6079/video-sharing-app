@@ -60,6 +60,13 @@ import { TimeagoModule } from 'ngx-timeago';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/custom-routing-strategy';
 import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepage-skeleton.component';
+import { ShortsComponent } from './components/shorts/shorts.component';
+import { ShortsPageComponent } from './components/shorts-page/shorts-page.component';
+import { ShortsPlayerComponent } from './components/shorts-player/shorts-player.component';
+import { ShortsVidInfoComponent } from './components/shorts-vid-info/shorts-vid-info.component';
+import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -87,6 +94,10 @@ import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepa
     LoadingAnimationComponent,
     RelativeTimeFilterPipe,
     HomepageSkeletonComponent,
+    ShortsComponent,
+    ShortsPageComponent,
+    ShortsPlayerComponent,
+    ShortsVidInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,6 +129,9 @@ import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepa
     SplitButtonModule,
     InplaceModule,
     MatInputModule,
+    TooltipModule,
+    DialogModule,
+    OverlayPanelModule,
     TimeagoModule.forRoot(),
     AuthModule.forRoot({
       config: {

@@ -1,38 +1,35 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserDto, VideoDto } from '../../dto/video-dto';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { LoginService } from '../../services/login/login.service';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../services/user/user.service';
-import { VideoService } from '../../services/video/video.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
-  selector: 'app-channel-info',
-  templateUrl: './channel-info.component.html',
-  styleUrl: './channel-info.component.css',
-  providers: [MessageService],
+  selector: 'app-shorts-vid-info',
+  templateUrl: './shorts-vid-info.component.html',
+  styleUrl: './shorts-vid-info.component.css',
 })
-export class ChannelInfoComponent implements OnInit {
-  @Input()
-  video: VideoDto | undefined;
-
-  user: UserDto | undefined;
-
-  public isAuthenticated: boolean = false;
+export class ShortsVidInfoComponent implements OnInit {
   subscribed: boolean = false;
   unsubscribed: boolean = false;
 
+  user!: UserDto;
+
+  @Input()
+  video!: VideoDto;
+
+  public isAuthenticated: boolean = false;
+
   constructor(
-    private loginService: LoginService,
     private messageService: MessageService,
     private userService: UserService,
-    private oidcSecurityService: OidcSecurityService,
-    private videoService: VideoService
+    private oidcSecurityService: OidcSecurityService
   ) {}
 
   ngOnInit(): void {
     this.user = this.video?.userDTO;
     console.log(this.user);
+    console.log(this.video);
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
         this.isAuthenticated = isAuthenticated;
@@ -40,24 +37,6 @@ export class ChannelInfoComponent implements OnInit {
     );
   }
 
-  likeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .likeVideo(String(this.video?.id))
-        .subscribe((video: VideoDto) => {
-          this.video = video;
-        });
-    }
-  }
-  dislikeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .dislikeVideo(String(this.video?.id))
-        .subscribe((video: VideoDto) => {
-          this.video = video;
-        });
-    }
-  }
   unsubscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService

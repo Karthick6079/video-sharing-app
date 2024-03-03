@@ -43,3 +43,8 @@ html{
 :host::ng-deep .p-component{
     font-size: 1.6rem;
 }
+
+hr{
+    color: var(--app-skeleton-color);
+    opacity: 0.7;
+}

@@ -64,5 +64,10 @@ public class VideoController {
         return videoService.getAllVideos();
     }
 
+    @GetMapping("/short-video")
+    public List<VideoDTO> getShortsVideo(){
+        return videoService.getShortVideo();
+    }
+
 
 }

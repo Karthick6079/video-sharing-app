@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VideoRepository extends MongoRepository<Video, String> {
 
-    @NonNull Page<Video> findAll(Pageable pageable);
+    Page<Video> findAll(Pageable pageable);
 
 
 }

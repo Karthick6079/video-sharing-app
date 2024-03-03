@@ -42,7 +42,7 @@ public class CommentService {
 
     public List<CommentDTO> getAllComments(String videoId, int page) {
         Pageable pageable = PageRequest.of(page, RECORDS_PER_PAGE, Sort.by(Sort.Direction.ASC, "commentCreatedTime"));
-        Optional<List<Comment>> commentList = commentRepository.findByVideoId(pageable);
+        Optional<List<Comment>> commentList = commentRepository.findByVideoId(videoId);
         return commentList.map(comments -> mapToList(comments, CommentDTO.class)).orElse(null);
     }
 

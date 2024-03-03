@@ -9,12 +9,15 @@ import com.karthick.youtubeclone.repository.VideoRepository;
 import com.karthick.youtubeclone.servicelogic.VideoServiceLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +96,10 @@ public class VideoService {
 
     public VideoDTO getVideo(String videoId) {
         Video video = getVideoFromDB(videoId);
+        return increaseViewAndUpdateDB(videoId, video);
+    }
 
+    private VideoDTO increaseViewAndUpdateDB(String videoId, Video video) {
         video.increaseViewCount();
         userService.addToWatchHistory(videoId);
         // Get channel information about video
@@ -104,9 +110,7 @@ public class VideoService {
         videoRepository.save(video);
         VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
         videoDTO.setUserDTO(userDTO);
-
         return videoDTO;
-
     }
 
     public VideoDTO likeVideo(String videoId) {
@@ -167,11 +171,12 @@ public class VideoService {
     public List<VideoDTO> getAllVideos(){
 
         List<Video> videos;
-        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,12)).toList();
+        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,35)).toList();
 
-//        Collections.shuffle(videos);
+        ArrayList<Video> videoArrayList = new ArrayList<>(videos);
+        Collections.shuffle(videoArrayList);
 
-        return getVideosAndUser(videos);
+        return getVideosAndUser(videoArrayList);
     }
 
 
@@ -179,5 +184,18 @@ public class VideoService {
 
     public List<Video> fetchWatchedVideos(List<String> videoIdList) {
         return videoRepository.findAllById(videoIdList);
+    }
+
+    public List<VideoDTO> getShortVideo(){
+        long qty = videoRepository.count();
+        int idx = (int)(Math.random() * qty);
+        Page<Video> videoPage = videoRepository.findAll(PageRequest.of(idx, 1));
+        Video video = null;
+        if (videoPage.hasContent()) {
+            return videoPage.stream().map(vid -> {
+                return increaseViewAndUpdateDB(vid.getId(), vid);
+            }).toList();
+        }
+        return null;
     }
 }

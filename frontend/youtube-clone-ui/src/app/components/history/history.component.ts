@@ -19,13 +19,7 @@ export class HistoryComponent implements OnInit {
   constructor(
     private userService: UserService,
     private oidcSecurityService: OidcSecurityService
-  ) {
-    this.userService.getWatchedVideos().subscribe((videos) => {
-      console.log(videos);
-      this.watchedVideos = videos;
-      this.isDataAvailable = true;
-    });
-  }
+  ) {}
 
   watchedVideos$!: Observable<VideoDto[]>;
 
@@ -35,11 +29,17 @@ export class HistoryComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
-    // this.getWatchedVideos();
-    // console.log(this.watchedVideos$);
+
+    setTimeout(this.getWatchedVideos, 2000);
   }
 
-  // getWatchedVideos() {
-  //   this.watchedVideos$ = this.videoService.getVideos();
-  // }
+  getWatchedVideos() {
+    if (this.isAuthenticated) {
+      this.userService.getWatchedVideos().subscribe((videos) => {
+        console.log(videos);
+        this.watchedVideos = videos;
+        this.isDataAvailable = true;
+      });
+    }
+  }
 }

@@ -4,10 +4,10 @@
 
 .sidebar{
     width: 15%;
-    height: 100vh;
+    height: 100%;
 }
 
 .featured{
     flex : 1;
-    height: 100vh;
+    height: 100%;
 }

@@ -16,4 +16,10 @@ export class ShortsPageComponent implements OnInit {
       this.videos = videos;
     });
   }
+
+  getShortVideo() {
+    this.videoService.getShortsVideo().subscribe((videos) => {
+      this.videos.push(...videos);
+    });
+  }
 }

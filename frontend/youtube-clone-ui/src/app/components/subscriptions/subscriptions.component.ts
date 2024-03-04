@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { VideoDto } from '../../dto/video-dto';
+import { UserService } from '../../services/user/user.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-subscriptions',
@@ -6,6 +9,21 @@ import { Component } from '@angular/core';
   styleUrl: './subscriptions.component.css',
 })
 export class SubscriptionsComponent {
-  url =
-    'https://youtube-clone-avk.s3.ap-south-1.amazonaws.com/2adfcab6-dc28-47eb-af60-2e200ff5ce70.mp4';
+  getSubscriptionVideos() {
+    throw new Error('Method not implemented.');
+  }
+  subscribedChannalVideos!: VideoDto[];
+  isDataAvailable = false;
+  isAuthenticated!: boolean;
+
+  constructor(
+    private userService: UserService,
+    private oidcSecurityService: OidcSecurityService
+  ) {
+    this.userService.getWatchedVideos().subscribe((videos) => {
+      console.log(videos);
+      this.subscribedChannalVideos = videos;
+      this.isDataAvailable = true;
+    });
+  }
 }

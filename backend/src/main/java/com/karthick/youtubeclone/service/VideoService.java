@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -197,6 +199,7 @@ public class VideoService {
 
 
     public List<Video> fetchWatchedVideos(List<String> videoIdList) {
+
         return videoRepository.findAllById(videoIdList);
     }
 
@@ -210,6 +213,45 @@ public class VideoService {
                 return increaseViewAndUpdateDB(vid.getId(), vid);
             }).toList();
         }
+        return null;
+    }
+
+    public List<VideoDTO> getSubscriptionVideos(int page, int size) {
+
+        User user = userService.getCurrentUser();
+        List<String> subscribedChannelIds = new ArrayList<>(user.getSubscribedToUsers());
+
+        if (subscribedChannelIds.size() == 0)
+            return null;
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
+        Page<Video> videoPage = videoRepository.findAllByIds(subscribedChannelIds, pageRequest);
+
+        if(videoPage.hasContent()){
+            ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
+            return getVideosAndUser(videoArrayList);
+        }
+
+
+        return null;
+    }
+
+    public List<VideoDTO> getLikedVideos(int page, int size) {
+
+        User user = userService.getCurrentUser();
+        List<String> likedVideosId = new ArrayList<>(user.getLikedVideos());
+
+        if (likedVideosId.size() == 0)
+            return null;
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
+        Page<Video> videoPage = videoRepository.findAllByIds(likedVideosId, pageRequest);
+
+        if(videoPage.hasContent()){
+            ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
+            return getVideosAndUser(videoArrayList);
+        }
+
         return null;
     }
 }

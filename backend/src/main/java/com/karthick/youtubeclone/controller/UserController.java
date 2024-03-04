@@ -57,5 +57,18 @@ public class UserController {
         return commonService.getWatchedVideos();
     }
 
+    @GetMapping("/subscription-videos")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<VideoDTO> getSubscriptionVideos(){
+        return commonService.getWatchedVideos();
+    }
+
+    @GetMapping("/liked-videos")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<VideoDTO> getLikedVideos(){
+        return commonService.getWatchedVideos();
+    }
+
+
 
 }

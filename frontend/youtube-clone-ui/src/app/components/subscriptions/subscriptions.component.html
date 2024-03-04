@@ -1,3 +1,13 @@
-<div class="video-player">
-    <app-thumbnail-video-player [url]="url" width="300" height="150"></app-thumbnail-video-player>
+<div  *ngIf="isAuthenticated">
+    <div class="content" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="getSubscriptionVideos()">
+        @if(isDataAvailable){
+            <app-video-card *ngFor="let video of subscribedChannalVideos " [video]="video"></app-video-card>
+        }@else {
+            <app-homepage-skeleton *ngFor="let num of [1,2,3,4,5,6]"></app-homepage-skeleton>
+        }
+    </div>
 </div>
+
+<h1 *ngIf="!isAuthenticated">
+    Please login to check your watched videos!!!!
+</h1>

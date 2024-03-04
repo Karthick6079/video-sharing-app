@@ -17,6 +17,9 @@ spring:
         static: ap-south-1
       stack:
         auto: false
+      credentials:
+        access-key: AKIAQKH7B62P4JDODAON
+        secret-key: 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
   security:
     oauth2:
       resourceserver:
@@ -25,5 +28,6 @@ spring:
   auth:
     user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
 
+    
 
 

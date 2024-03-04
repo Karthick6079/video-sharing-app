@@ -1,3 +1,7 @@
-.video-player{
-   max-width: 30%;
+.content{
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(340px,1fr));
+   grid-gap: 2em;
+   cursor: pointer;
+   padding: 1.6em 0;
 }

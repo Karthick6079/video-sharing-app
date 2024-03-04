@@ -41,35 +41,6 @@
     align-items: center;
 }
 
-
-/*Modifying the primeng styles*/
-
-:host::ng-deep .p-button.p-button-lg .p-button-icon{
-    font-size: 1.5em;
-}
-
-:host::ng-deep .p-button.p-button-icon-only.p-button-rounded{
-    height: 3.75em;
-}
-
-:host::ng-deep .p-button.p-button-icon-only{
-    width: 3.75em;
-}
-
-:host::ng-deep .p-component{
-    font-size: 1.4rem;
-}
-
-:host::ng-deep .p-toast .p-toast-message.p-toast-message-info{
-    background-color: white;
-    /* color: #8b5cf6; */
-}
-
-:host::ng-deep .p-toast {
-    width: 50rem;
-    /* color: #8b5cf6; */
-}
-
 .video-infos{
     margin-top: 8px;
 }

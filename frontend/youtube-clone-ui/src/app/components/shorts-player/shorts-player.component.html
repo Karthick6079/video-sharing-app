@@ -1,29 +1,16 @@
 <div class="video-container">
     <vg-player>
-      <vg-buffering></vg-buffering>
-      <vg-overlay-play></vg-overlay-play>
-      <vg-controls>
-          <vg-play-pause></vg-play-pause>
-          <vg-mute></vg-mute>
-      </vg-controls>
-  
-      
-      <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" class="player" disablepictureinpicture
-    (ended)="callMethodOnEnd()" autoplay>
-        <source [src]="url" type="video/mp4">
-    </video>
-  </vg-player>
-  
-      
-    </div>
+        <vg-buffering></vg-buffering>
+        <vg-overlay-play></vg-overlay-play>
+        <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-mute></vg-mute>
+        </vg-controls>
 
 
-
-<!-- 
-<div id="videoContainer"class="video-container" >
-    <video id="singleVideo" preload="auto" class="player" autoplay  controls  
-    controlsList="nofullscreen nodownload noremoteplayback noplaybackrate notimeline" #vidshorts disablepictureinpicture
-    (ended)="callMethodOnEnd()">
-        <source [src]="url" type="video/mp4">
-    </video>
-</div> -->
+        <video [vgMedia]="$any(media)" #media id="singleVideo" class="player" disablepictureinpicture
+            (ended)="callMethodOnEnd()" [autoplay]="false">
+            <source [src]="url" type="video/mp4">
+        </video>
+    </vg-player>
+</div>

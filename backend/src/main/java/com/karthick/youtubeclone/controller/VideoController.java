@@ -64,6 +64,14 @@ public class VideoController {
         return videoService.getAllVideos();
     }
 
+    @GetMapping("/suggestion-videos")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VideoDTO> getSuggestedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                             @RequestParam( value = "size", defaultValue = "6") int size){
+
+        return videoService.getSuggestionVideos(page, size);
+    }
+
     @GetMapping("/short-video")
     public List<VideoDTO> getShortsVideo(){
         return videoService.getShortVideo();

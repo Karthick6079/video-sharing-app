@@ -29,6 +29,11 @@ export class WatchComponent implements OnInit, OnDestroy {
   isVideoAvailable: boolean = false;
   descPanalOpen = false;
 
+  suggestionVideos!: VideoDto[];
+
+  page: number = 0;
+  private SIZE: number = 3;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -42,13 +47,16 @@ export class WatchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getSuggestionVideos();
-
-    this.activatedRoute.params.subscribe((params) =>
-      console.log(params['videoId'])
-    );
-
-    console.log(this.video);
+    this.videoService
+      .getSuggestedVideos(
+        this.page,
+        6 // By default video size 6
+      )
+      .subscribe((videos) => {
+        this.suggestionVideos = videos;
+        this.isVideoAvailable = true;
+        console.log(this.suggestionVideos);
+      });
   }
 
   closeDesc() {
@@ -63,7 +71,18 @@ export class WatchComponent implements OnInit, OnDestroy {
   }
 
   getSuggestionVideos() {
-    this.suggestionVideos$ = this.videoService.getVideos();
+    //Fetching only 12 suggestion videos
+    if (this.suggestionVideos.length >= 12) {
+      return;
+    }
+
+    this.page = this.page + 1;
+    this.videoService
+      .getSuggestedVideos(this.page, this.SIZE)
+      .subscribe((videos) => {
+        this.suggestionVideos.push(...videos);
+        console.log(this.suggestionVideos);
+      });
   }
 
   ngOnDestroy(): void {

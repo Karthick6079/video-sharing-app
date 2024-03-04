@@ -67,6 +67,7 @@ import { ShortsVidInfoComponent } from './components/shorts-vid-info/shorts-vid-
 import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { TooltipModule } from 'primeng/tooltip';
     TooltipModule,
     DialogModule,
     OverlayPanelModule,
+    InfiniteScrollModule,
     TimeagoModule.forRoot(),
     AuthModule.forRoot({
       config: {

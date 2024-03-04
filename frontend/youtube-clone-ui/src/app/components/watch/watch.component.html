@@ -29,8 +29,8 @@
     </div>
     <div class="suggestion-bar">
         <h2 class="suggest-title">Suggestions</h2>
-        <div class="rightside-section">
-            <app-suggestion *ngFor="let video of suggestionVideos$ | async"  [video]="video"></app-suggestion>
+        <div class="rightside-section" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="getSuggestionVideos()">
+            <app-suggestion *ngFor="let video of suggestionVideos"  [video]="video"></app-suggestion>
         </div>
     </div>
 </div>

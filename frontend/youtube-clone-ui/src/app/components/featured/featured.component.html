@@ -19,7 +19,7 @@
         </div>
     }
 
-    <div class="content">
+    <div class="content" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="getSuggestionVideos()">
         @if(isVideosAvailable){
             <app-video-card *ngFor="let video of videos " [video]="video"></app-video-card>
         }@else {

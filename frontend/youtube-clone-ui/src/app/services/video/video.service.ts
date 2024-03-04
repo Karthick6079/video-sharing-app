@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
@@ -16,6 +16,8 @@ export class VideoService {
   private EDIT_META_DATA_URL: string = '/editMetadata';
 
   private ALL_VIDEOS_URL: string = '/all';
+
+  private SUGGESTED_VIDEO_URL: string = '/suggestion-videos';
 
   private GET_VIDEDO_URL: string = '/watch/';
 
@@ -62,6 +64,19 @@ export class VideoService {
   getVideos(): Observable<VideoDto[]> {
     return this.http.get<VideoDto[]>(
       this.getVideoBaseUrl() + this.ALL_VIDEOS_URL
+    );
+  }
+
+  getSuggestedVideos(page: number, size: number): Observable<VideoDto[]> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const httpOptions = {
+      params: params,
+    };
+
+    return this.http.get<VideoDto[]>(
+      this.getVideoBaseUrl() + this.SUGGESTED_VIDEO_URL,
+      httpOptions
     );
   }
 

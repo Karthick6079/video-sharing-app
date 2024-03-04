@@ -179,6 +179,20 @@ public class VideoService {
         return getVideosAndUser(videoArrayList);
     }
 
+    public List<VideoDTO> getSuggestionVideos(int page, int size){
+
+
+         Page<Video> videoPage = videoRepository.findAll(PageRequest.of(page,size));
+
+         if(videoPage.hasContent()){
+             ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
+             Collections.shuffle(videoArrayList);
+             return getVideosAndUser(videoArrayList);
+         } else{
+             return null;
+         }
+    }
+
 
 
 
@@ -188,9 +202,9 @@ public class VideoService {
 
     public List<VideoDTO> getShortVideo(){
         long qty = videoRepository.count();
-        int idx = (int)(Math.random() * qty);
-        Page<Video> videoPage = videoRepository.findAll(PageRequest.of(idx, 1));
-        Video video = null;
+        int idx = (int)(Math.random() * qty/2);
+        idx = qty == 0 ? 0: idx;
+        Page<Video> videoPage = videoRepository.findAll(PageRequest.of(idx, 2));
         if (videoPage.hasContent()) {
             return videoPage.stream().map(vid -> {
                 return increaseViewAndUpdateDB(vid.getId(), vid);

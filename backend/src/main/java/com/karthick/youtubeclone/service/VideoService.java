@@ -225,7 +225,7 @@ public class VideoService {
             return null;
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        Page<Video> videoPage = videoRepository.findAllByIds(subscribedChannelIds, pageRequest);
+        Page<Video> videoPage = videoRepository.findAllByUserId(subscribedChannelIds, pageRequest);
 
         if(videoPage.hasContent()){
             ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
@@ -245,7 +245,7 @@ public class VideoService {
             return null;
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        Page<Video> videoPage = videoRepository.findAllByIds(likedVideosId, pageRequest);
+        Page<Video> videoPage = videoRepository.findAllById(likedVideosId, pageRequest);
 
         if(videoPage.hasContent()){
             ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());

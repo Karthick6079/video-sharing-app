@@ -77,5 +77,11 @@ public class VideoController {
         return videoService.getShortVideo();
     }
 
+    @PostMapping("/subscription-videos")
+    public List<VideoDTO> getSubscriptionVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                                 @RequestParam( value = "size", defaultValue = "6") int size){
+        return videoService.getSubscriptionVideos(page, size);
+    }
+
 
 }

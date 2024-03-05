@@ -23,6 +23,8 @@ export class VideoService {
 
   private GET_SHORT_VIDEDO_URL: string = '/short-video';
 
+  private SUBSCRIPTIONS_VIDEO_URL: String = '/subscription-videos';
+
   constructor(private http: HttpClient) {}
 
   getVideoBaseUrl(): string {
@@ -103,6 +105,13 @@ export class VideoService {
   getShortsVideo(): Observable<VideoDto[]> {
     return this.http.get<VideoDto[]>(
       this.getVideoBaseUrl() + this.GET_SHORT_VIDEDO_URL
+    );
+  }
+
+  getSubscriptionVideos(): Observable<VideoDto[]> {
+    return this.http.post<VideoDto[]>(
+      this.getVideoBaseUrl() + this.SUBSCRIPTIONS_VIDEO_URL,
+      null
     );
   }
 }

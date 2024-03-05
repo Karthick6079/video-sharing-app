@@ -1,5 +1,6 @@
 package com.karthick.youtubeclone.service;
 
+import com.karthick.youtubeclone.dto.LatestVideoDTO;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.UserDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
@@ -224,16 +225,17 @@ public class VideoService {
         if (subscribedChannelIds.size() == 0)
             return null;
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        Page<Video> videoPage = videoRepository.findAllByUserId(subscribedChannelIds, pageRequest);
+        PageRequest pageRequest = PageRequest.of(page, size);
+        List<LatestVideoDTO> videoList = videoRepository.findLatestVideoFromUsers(subscribedChannelIds, pageRequest);
 
-        if(videoPage.hasContent()){
-            ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
-            return getVideosAndUser(videoArrayList);
+        ArrayList<Video> videoArrayList = new ArrayList<>();
+
+        for(LatestVideoDTO video: videoList){
+            videoArrayList.addAll(video.getVideos());
         }
 
 
-        return null;
+        return getVideosAndUser(videoArrayList);
     }
 
     public List<VideoDTO> getLikedVideos(int page, int size) {

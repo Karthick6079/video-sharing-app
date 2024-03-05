@@ -2,11 +2,17 @@
   <configuration default="false" name="YoutubeCloneApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.karthick.youtubeclone.YoutubeCloneApplication" />
     <module name="backend" />
+    <option name="VM_PARAMETERS" value="-Daws.accessKeyId=AKIAQKH7B62P5CKALHV2 -Daws.secretKey=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" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.karthick.youtubeclone.*" />
         <option name="ENABLED" value="true" />
       </pattern>
+    </extension>
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
     </extension>
     <method v="2">
       <option name="Make" enabled="true" />

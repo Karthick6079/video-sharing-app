@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
 import { UserService } from '../../services/user/user.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { VideoService } from '../../services/video/video.service';
 
 @Component({
   selector: 'app-subscriptions',
   templateUrl: './subscriptions.component.html',
   styleUrl: './subscriptions.component.css',
 })
-export class SubscriptionsComponent {
+export class SubscriptionsComponent implements OnInit {
   getSubscriptionVideos() {
     throw new Error('Method not implemented.');
   }
@@ -17,10 +18,11 @@ export class SubscriptionsComponent {
   isAuthenticated!: boolean;
 
   constructor(
-    private userService: UserService,
+    private videoService: VideoService,
     private oidcSecurityService: OidcSecurityService
-  ) {
-    this.userService.getWatchedVideos().subscribe((videos) => {
+  ) {}
+  ngOnInit(): void {
+    this.videoService.getSubscriptionVideos().subscribe((videos) => {
       console.log(videos);
       this.subscribedChannalVideos = videos;
       this.isDataAvailable = true;

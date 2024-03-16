@@ -1,24 +1,28 @@
 package com.karthick.youtubeclone.service;
 
-import com.karthick.youtubeclone.dto.LatestVideoDTO;
-import com.karthick.youtubeclone.dto.UploadVideoResponse;
-import com.karthick.youtubeclone.dto.UserDTO;
-import com.karthick.youtubeclone.dto.VideoDTO;
-import com.karthick.youtubeclone.entity.User;
-import com.karthick.youtubeclone.entity.Video;
+import com.karthick.youtubeclone.dto.*;
+import com.karthick.youtubeclone.entity.*;
+import com.karthick.youtubeclone.repository.LikedVideoRepo;
 import com.karthick.youtubeclone.repository.VideoRepository;
+import com.karthick.youtubeclone.repository.WatchedVideoRepo;
 import com.karthick.youtubeclone.servicelogic.VideoServiceLogic;
+import com.karthick.youtubeclone.util.MapperUtil;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,13 +34,21 @@ public class VideoService {
 
     private final S3Service s3Service;
 
-    private final VideoRepository videoRepository;
-
-    private final ModelMapper mapper;
+    private final VideoRepository videoRepo;
+    
+    private final MapperUtil mapperUtil;
 
     private final VideoServiceLogic videoServiceLogic;
 
     private final UserService userService;
+
+    private final WatchedVideoRepo watchedVideoRepo;
+
+    private final MongoClient mongoClient;
+
+    private final WatchedVideoService watchedVideoService;
+
+    private final LikedVideoRepo likedVideoRepo;
 
 
     public UploadVideoResponse uploadFile(MultipartFile file) {
@@ -45,7 +57,7 @@ public class VideoService {
         Video video = new Video();
         video.setVideoUrl(url);
 
-        Video savedVideo =  videoRepository.save(video);
+        Video savedVideo =  videoRepo.save(video);
 
         return new UploadVideoResponse(url, savedVideo.getId());
 
@@ -58,7 +70,7 @@ public class VideoService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find video by Id" + videoId));
         savedVideo.setThumbnailUrl(url);
 
-        videoRepository.save(savedVideo);
+        videoRepo.save(savedVideo);
 
         return new UploadVideoResponse(url, savedVideo.getId());
 
@@ -81,14 +93,14 @@ public class VideoService {
         //update video url to video dto
         videoDto.setVideoUrl(savedVideo.getVideoUrl());
 
-        videoRepository.save(savedVideo);
+        videoRepo.save(savedVideo);
 
         return videoDto;
 
     }
 
     public Optional<Video> findVideoById(String id) {
-        return videoRepository.findById(id);
+        return videoRepo.findById(id);
     }
 
 
@@ -97,24 +109,31 @@ public class VideoService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find video by Id" + id));
     }
 
-    public VideoDTO getVideo(String videoId) {
-        Video video = getVideoFromDB(videoId);
-        return increaseViewAndUpdateDB(videoId, video);
+    public VideoUserInfoDTO getVideoUserInfo(String videoId) {
+        // 1. Get requested video and update it viewCount by 1
+        MongoDatabase database = mongoClient.getDatabase("videoStreamingDB");
+        updateViewCount(videoId, database);
+
+        // 2. Get video and required user info from DB
+        VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
+
+        // 3. Update watch history table
+        watchedVideoService.updateWatchHistory(videoUserInfo, database);
+
+        return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
     }
 
-    private VideoDTO increaseViewAndUpdateDB(String videoId, Video video) {
-        video.increaseViewCount();
-        userService.addToWatchHistory(videoId);
-        // Get channel information about video
-        User videoUploadedUser =  userService.getUserById(video.getUserId());
-        UserDTO userDTO = mapper.map(videoUploadedUser, UserDTO.class);
+    private void updateViewCount(String videoId, MongoDatabase database) {
+        MongoCollection<Document> collection = database.getCollection("videos");
+        Bson filter = Filters.eq("_id", new ObjectId(videoId));
+        Bson update  = Updates.inc("viewCount", 1);
+        UpdateResult updateResult = collection.updateOne(filter, update);
 
-
-        videoRepository.save(video);
-        VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
-        videoDTO.setUserDTO(userDTO);
-        return videoDTO;
+        if( updateResult.getModifiedCount() == 1)
+            System.out.println("Video view count updated !");
     }
+
+
 
     public VideoDTO likeVideo(String videoId) {
 
@@ -127,10 +146,10 @@ public class VideoService {
 
         // After manipulating likes count and liked video list
         // Save video and user entity to database
-        videoRepository.save(video);
+        videoRepo.save(video);
         userService.saveUser(user);
 
-        return mapper.map(video, VideoDTO.class);
+        return mapperUtil.map(video, VideoDTO.class);
 
 
     }
@@ -145,79 +164,57 @@ public class VideoService {
 
         // After manipulating dislikes count and disliked video list
         // Save video and user entity to database
-        videoRepository.save(video);
+        videoRepo.save(video);
         userService.saveUser(user);
 
-        return mapper.map(video, VideoDTO.class);
-
+        return mapperUtil.map(video, VideoDTO.class);
 
     }
 
 
 
-    public List<VideoDTO> getVideosAndUser(List<Video> videos) {
-        return videos.stream().map(video -> {
-//            mapper.getConfiguration().getMatchingStrategy().
-            VideoDTO videoDTO = mapper.map(video, VideoDTO.class);
-            Long publishedInLong = video.getPublishedDateAndTime()
-                    .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-            videoDTO.setPublishedDateAndTime(publishedInLong);
-            if(video.getUserId() != null){
-                User user = userService.getUserById(video.getUserId());
-                UserDTO userDTO = userService.convertUsertoUserDto(user, mapper);
-                videoDTO.setUserDTO(userDTO);
-            }
-            return videoDTO;
+    public List<VideoUserInfoDTO> getVideosAndUser(List<String> videos) {
+        return videos.stream().map(videoId -> {
+            VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
+
+//            Long publishedInLong = videoUserInfo.getPublishedDateAndTime()
+//                    .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//            videoUserInfoDTO.setPublishedDateAndTime(publishedInLong);
+
+            return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
         }).toList();
     }
 
-    public List<VideoDTO> getAllVideos(){
+    public List<VideoUserInfoDTO> getSuggestionVideos(int page, int size){
 
-        List<Video> videos;
-        videos = (List<Video>) videoRepository.findAll(PageRequest.of(0,35)).toList();
-
-        ArrayList<Video> videoArrayList = new ArrayList<>(videos);
-        Collections.shuffle(videoArrayList);
-
-        return getVideosAndUser(videoArrayList);
-    }
-
-    public List<VideoDTO> getSuggestionVideos(int page, int size){
-
-
-         Page<Video> videoPage = videoRepository.findAll(PageRequest.of(page,size));
+         Page<Video> videoPage = videoRepo.findAllIds(PageRequest.of(page,size));
 
          if(videoPage.hasContent()){
              ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
              Collections.shuffle(videoArrayList);
-             return getVideosAndUser(videoArrayList);
+             List<String> videoIds = videoArrayList.stream().map(Video::getId).toList();
+             return getVideosAndUser(videoIds);
          } else{
              return null;
          }
     }
 
+    public List<WatchedVideoDTO> fetchWatchedVideos(String userId, int page, int size) {
 
+        List<WatchedVideo> watchedVideoList   = watchedVideoRepo.getUserVideoWatchHistory(userId);
 
-
-    public List<Video> fetchWatchedVideos(List<String> videoIdList) {
-
-        return videoRepository.findAllById(videoIdList);
+        return mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
     }
 
-    public List<VideoDTO> getShortVideo(){
-        long qty = videoRepository.count();
-        int idx = (int)(Math.random() * qty/2);
-        idx = qty == 0 ? 0: idx;
-        Page<Video> videoPage = videoRepository.findAll(PageRequest.of(idx, 2));
-        if (videoPage.hasContent()) {
-            return videoPage.stream().map(vid -> {
-                return increaseViewAndUpdateDB(vid.getId(), vid);
-            }).toList();
+    public List<VideoUserInfoDTO> getShortVideo(){
+        List<String> videosId = videoRepo.getShortsVideo();
+        if(videosId != null){
+            return videosId.stream().map(this::getVideoUserInfo).toList();
         }
         return null;
     }
 
-    public List<VideoDTO> getSubscriptionVideos(int page, int size) {
+    public List<VideoUserInfoDTO> getSubscriptionVideos(int page, int size) {
 
         User user = userService.getCurrentUser();
         List<String> subscribedChannelIds = new ArrayList<>(user.getSubscribedToUsers());
@@ -226,19 +223,12 @@ public class VideoService {
             return null;
 
         PageRequest pageRequest = PageRequest.of(page, size);
-        List<LatestVideoDTO> videoList = videoRepository.findLatestVideoFromUsers(subscribedChannelIds, pageRequest);
+        List<String> videoIdList = videoRepo.findLatestVideoFromUsers(subscribedChannelIds, pageRequest);
 
-        ArrayList<Video> videoArrayList = new ArrayList<>();
-
-        for(LatestVideoDTO video: videoList){
-            videoArrayList.addAll(video.getVideos());
-        }
-
-
-        return getVideosAndUser(videoArrayList);
+        return getVideosAndUser(videoIdList);
     }
 
-    public List<VideoDTO> getLikedVideos(int page, int size) {
+    public List<LikedVideoDTO> getLikedVideos(int page, int size) {
 
         User user = userService.getCurrentUser();
         List<String> likedVideosId = new ArrayList<>(user.getLikedVideos());
@@ -246,14 +236,9 @@ public class VideoService {
         if (likedVideosId.size() == 0)
             return null;
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        Page<Video> videoPage = videoRepository.findAllById(likedVideosId, pageRequest);
+//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
+        List<LikedVideo> likedVideos = likedVideoRepo.getLikedVideos(user.getId());
 
-        if(videoPage.hasContent()){
-            ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
-            return getVideosAndUser(videoArrayList);
-        }
-
-        return null;
+        return mapperUtil.mapToList(likedVideos, LikedVideoDTO.class);
     }
 }

@@ -20,7 +20,13 @@ export class SubscriptionsComponent implements OnInit {
   constructor(
     private videoService: VideoService,
     private oidcSecurityService: OidcSecurityService
-  ) {}
+  ) {
+    this.oidcSecurityService.isAuthenticated$.subscribe(
+      ({ isAuthenticated }) => {
+        this.isAuthenticated = isAuthenticated;
+      }
+    );
+  }
   ngOnInit(): void {
     this.videoService.getSubscriptionVideos().subscribe((videos) => {
       console.log(videos);

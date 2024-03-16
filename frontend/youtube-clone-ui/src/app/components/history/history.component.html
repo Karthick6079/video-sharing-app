@@ -1,5 +1,6 @@
 <div  *ngIf="isAuthenticated">
-    <div *ngIf="isDataAvailable" class="watched-video-container">
+    <div *ngIf="isDataAvailable" class="watched-video-container" infinite-scroll [infiniteScrollDistance]="1" 
+    (scrolled)="getWatchedVideos(false)">
         <app-suggestion *ngFor="let video of watchedVideos" [video]="video"></app-suggestion>
     </div>
 </div>

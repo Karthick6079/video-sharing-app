@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
@@ -51,9 +51,15 @@ export class UserService implements OnInit {
     );
   }
 
-  getWatchedVideos(): Observable<VideoDto[]> {
+  getWatchedVideos(page: number, size: number): Observable<VideoDto[]> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const httpOptions = {
+      params: params,
+    };
     return this.http.get<VideoDto[]>(
-      this.getUserBaseUrl() + this.VIDEO_HISTORY_URL
+      this.getUserBaseUrl() + this.VIDEO_HISTORY_URL,
+      httpOptions
     );
   }
 

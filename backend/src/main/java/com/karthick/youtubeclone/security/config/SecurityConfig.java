@@ -13,13 +13,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final String ALL_VIDEOS_ENDPOINT = "api/youtube/video/all";
+    private final String SHORT_VIDEO_ENDPOINT = "/api/youtube/video/short-video";
+
+    private final String SUGGEST_VIDEO_ENDPOINT = "/api/youtube/video/suggestion-videos";
+
+    private final String GET_VIDEO_ENDPOINT = "/api/youtube/video/watch/{videoId}";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(
-                auth -> auth.requestMatchers(HttpMethod.GET).permitAll()
+                auth -> auth.requestMatchers(SHORT_VIDEO_ENDPOINT,
+                                SUGGEST_VIDEO_ENDPOINT,
+                                GET_VIDEO_ENDPOINT).permitAll()
+
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())

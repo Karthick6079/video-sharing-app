@@ -1,6 +1,7 @@
 package com.karthick.youtubeclone.controller;
 
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
+import com.karthick.youtubeclone.dto.VideoUserInfoDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,8 @@ public class VideoController {
 
     @GetMapping("/watch/{videoId}")
     @ResponseStatus(HttpStatus.OK)
-    public VideoDTO getVideoForWatch(@PathVariable String videoId){
-        return videoService.getVideo(videoId);
+    public VideoUserInfoDTO getVideoForWatch(@PathVariable String videoId){
+        return videoService.getVideoUserInfo(videoId);
     }
 
     @PutMapping("/watch/{videoId}/like")
@@ -57,28 +58,21 @@ public class VideoController {
         return videoService.dislikeVideo(videoId);
     }
 
-
-    @GetMapping("/all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<VideoDTO> getAllVideos(){
-        return videoService.getAllVideos();
-    }
-
     @GetMapping("/suggestion-videos")
     @ResponseStatus(HttpStatus.OK)
-    public List<VideoDTO> getSuggestedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+    public List<VideoUserInfoDTO> getSuggestedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
                                              @RequestParam( value = "size", defaultValue = "6") int size){
 
         return videoService.getSuggestionVideos(page, size);
     }
 
     @GetMapping("/short-video")
-    public List<VideoDTO> getShortsVideo(){
+    public List<VideoUserInfoDTO> getShortsVideo(){
         return videoService.getShortVideo();
     }
 
     @PostMapping("/subscription-videos")
-    public List<VideoDTO> getSubscriptionVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+    public List<VideoUserInfoDTO> getSubscriptionVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
                                                  @RequestParam( value = "size", defaultValue = "6") int size){
         return videoService.getSubscriptionVideos(page, size);
     }

@@ -1,8 +1,10 @@
 package com.karthick.youtubeclone.controller;
 
 
+import com.karthick.youtubeclone.dto.LikedVideoDTO;
 import com.karthick.youtubeclone.dto.UserDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
+import com.karthick.youtubeclone.dto.WatchedVideoDTO;
 import com.karthick.youtubeclone.service.CommonService;
 import com.karthick.youtubeclone.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -53,20 +55,22 @@ public class UserController {
 
     @GetMapping("/videos-history")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<VideoDTO> videosHistory(){
-        return commonService.getWatchedVideos();
+    public List<WatchedVideoDTO> videosHistory(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                               @RequestParam( value = "size", defaultValue = "6") int size){
+        return commonService.getWatchedVideos(page, size);
     }
 
-    @GetMapping("/subscription-videos")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<VideoDTO> getSubscriptionVideos(){
-        return commonService.getWatchedVideos();
-    }
-
+//    @GetMapping("/subscription-videos")
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public List<VideoDTO> getSubscriptionVideos(){
+//        return commonService.getWatchedVideos();
+//    }
+//
     @GetMapping("/liked-videos")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<VideoDTO> getLikedVideos(){
-        return commonService.getWatchedVideos();
+    public List<LikedVideoDTO> getLikedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                              @RequestParam( value = "size", defaultValue = "6") int size){
+        return commonService.getLikedVideos(page, size);
     }
 
 

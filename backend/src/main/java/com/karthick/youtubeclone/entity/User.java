@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Document("User")
+@Document("users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

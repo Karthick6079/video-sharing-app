@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
-import { UserDto, VideoDto } from '../../dto/video-dto';
+import { UserDto, VideoDto, WatchedVideoDTO } from '../../dto/video-dto';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 
 @Injectable({
@@ -51,13 +51,13 @@ export class UserService implements OnInit {
     );
   }
 
-  getWatchedVideos(page: number, size: number): Observable<VideoDto[]> {
+  getWatchedVideos(page: number, size: number): Observable<WatchedVideoDTO[]> {
     let params = new HttpParams().set('page', page).set('size', size);
 
     const httpOptions = {
       params: params,
     };
-    return this.http.get<VideoDto[]>(
+    return this.http.get<WatchedVideoDTO[]>(
       this.getUserBaseUrl() + this.VIDEO_HISTORY_URL,
       httpOptions
     );

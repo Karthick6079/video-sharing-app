@@ -13,8 +13,6 @@ export class ShortsVidInfoComponent implements OnInit {
   subscribed: boolean = false;
   unsubscribed: boolean = false;
 
-  user!: UserDto;
-
   @Input()
   video!: VideoDto;
 
@@ -27,8 +25,6 @@ export class ShortsVidInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.video?.userDTO;
-    console.log(this.user);
     console.log(this.video);
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
@@ -40,7 +36,7 @@ export class ShortsVidInfoComponent implements OnInit {
   unsubscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
-        .unsubscribeUser(String(this.user?.id))
+        .unsubscribeUser(String(this.video.userId))
         .subscribe((isUnsubscribed) => {
           this.subscribed = !isUnsubscribed;
         });
@@ -49,7 +45,7 @@ export class ShortsVidInfoComponent implements OnInit {
   subscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
-        .subscribeUser(String(this.user?.id))
+        .subscribeUser(String(this.video.userId))
         .subscribe((isSubscribed) => {
           this.subscribed = isSubscribed;
         });

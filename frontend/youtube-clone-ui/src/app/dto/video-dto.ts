@@ -1,16 +1,24 @@
 export interface VideoDto {
   id: string;
+  videoId: string;
+  userId: string;
   title: string;
   description: string;
-  tags: string[];
-  videoStatus: VideoStatus;
-  videoUrl: string;
-  thumbnailUrl: string;
-  userDTO: UserDto;
-  viewCount: number;
   likes: number;
   dislikes: number;
+  viewCount: number;
+  tags: string[];
+  videoStatus: string;
+  videoUrl: string;
+  thumbnailUrl: string;
   publishedDateAndTime: string;
+  username: string;
+  userDisplayName: string;
+  userPicture: string;
+}
+
+export interface WatchedVideoDTO extends VideoDto {
+  watchedOn: string | number | Date;
 }
 
 export interface UserDto {

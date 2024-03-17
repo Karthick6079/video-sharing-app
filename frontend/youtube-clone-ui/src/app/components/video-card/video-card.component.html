@@ -9,11 +9,11 @@
     
     <div>
         <div class="logo-container">
-            <p-avatar [image]="video.userDTO.picture" styleClass="mr-2" shape="circle" size="large"></p-avatar>
+            <p-avatar [image]="video.userPicture" styleClass="mr-2" shape="circle" size="large"></p-avatar>
             <span class="video-title">{{video.title}}</span>
         </div>
         <div class="channal-name-container">
-            <div class="small-info-text channal-name">{{video.userDTO.name}}</div>
+            <div class="small-info-text channal-name">{{video.userDisplayName}}</div>
             <div>
                 <span class="small-info-text">{{video.viewCount}}{{video.viewCount == 0 ||  video.viewCount == 1 ? ' view' :' views'}}</span>
                 <span class="splitter"></span>

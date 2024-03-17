@@ -16,8 +16,6 @@ export class ChannelInfoComponent implements OnInit {
   @Input()
   video: VideoDto | undefined;
 
-  user: UserDto | undefined;
-
   public isAuthenticated: boolean = false;
   subscribed: boolean = false;
   unsubscribed: boolean = false;
@@ -31,8 +29,6 @@ export class ChannelInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.video?.userDTO;
-    console.log(this.user);
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
         this.isAuthenticated = isAuthenticated;
@@ -61,7 +57,7 @@ export class ChannelInfoComponent implements OnInit {
   unsubscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
-        .unsubscribeUser(String(this.user?.id))
+        .unsubscribeUser(String(this.video?.userId))
         .subscribe((isUnsubscribed) => {
           this.subscribed = !isUnsubscribed;
         });
@@ -70,7 +66,7 @@ export class ChannelInfoComponent implements OnInit {
   subscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
-        .subscribeUser(String(this.user?.id))
+        .subscribeUser(String(this.video?.userId))
         .subscribe((isSubscribed) => {
           this.subscribed = isSubscribed;
         });

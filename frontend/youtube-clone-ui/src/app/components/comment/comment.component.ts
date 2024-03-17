@@ -102,7 +102,7 @@ export class CommentComponent implements OnInit {
     const commentBody = {
       text: comment,
       videoId: this.video.id,
-      userId: this.video.userDTO.id,
+      userId: this.video.userId,
     };
     return commentBody;
   }

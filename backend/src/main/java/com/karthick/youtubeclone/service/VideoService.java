@@ -200,8 +200,10 @@ public class VideoService {
     }
 
     public List<WatchedVideoDTO> fetchWatchedVideos(String userId, int page, int size) {
+        // Skipping elements PageNumber * PageSize
+        int skip = page * size;
 
-        List<WatchedVideo> watchedVideoList   = watchedVideoRepo.getUserVideoWatchHistory(userId);
+        List<WatchedVideo> watchedVideoList   = watchedVideoRepo.getUserVideoWatchHistory(userId, skip, size);
 
         return mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
     }

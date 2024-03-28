@@ -2,7 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable } from 'rxjs';
-import { UserDto, VideoDto, WatchedVideoDTO } from '../../dto/video-dto';
+import {
+  LikedVideoDTO,
+  UserDto,
+  VideoDto,
+  WatchedVideoDTO,
+} from '../../dto/video-dto';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
 
 @Injectable({
@@ -13,6 +18,7 @@ export class UserService implements OnInit {
   private SUBSCRIBE_URL: String = '/subscribe';
   private UN_SUBSCRIBE_URL: String = '/unsubscribe';
   private VIDEO_HISTORY_URL: String = '/videos-history';
+  private LIKED_VIDEOS_URL: String = '/liked-videos';
 
   private loggedInUserData!: UserDataResult;
 
@@ -59,6 +65,18 @@ export class UserService implements OnInit {
     };
     return this.http.get<WatchedVideoDTO[]>(
       this.getUserBaseUrl() + this.VIDEO_HISTORY_URL,
+      httpOptions
+    );
+  }
+
+  getLikedVideos(page: number, size: number): Observable<LikedVideoDTO[]> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const httpOptions = {
+      params: params,
+    };
+    return this.http.get<LikedVideoDTO[]>(
+      this.getUserBaseUrl() + this.LIKED_VIDEOS_URL,
       httpOptions
     );
   }

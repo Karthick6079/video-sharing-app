@@ -43,6 +43,7 @@ public class LikedVideoService {
         LikedVideo likedVideo = new LikedVideo();
         likedVideo.setVideoId(videoId);
         likedVideo.setUserId(userId);
+        likedVideo.setLikedOn(LocalDateTime.now());
         likedVideo.setLikedTopics(topics);
 
         likedVideoRepo.save(likedVideo);

@@ -239,7 +239,7 @@ public class VideoService {
             return null;
 
 //        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        List<LikedVideo> likedVideos = likedVideoRepo.getLikedVideos(user.getId());
+        List<LikedVideo> likedVideos = likedVideoRepo.getLikedVideos(user.getId(), page * size, size);
 
         return mapperUtil.mapToList(likedVideos, LikedVideoDTO.class);
     }

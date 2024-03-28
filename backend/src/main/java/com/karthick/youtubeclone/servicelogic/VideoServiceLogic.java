@@ -43,6 +43,7 @@ public class VideoServiceLogic {
         } else{
             video.incrementLikeCount();
             user.addToLikedVideo(videoId);
+            likedVideoService.addLikedVideoInDB(userId, videoId, video.getTags());
         }
 
     }
@@ -62,6 +63,7 @@ public class VideoServiceLogic {
         } else{
             video.incrementDisLikeCount();
             user.addToDisLikedVideo(videoId);
+            likedVideoService.removeLikedVideoFromDB(userId, videoId);
         }
 
     }

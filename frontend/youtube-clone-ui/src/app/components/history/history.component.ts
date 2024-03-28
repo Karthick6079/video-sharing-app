@@ -60,20 +60,17 @@ export class HistoryComponent implements OnInit {
     const lastSevenDays = new Date(today);
     lastSevenDays.setDate(today.getDate() - 7);
 
-    const groupByDay = _.groupBy(videos, (item) => {
-      const itemDate = new Date(item.watchedOn);
-      if (itemDate.toDateString() === today.toDateString()) {
-        return '1. Today';
-      } else if (itemDate.toDateString() === yesterday.toDateString()) {
-        return '2. Yesterday';
-      } else if (itemDate > lastSevenDays) {
-        return '3. Last seven days';
-      } else {
+    const groupByDay = _.mapValues(
+      _.groupBy(videos, (item) => {
+        const itemDate = new Date(item.watchedOn);
         return `${itemDate.toLocaleString('default', {
+          day: 'numeric',
           month: 'long',
-        })} ${itemDate.getFullYear()}`;
-      }
-    });
+          year: 'numeric',
+        })}`;
+      }),
+      (v) => _.sortBy(v, 'desc')
+    );
 
     this.videosGroupedByDay = this.mergeDictionary(
       this.videosGroupedByDay,
@@ -81,6 +78,12 @@ export class HistoryComponent implements OnInit {
     );
 
     console.log(this.videosGroupedByDay);
+
+    console.log('------------------------------');
+
+    const sortedObject = _.orderBy(this.videosGroupedByDay, 'desc');
+
+    console.log(sortedObject);
   }
 
   mergeDictionary(existing: any, newDict: any) {

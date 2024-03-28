@@ -21,6 +21,11 @@ export interface WatchedVideoDTO extends VideoDto {
   watchedOn: string | number | Date;
 }
 
+export interface LikedVideoDTO extends VideoDto {
+  likedOn: string | number | Date;
+  likedTopics: string[];
+}
+
 export interface UserDto {
   id: string;
   firstName: string;

@@ -1,11 +1,15 @@
 
-<hr>
-<div class="topic-skeleton">
-    <span class="chip"></span>
-    <span class="chip"></span>
-    <span class="chip"></span>
-    <span class="chip"></span>
-    <span class="chip"></span>
-    <span class="chip"></span>
+<div  *ngIf="isAuthenticated">
+    <div *ngIf="isDataAvailable" class="liked-video-container" infinite-scroll [infiniteScrollDistance]="1"
+        (scrolled)="getLikedVideos(false)">
+        <h1>Liked Videos</h1>
+        <div *ngFor=" let item of videosGroupedByDay | keyvalue">
+            <h2> {{item.key}}</h2>
+            <app-suggestion *ngFor="let video of item.value" [video]="video"></app-suggestion>
+        </div>
+    </div>
 </div>
-<hr>
+
+<h1 *ngIf="!isAuthenticated">
+    Please login to check your watched videos!!!!
+</h1>

@@ -5,6 +5,7 @@ import com.karthick.youtubeclone.entity.User;
 import com.karthick.youtubeclone.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.karthick.youtubeclone.dto.CommentDTO;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,8 +43,15 @@ public class CommentService {
 
     public List<CommentDTO> getAllComments(String videoId, int page) {
         Pageable pageable = PageRequest.of(page, RECORDS_PER_PAGE, Sort.by(Sort.Direction.ASC, "commentCreatedTime"));
-        Optional<List<Comment>> commentList = commentRepository.findByVideoId(videoId);
-        return commentList.map(comments -> mapToList(comments, CommentDTO.class)).orElse(null);
+        Page<Comment> commentsPage = commentRepository.findByVideoId(videoId, pageable);
+
+        if(commentsPage.hasContent()){
+            return commentsPage.getContent().stream().map(comment -> mapper.map(comment, CommentDTO.class)).toList();
+        }
+
+        return null;
+
+
     }
 
     public <S, T> List<T> mapToList(List<S> source, Class<T> targetClassType){

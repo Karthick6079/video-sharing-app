@@ -17,9 +17,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { videoDataResolverResolver } from './resolver/video-data-resolver.resolver';
-import { HomepageSkeletonComponent } from './components/homepage-skeleton/homepage-skeleton.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { ShortsComponent } from './components/shorts/shorts.component';
 import { ShortsPageComponent } from './components/shorts-page/shorts-page.component';
 
 const routes: Routes = [
@@ -82,11 +80,11 @@ const routes: Routes = [
     path: 'video-player',
     component: VideoPlayerComponent,
   },
-  // {
-  //   path: '',
-  //   redirectTo: '/home',
-  //   pathMatch: 'full',
-  // },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
   {
     path: '**',
     component: HomeComponent,

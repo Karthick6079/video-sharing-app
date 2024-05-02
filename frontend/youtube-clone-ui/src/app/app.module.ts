@@ -138,8 +138,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',
-        redirectUrl: 'http://localhost:4200/register-user',
-        postLogoutRedirectUri: 'http://localhost:4200/home/featured',
+        redirectUrl: window.location.origin + '/login/callback',
+        postLogoutRedirectUri: window.location.origin + '/home/featured',
         clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
         scope:
           'openid profile email offline_access given_name family_name nickname phone address picture',

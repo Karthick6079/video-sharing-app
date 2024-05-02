@@ -11,6 +11,9 @@ export class SuggestionComponent implements OnInit {
   @Input()
   video!: VideoDto;
 
+  @Input()
+  showDescription: boolean = false;
+
   constructor(private router: Router) {
     // this.router.routeReuseStrategy.shouldReuseRoute = function () {
     //   return false;

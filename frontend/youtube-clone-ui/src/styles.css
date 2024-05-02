@@ -29,6 +29,7 @@ html{
     --app-second-color: #ddd6fe;
     --app-light-background: #efefef;
     --app-skeleton-color: #dedede;
+    --mdc-icon-button-icon-size: 48px;
 }
 
 .splitter{

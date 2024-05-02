@@ -6,6 +6,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { AuthResult } from 'angular-auth-oidc-client/lib/flows/callback-context';
 import { UserService } from '../../services/user/user.service';
 import * as _ from 'lodash';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-history',
@@ -18,7 +19,10 @@ export class HistoryComponent implements OnInit {
   isAuthenticated!: boolean;
   page: number = 0;
   size: number = 6;
-  videosGroupedByDay!: _.Dictionary<WatchedVideoDTO[]>;
+  videos!: WatchedVideoDTO[];
+  sortedDate!: string[];
+  videosGroupedByDay!: Record<string, WatchedVideoDTO[]>;
+  // mediumDate: string|undefined;
 
   constructor(
     private userService: UserService,
@@ -37,6 +41,26 @@ export class HistoryComponent implements OnInit {
     this.getWatchedVideos(true);
   }
 
+  reverseKeyOrder = (
+    a: KeyValue<string, WatchedVideoDTO[]>,
+    b: KeyValue<string, WatchedVideoDTO[]>
+  ): number => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const lastSevenDays = new Date(today);
+    lastSevenDays.setDate(today.getDate() - 7);
+    if (
+      a.key === 'Today' ||
+      a.key === 'Yesterday' ||
+      a.key === 'Last seven days'
+    ) {
+      return 1;
+    } else {
+      return Date.parse(b.key) - Date.parse(a.key);
+    }
+  };
+
   getWatchedVideos(isCompLoad: boolean) {
     if (this.isAuthenticated) {
       if (!isCompLoad) {
@@ -46,8 +70,10 @@ export class HistoryComponent implements OnInit {
         .getWatchedVideos(this.page, this.size)
         .subscribe((videos) => {
           console.log(videos);
-          this.watchedVideos = videos;
+          videos = videos;
+
           this.groupByDays(videos);
+
           this.isDataAvailable = true;
         });
     }
@@ -60,17 +86,22 @@ export class HistoryComponent implements OnInit {
     const lastSevenDays = new Date(today);
     lastSevenDays.setDate(today.getDate() - 7);
 
-    const groupByDay = _.mapValues(
-      _.groupBy(videos, (item) => {
-        const itemDate = new Date(item.watchedOn);
+    const groupByDay = _.groupBy(videos, (item) => {
+      const itemDate = new Date(item.watchedOn);
+      if (itemDate.toDateString() === today.toDateString()) {
+        return 'Today';
+      } else if (itemDate.toDateString() === yesterday.toDateString()) {
+        return 'Yesterday';
+      } else if (itemDate > lastSevenDays) {
+        return 'Last seven days';
+      } else {
         return `${itemDate.toLocaleString('default', {
           day: 'numeric',
           month: 'long',
           year: 'numeric',
         })}`;
-      }),
-      (v) => _.sortBy(v, 'desc')
-    );
+      }
+    });
 
     this.videosGroupedByDay = this.mergeDictionary(
       this.videosGroupedByDay,
@@ -78,12 +109,6 @@ export class HistoryComponent implements OnInit {
     );
 
     console.log(this.videosGroupedByDay);
-
-    console.log('------------------------------');
-
-    const sortedObject = _.orderBy(this.videosGroupedByDay, 'desc');
-
-    console.log(sortedObject);
   }
 
   mergeDictionary(existing: any, newDict: any) {

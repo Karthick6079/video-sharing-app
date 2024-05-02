@@ -1,5 +1,7 @@
 package com.karthick.youtubeclone.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karthick.youtubeclone.dto.LikedVideoDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
 import com.karthick.youtubeclone.dto.WatchedVideoDTO;
@@ -11,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,9 +26,12 @@ public class CommonService {
 
     private final UserService userService;
 
-    public List<WatchedVideoDTO> getWatchedVideos(int page, int size){
+    private final ObjectMapper objectMapper;
+
+    public List<WatchedVideoDTO> getWatchedVideos(int page, int size) throws JsonProcessingException {
         User user = userService.getCurrentUser();
-        return videoService.fetchWatchedVideos(user.getId(),page, size);
+//        Map<LocalDate, List<WatchedVideoDTO>> groupedObject = videoService.fetchWatchedVideos(user.getId(), page, size);
+        return videoService.fetchWatchedVideos(user.getId(), page, size);
     }
 
 

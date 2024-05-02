@@ -6,23 +6,26 @@
             <span class="example-spacer"></span>
             
             @if (isAuthenticated) {
-              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Account Info">
-                <p-avatar [image]="(userData | async) ?.userData.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                  <mat-icon>perm_identity</mat-icon>
-                  <span>{{name}}</span>
-                </button>
-                <button mat-menu-item routerLink="studio" >
+
+              <div style="display: flex;">
+                <button mat-icon-button aria-label="Studio icon button to upload a video" routerLink="studio"> 
                   <mat-icon>video_call</mat-icon>
-                  <span>Studio</span>
                 </button>
-                <button mat-menu-item (click)="logout()">
-                  <mat-icon>logout</mat-icon>
-                  <span>Logout</span>
+  
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Account Info">
+                  <img [src]="userPictureUrl" alt="Photo of a User">
                 </button>
-              </mat-menu>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>perm_identity</mat-icon>
+                    <span>{{name}}</span>
+                  </button>
+                  <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                  </button>
+                </mat-menu>
+              </div>
             } @else {
               <button mat-raised-button (click)="login()">Login</button>
             }

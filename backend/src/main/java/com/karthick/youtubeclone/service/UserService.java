@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -89,8 +90,8 @@ public class UserService {
     }
 
     public User getUserFromDB(String sub) {
-        return userRepository.findBySub(sub)
-                .orElseThrow(() -> new RuntimeException("User cannot find using sub - " + sub));
+        Optional<User> userOp = userRepository.findBySub(sub);
+        return userOp.orElse(null);
     }
 
     public User getUserById(String userId) {

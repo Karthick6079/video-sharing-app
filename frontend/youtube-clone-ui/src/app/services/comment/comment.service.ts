@@ -23,8 +23,8 @@ export class CommentService {
     );
   }
 
-  getComments(videoId: string): Observable<CommentDTO[]> {
-    return this.httpclient.get<CommentDTO[]>(
+  getComments(videoId: string): Observable<Record<string, Object>> {
+    return this.httpclient.get<Record<string, Object>>(
       this.getVideoBaseUrl() + this.VIDEO_URL + videoId + '/comments'
     );
   }

@@ -48,10 +48,9 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'register-user',
+    path: 'login/callback',
     component: RegisterUserComponent,
   },
-
   {
     path: 'watch/:videoId',
     component: WatchComponent,

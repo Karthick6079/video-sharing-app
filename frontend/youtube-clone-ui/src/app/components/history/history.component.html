@@ -1,10 +1,15 @@
 <div  *ngIf="isAuthenticated">
     <div *ngIf="isDataAvailable" class="watched-video-container" infinite-scroll [infiniteScrollDistance]="1"
         (scrolled)="getWatchedVideos(false)">
-        <div *ngFor=" let item of videosGroupedByDay | keyvalue">
+        <div *ngFor=" let item of videosGroupedByDay | keyvalue:reverseKeyOrder">
             <h1> {{item.key}}</h1>
             <app-suggestion *ngFor="let video of item.value" [video]="video"></app-suggestion>
         </div>
+
+        <!-- <div ng-repeat="(day, videos) in videos | groupBy:'watchedOn'">
+            <h1> {{day | date:mediumDate}}</h1>
+            <app-suggestion *ngFor="let video of item.value" [video]="video"></app-suggestion>
+        </div> -->
     </div>
 </div>
 

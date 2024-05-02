@@ -7,7 +7,7 @@
         <div class="channal-name items">
              <!--Name and Subs count--> 
            <div class="name">{{video?.userDisplayName}}</div>
-           <div class="subscribers-count">Yet to dev</div>
+           <div class="subscribers-count">{{subscribersCount}}{{subscribersCount == 0 ||  subscribersCount == 1 ? ' subscriber' :' subscribers'}}</div>
         </div>
          <!--Subscribe button--> 
         <div class="subscribe-button">

@@ -31,11 +31,13 @@ export class CommentComponent implements OnInit {
 
   isNewCommentAdded = false;
 
-  comments: CommentDTO[] = [];
+  comments: any = [];
 
   public isAuthenticated: boolean = false;
 
   commentForm!: FormGroup;
+
+  numberOfComments: any = 0;
 
   constructor(
     private loginService: LoginService,
@@ -92,8 +94,15 @@ export class CommentComponent implements OnInit {
   getComments(videoId: string) {
     this.commentService
       .getComments(this.video.id)
-      .subscribe((comments: CommentDTO[]) => {
-        this.comments = comments;
+      .subscribe((commentsMap: Record<string, Object>) => {
+        if (commentsMap['commentsList']) {
+          this.comments = commentsMap['commentsList'];
+        }
+
+        if (commentsMap['commentsCount']) {
+          this.numberOfComments = commentsMap['commentsCount'];
+        }
+        // this.comments = comments;
         // this.isNewCommentAdded = true;
       });
   }
@@ -109,8 +118,9 @@ export class CommentComponent implements OnInit {
 
   showLoginMessageIfNot() {
     if (!this.isAuthenticated) {
-      this.setLoginMessage('Please login before share your feedback!');
-      return false;
+      this.loginService.login();
+      // this.setLoginMessage('Please login before share your feedback!');
+      // return false;
     }
     return true;
   }

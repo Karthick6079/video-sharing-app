@@ -4,6 +4,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from '../../services/user/user.service';
 import { Observable } from 'rxjs';
 import _ from 'lodash';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-user-profile',
@@ -28,6 +29,26 @@ export class UserProfileComponent {
       }
     );
   }
+
+  reverseKeyOrder = (
+    a: KeyValue<string, LikedVideoDTO[]>,
+    b: KeyValue<string, LikedVideoDTO[]>
+  ): number => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const lastSevenDays = new Date(today);
+    lastSevenDays.setDate(today.getDate() - 7);
+    if (
+      a.key === 'Today' ||
+      a.key === 'Yesterday' ||
+      a.key === 'Last seven days'
+    ) {
+      return 1;
+    } else {
+      return Date.parse(b.key) - Date.parse(a.key);
+    }
+  };
 
   watchedVideos$!: Observable<VideoDto[]>;
 
@@ -58,17 +79,22 @@ export class UserProfileComponent {
     const lastSevenDays = new Date(today);
     lastSevenDays.setDate(today.getDate() - 7);
 
-    const groupByDay = _.mapValues(
-      _.groupBy(videos, (item) => {
-        const itemDate = new Date(item.likedOn);
+    const groupByDay = _.groupBy(videos, (item) => {
+      const itemDate = new Date(item.likedOn);
+      if (itemDate.toDateString() === today.toDateString()) {
+        return 'Today';
+      } else if (itemDate.toDateString() === yesterday.toDateString()) {
+        return 'Yesterday';
+      } else if (itemDate > lastSevenDays) {
+        return 'Last seven days';
+      } else {
         return `${itemDate.toLocaleString('default', {
           day: 'numeric',
           month: 'long',
           year: 'numeric',
         })}`;
-      }),
-      (v) => _.sortBy(v, 'desc')
-    );
+      }
+    });
 
     this.videosGroupedByDay = this.mergeDictionary(
       this.videosGroupedByDay,
@@ -76,12 +102,6 @@ export class UserProfileComponent {
     );
 
     console.log(this.videosGroupedByDay);
-
-    console.log('------------------------------');
-
-    const sortedObject = _.orderBy(this.videosGroupedByDay, 'desc');
-
-    console.log(sortedObject);
   }
 
   mergeDictionary(existing: any, newDict: any) {

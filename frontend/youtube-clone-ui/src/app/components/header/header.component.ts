@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;
   name: string = '';
+  userPictureUrl!: string;
 
   userData!: Observable<UserDataResult>;
 
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit {
     this.oidcSecurityService.userData$.subscribe((response) => {
       if (response.userData) {
         this.name = response.userData.name;
+        this.userPictureUrl = response.userData.picture;
       }
     });
 
@@ -36,6 +38,8 @@ export class HeaderComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    console.log(this.userData);
   }
 
   login() {
@@ -46,6 +50,6 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToHome() {
-    // this.router.navigateByUrl('/home');
+    // this.router.navigate(['/home']);
   }
 }

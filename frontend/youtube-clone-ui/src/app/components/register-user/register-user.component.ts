@@ -11,17 +11,26 @@ import { UserService } from '../../services/user/user.service';
 export class RegisterUserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {}
 
+  isAPILoading = false;
+
   ngOnInit(): void {
     setTimeout(() => {
       this.registerUserInDB();
-    }, 1700);
+    }, 2000);
   }
 
   registerUserInDB() {
+    this.isAPILoading = true;
     this.userService.registerUser().subscribe((userDto) => {
       if (userDto) {
+        this.isAPILoading = false;
         this.userService.setCurrentUser(userDto);
-        // this.router.navigateByUrl('/');
+        let loginBeforeUrl = localStorage.getItem('loginBeforeUrl');
+
+        if (!loginBeforeUrl) {
+          loginBeforeUrl = '/';
+        }
+        // window.location.assign(loginBeforeUrl);
       }
     });
   }

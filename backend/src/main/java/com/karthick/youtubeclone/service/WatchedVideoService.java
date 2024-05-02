@@ -1,6 +1,7 @@
 package com.karthick.youtubeclone.service;
 
 
+import com.karthick.youtubeclone.entity.User;
 import com.karthick.youtubeclone.entity.VideoUserInfo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -32,7 +33,7 @@ public class WatchedVideoService {
      * @param videoUserInfo
      * @param database
      */
-    public void updateWatchHistory(VideoUserInfo videoUserInfo, MongoDatabase database) {
+    public void updateWatchHistory(VideoUserInfo videoUserInfo, MongoDatabase database, User currentUser) {
         MongoCollection<Document> collection = database.getCollection("watchedVideos");
 
         // Query to filter
@@ -49,7 +50,7 @@ public class WatchedVideoService {
 
         //Update document
         Bson update  = Updates.combine(
-                Updates.set("userId", videoUserInfo.getUserId()),
+                Updates.set("userId", currentUser.getId()),
                 Updates.set("videoId", videoUserInfo.getId()),
                 Updates.set("watchedOn", LocalDateTime.now()),
                 Updates.set("tags", videoUserInfo.getTags())

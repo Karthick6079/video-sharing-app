@@ -28,4 +28,9 @@ public class AppConfiguration {
         return modelMapper;
     }
 
+    @Bean
+    public ObjectMapper objectMapper(){
+        return new ObjectMapper().registerModule(new JavaTimeModule());
+    }
+
 }

@@ -15,6 +15,7 @@ import com.karthick.youtubeclone.dto.CommentDTO;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,17 +42,29 @@ public class CommentService {
         return mapper.map(savedComment, CommentDTO.class);
     }
 
-    public List<CommentDTO> getAllComments(String videoId, int page) {
-        Pageable pageable = PageRequest.of(page, RECORDS_PER_PAGE, Sort.by(Sort.Direction.ASC, "commentCreatedTime"));
+    public List<CommentDTO> getAllComments(String videoId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "commentCreatedTime"));
         Page<Comment> commentsPage = commentRepository.findByVideoId(videoId, pageable);
 
         if(commentsPage.hasContent()){
             return commentsPage.getContent().stream().map(comment -> mapper.map(comment, CommentDTO.class)).toList();
         }
-
         return null;
+    }
+
+    public Long getCommentsCount(String videoId){
+        return commentRepository.findCommentsCount(videoId);
+    }
 
 
+
+    public boolean likeComment(String commentId, String userId, String videoId){
+
+        Optional<Comment> comment = commentRepository.findById(commentId);
+
+
+
+        return false;
     }
 
     public <S, T> List<T> mapToList(List<S> source, Class<T> targetClassType){

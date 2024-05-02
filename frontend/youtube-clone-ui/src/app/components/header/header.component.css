@@ -5,3 +5,14 @@
   .app-logo{
     cursor: pointer;
   }
+
+
+  :host::ng-deep .mat-mdc-icon-button img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  :host::ng-deep .mat-mdc-icon-button.mat-mdc-button-base  {
+    padding:5px;
+  }

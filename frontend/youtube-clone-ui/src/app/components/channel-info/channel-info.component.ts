@@ -20,6 +20,10 @@ export class ChannelInfoComponent implements OnInit {
   subscribed: boolean = false;
   unsubscribed: boolean = false;
 
+  currentUser!: UserDto;
+  videoUploadedUser!: UserDto;
+  subscribersCount = 0;
+
   constructor(
     private loginService: LoginService,
     private messageService: MessageService,
@@ -34,6 +38,26 @@ export class ChannelInfoComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    this.currentUser = this.userService.getCurrentUser();
+
+    if (
+      this.currentUser &&
+      this.currentUser.subscribedToUsers.includes(this.video?.userId)
+    ) {
+      this.subscribed = true;
+    }
+
+    if (this.video) {
+      this.userService
+        .getUserInfoById(this.video.userId)
+        .subscribe((userDto) => {
+          this.videoUploadedUser = userDto;
+          if (userDto.subscribers) {
+            this.subscribersCount = userDto.subscribers.length;
+          }
+        });
+    }
   }
 
   likeVideo() {
@@ -75,9 +99,7 @@ export class ChannelInfoComponent implements OnInit {
 
   showLoginMessageIfNot(message?: string) {
     if (!this.isAuthenticated) {
-      message = message ? message : 'Please login before share your feedback!';
-      this.setLoginMessage(message);
-      return false;
+      this.loginService.login();
     }
     return true;
   }

@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${spring.services.path}/video")
@@ -25,8 +27,22 @@ public class CommentController {
 
     @GetMapping("/watch/{videoId}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDTO> getAllComments(@PathVariable String videoId,
-                                           @RequestParam( name = "page", defaultValue  = "0") int page){
-        return commentService.getAllComments(videoId, page);
+    public Map<String, Object> getAllComments(@PathVariable String videoId,
+                                           @RequestParam( name = "page", defaultValue  = "0") int page,
+                                           @RequestParam( value = "size", defaultValue = "6") int size){
+        List<CommentDTO> comments = commentService.getAllComments(videoId, page, size);
+
+
+
+        Map<String, Object> commentsMap = new LinkedHashMap<>();
+
+        // Count only need for first call
+        if(page == 0){
+            Long commentsCount = commentService.getCommentsCount(videoId);
+            commentsMap.put("commentsCount", commentsCount);
+        }
+        commentsMap.put("commentsList", comments);
+
+        return commentsMap;
     }
 }

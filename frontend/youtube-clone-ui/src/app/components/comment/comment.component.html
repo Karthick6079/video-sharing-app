@@ -36,7 +36,7 @@
             styleClass="comment-button" [disabled]="!commentForm.get('comment')?.value"></p-button>
     </div>
 
-    <h2>Comments</h2>
+    <h1>{{numberOfComments}} Comments</h1>
     <app-show-comments *ngFor="let comment of comments" [comment]="comment"></app-show-comments>
     <!-- <app-show-comments *ngFor="let num of [1,2,3,4,5,6,7,8]"></app-show-comments> -->
 

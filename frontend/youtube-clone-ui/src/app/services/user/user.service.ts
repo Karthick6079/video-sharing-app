@@ -57,6 +57,10 @@ export class UserService implements OnInit {
     );
   }
 
+  getUserInfoById(userId: string): Observable<UserDto> {
+    return this.http.get<UserDto>(this.getUserBaseUrl() + '/' + userId);
+  }
+
   getWatchedVideos(page: number, size: number): Observable<WatchedVideoDTO[]> {
     let params = new HttpParams().set('page', page).set('size', size);
 

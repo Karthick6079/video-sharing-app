@@ -22,11 +22,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -116,9 +117,12 @@ public class VideoService {
 
         // 2. Get video and required user info from DB
         VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
+        User currentUser = userService.getCurrentUser();
+
 
         // 3. Update watch history table
-        watchedVideoService.updateWatchHistory(videoUserInfo, database);
+        if(currentUser != null)
+            watchedVideoService.updateWatchHistory(videoUserInfo, database, currentUser);
 
         return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
     }
@@ -203,9 +207,19 @@ public class VideoService {
         // Skipping elements PageNumber * PageSize
         int skip = page * size;
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+
         List<WatchedVideo> watchedVideoList   = watchedVideoRepo.getUserVideoWatchHistory(userId, skip, size);
 
-        return mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
+        List<WatchedVideoDTO> watchedVideoDTOList = mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
+
+//        Map<LocalDate, List<WatchedVideoDTO>> result = watchedVideoDTOList.stream().
+//                collect(Collectors.groupingBy(item -> item.getWatchedOn().toLocalDate(), Collectors.toList()));
+//
+//        LinkedHashMap<LocalDate, List<WatchedVideoDTO>> sorted = result.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByKey())).
+//                collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        return watchedVideoDTOList;
     }
 
     public List<VideoUserInfoDTO> getShortVideo(){

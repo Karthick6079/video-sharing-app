@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { CommentDTO } from '../../dto/video-dto';
@@ -23,9 +23,19 @@ export class CommentService {
     );
   }
 
-  getComments(videoId: string): Observable<Record<string, Object>> {
+  getComments(
+    videoId: string,
+    page: number,
+    size: number
+  ): Observable<Record<string, Object>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const httpOptions = {
+      params: params,
+    };
     return this.httpclient.get<Record<string, Object>>(
-      this.getVideoBaseUrl() + this.VIDEO_URL + videoId + '/comments'
+      this.getVideoBaseUrl() + this.VIDEO_URL + videoId + '/comments',
+      httpOptions
     );
   }
 }

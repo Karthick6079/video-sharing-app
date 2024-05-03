@@ -7,7 +7,8 @@
         <div class="channal-name items">
              <!--Name and Subs count--> 
            <div class="name">{{video?.userDisplayName}}</div>
-           <div class="subscribers-count">{{subscribersCount}}{{subscribersCount == 0 ||  subscribersCount == 1 ? ' subscriber' :' subscribers'}}</div>
+           <div class="subscribers-count" *ngIf="subscribersCount == 0">No Subscribers</div>
+           <div class="subscribers-count" *ngIf="subscribersCount > 0">{{subscribersCount == 1 ? '1 subscriber' :subscribersCount + ' subscribers'}}</div>
         </div>
          <!--Subscribe button--> 
         <div class="subscribe-button">

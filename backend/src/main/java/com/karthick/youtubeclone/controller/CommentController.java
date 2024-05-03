@@ -29,7 +29,7 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> getAllComments(@PathVariable String videoId,
                                            @RequestParam( name = "page", defaultValue  = "0") int page,
-                                           @RequestParam( value = "size", defaultValue = "6") int size){
+                                           @RequestParam( value = "size", defaultValue = "5") int size){
         List<CommentDTO> comments = commentService.getAllComments(videoId, page, size);
 
 

@@ -15,7 +15,8 @@
         <div class="channal-name-container">
             <div class="small-info-text channal-name">{{video.userDisplayName}}</div>
             <div>
-                <span class="small-info-text">{{video.viewCount}}{{video.viewCount == 0 ||  video.viewCount == 1 ? ' view' :' views'}}</span>
+                <span class="small-info-text" *ngIf="video.viewCount == 0">No views</span>
+                <span class="small-info-text" *ngIf="video.viewCount > 0">{{ video.viewCount == 1 ?  "1 view" : video.viewCount + " views"}}</span>
                 <span class="splitter"></span>
                 <span class="small-info-text">{{video.publishedDateAndTime | timeago}}</span>
             </div>

@@ -31,13 +31,20 @@ export class CommentComponent implements OnInit {
 
   isNewCommentAdded = false;
 
-  comments: any = [];
+  comments: CommentDTO[] = [];
 
   public isAuthenticated: boolean = false;
 
   commentForm!: FormGroup;
 
   numberOfComments: any = 0;
+
+  page: number = 0;
+  private SIZE: number = 5;
+
+  showLoadCommentButton = false;
+
+  commentsLoadingfromApi = false;
 
   constructor(
     private loginService: LoginService,
@@ -64,7 +71,7 @@ export class CommentComponent implements OnInit {
       this.currentUser = this.userService.getCurrentUser();
     }
 
-    this.getComments(this.video.id);
+    this.getComments(this.video.id, this.page);
   }
 
   cancelComment() {
@@ -91,20 +98,43 @@ export class CommentComponent implements OnInit {
     this.commentForm.get('comment')?.reset();
   }
 
-  getComments(videoId: string) {
+  getComments(videoId: string, page: number) {
+    this.commentsLoadingfromApi = true;
     this.commentService
-      .getComments(this.video.id)
-      .subscribe((commentsMap: Record<string, Object>) => {
+      .getComments(this.video.id, page, this.SIZE)
+      .subscribe((commentsMap: Record<string, any>) => {
         if (commentsMap['commentsList']) {
-          this.comments = commentsMap['commentsList'];
-        }
+          const commentsfromApi: CommentDTO[] = commentsMap['commentsList'];
 
-        if (commentsMap['commentsCount']) {
-          this.numberOfComments = commentsMap['commentsCount'];
+          const commentsString = JSON.stringify(commentsfromApi);
+
+          const commentsJsObject: CommentDTO[] = JSON.parse(commentsString);
+
+          if (commentsJsObject) {
+            // if(commentsJsObject.length > 1) {
+            //   this.showLoadCommentButton  = true;
+            // }
+
+            if (commentsJsObject.length < this.SIZE) {
+              this.showLoadCommentButton = false;
+            } else {
+              this.showLoadCommentButton = true;
+            }
+
+            this.comments.push(...commentsJsObject);
+            if (commentsMap['commentsCount']) {
+              this.numberOfComments = commentsMap['commentsCount'];
+            }
+
+            this.commentsLoadingfromApi = false;
+          }
         }
-        // this.comments = comments;
-        // this.isNewCommentAdded = true;
       });
+  }
+
+  loadComments() {
+    this.page = this.page + 1;
+    this.getComments(this.video.id, this.page);
   }
 
   prepareRequestForComment(comment: string) {

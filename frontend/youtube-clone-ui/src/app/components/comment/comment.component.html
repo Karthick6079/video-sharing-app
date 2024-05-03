@@ -36,8 +36,21 @@
             styleClass="comment-button" [disabled]="!commentForm.get('comment')?.value"></p-button>
     </div>
 
-    <h1>{{numberOfComments}} Comments</h1>
+    <h2>{{numberOfComments == 0 ? ' No Comments' :  numberOfComments + ' Comments'  }}</h2>
+    <hr *ngIf="numberOfComments > 0">
     <app-show-comments *ngFor="let comment of comments" [comment]="comment"></app-show-comments>
     <!-- <app-show-comments *ngFor="let num of [1,2,3,4,5,6,7,8]"></app-show-comments> -->
+    
+    
+<div class="load-button-container" *ngIf="showLoadCommentButton">
+    <p-button label="Load Comments"  [outlined]="true" (click)="loadComments()" *ngIf="!commentsLoadingfromApi"></p-button>
+    <div class="load-wrapp" *ngIf="commentsLoadingfromApi" >
+        <div class="load-1">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+</div>
 
 </div>

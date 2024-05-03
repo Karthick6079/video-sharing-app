@@ -23,7 +23,7 @@
 }
 
 .comment-button-container{
-    margin-top: 1.2em;
+    margin-top: 0.3em;
 }
 
 :host::ng-deep .comment-like-button{

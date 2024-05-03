@@ -68,6 +68,7 @@ import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SimpleVerticalAnimationComponent } from './components/animations/simple-vertical-animation/simple-vertical-animation.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ShortsPageComponent,
     ShortsPlayerComponent,
     ShortsVidInfoComponent,
+    SimpleVerticalAnimationComponent,
   ],
   imports: [
     BrowserModule,

@@ -44,13 +44,7 @@
     
 <div class="load-button-container" *ngIf="showLoadCommentButton">
     <p-button label="Load Comments"  [outlined]="true" (click)="loadComments()" *ngIf="!commentsLoadingfromApi"></p-button>
-    <div class="load-wrapp" *ngIf="commentsLoadingfromApi" >
-        <div class="load-1">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-      </div>
+    <app-simple-vertical-animation *ngIf="commentsLoadingfromApi"></app-simple-vertical-animation>
 </div>
 
 </div>

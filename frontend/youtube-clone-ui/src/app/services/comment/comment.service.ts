@@ -38,4 +38,40 @@ export class CommentService {
       httpOptions
     );
   }
+
+  likeComment(
+    videoId: string,
+    userId: string,
+    commentId: string
+  ): Observable<CommentDTO> {
+    let formData = new FormData();
+    formData.append('userId', userId);
+    return this.httpclient.put<CommentDTO>(
+      this.getVideoBaseUrl() +
+        this.VIDEO_URL +
+        videoId +
+        '/comment/' +
+        commentId +
+        '/like',
+      formData
+    );
+  }
+
+  dislikeVideo(
+    videoId: string,
+    userId: string,
+    commentId: string
+  ): Observable<CommentDTO> {
+    let formData = new FormData();
+    formData.append('userId', userId);
+    return this.httpclient.put<CommentDTO>(
+      this.getVideoBaseUrl() +
+        this.VIDEO_URL +
+        videoId +
+        '/comment/' +
+        commentId +
+        '/dislike',
+      formData
+    );
+  }
 }

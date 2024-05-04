@@ -2,7 +2,11 @@ package com.karthick.youtubeclone.service;
 
 
 import com.karthick.youtubeclone.dto.UserDTO;
+import com.karthick.youtubeclone.entity.Subscriber;
+import com.karthick.youtubeclone.entity.Subscription;
 import com.karthick.youtubeclone.entity.User;
+import com.karthick.youtubeclone.repository.SubscriberRepo;
+import com.karthick.youtubeclone.repository.SubscriptionRepo;
 import com.karthick.youtubeclone.repository.UserRepository;
 import com.karthick.youtubeclone.servicelogic.UserLogic;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,10 @@ public class UserService {
     private final ModelMapper mapper;
 
     private final UserLogic userLogic;
+
+    private final SubscriberRepo subscriberRepo;
+
+    private final SubscriptionRepo subscriptionRepo;
 
     private final String ANONYMOUS_USER = "anonymousUser";
 
@@ -112,6 +120,8 @@ public class UserService {
         userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
     }
 
+
+
     public void unsubscribe(String userId) {
         User currentUser = getCurrentUser();
         User unsubscribeToUser = getUserById(userId);
@@ -119,14 +129,6 @@ public class UserService {
         userLogic.unsubscribe(currentUser, unsubscribeToUser);
 
         userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
-    }
-
-    public void addToWatchHistory(String videoId) {
-        User user = getCurrentUser();
-        if(user != null){
-            user.addToVideoHistory(videoId);
-            userRepository.save(user);
-        }
     }
 
 }

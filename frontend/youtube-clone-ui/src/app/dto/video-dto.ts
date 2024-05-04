@@ -27,19 +27,19 @@ export interface LikedVideoDTO extends VideoDto {
 }
 
 export interface UserDto {
-  id: string;
-  firstName: string;
-  lastName: string;
-  name: string;
-  picture: string;
-  sub: string;
-  email: string;
-  nickname: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
+  picture?: string;
+  sub?: string;
+  email?: string;
+  nickname?: string;
   subscribedToUsers: any[];
-  subscribers: any[];
-  videoHistory: any[];
-  likedVideos: any[];
-  dislikedVideos: any[];
+  subscribers?: any[];
+  videoHistory?: any[];
+  likedVideos?: any[];
+  dislikedVideos?: any[];
 }
 
 export interface CommentDTO {

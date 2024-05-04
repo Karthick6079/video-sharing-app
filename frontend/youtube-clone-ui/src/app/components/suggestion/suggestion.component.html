@@ -16,5 +16,8 @@
             <span class="splitter"></span>
             <span>{{video.publishedDateAndTime | timeago}}</span>
         </div>
+        <div class="video-desc channal-name" *ngIf="showDescription">
+            {{video.description}}
+        </div>
     </div>
 </div>

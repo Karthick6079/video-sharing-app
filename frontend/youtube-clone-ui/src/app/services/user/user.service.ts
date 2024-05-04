@@ -99,10 +99,16 @@ export class UserService implements OnInit {
   }
 
   setCurrentUser(userDto: UserDto) {
-    this.currentUserDto = userDto;
+    window.sessionStorage.setItem('currentUser', JSON.stringify(userDto));
   }
 
   getCurrentUser() {
-    return this.currentUserDto;
+    const currentUserString = window.sessionStorage.getItem('currentUser');
+    let currentUser: UserDto = { subscribedToUsers: [] };
+    if (currentUserString) {
+      currentUser = JSON.parse(currentUserString);
+    }
+
+    return currentUser;
   }
 }

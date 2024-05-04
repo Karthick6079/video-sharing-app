@@ -45,8 +45,6 @@ public class CommentService {
         commentDto.setCommentCreatedTime(Instant.now().toEpochMilli());
         commentDto.setPicture(user.getPicture());
         commentDto.setUsername(user.getName());
-        commentDto.setLikes(0L);
-        commentDto.setDisLikes(0L);
         Comment comment = mapper.map(commentDto, Comment.class);
         Comment savedComment = commentRepository.save(comment);
         return mapper.map(savedComment, CommentDTO.class);

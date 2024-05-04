@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +22,8 @@ public class CommentDTO {
     private String videoId;
     private String username;
     private String picture;
-    private Long likes;
-    private Long disLikes;
+    private AtomicLong likes = new AtomicLong(0);
+    private AtomicLong disLikes = new AtomicLong(0);
     private Long commentCreatedTime;
 
 }

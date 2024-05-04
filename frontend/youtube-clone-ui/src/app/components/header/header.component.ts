@@ -50,6 +50,6 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToHome() {
-    // this.router.navigate(['/home']);
+    window.location.assign(window.location.origin);
   }
 }

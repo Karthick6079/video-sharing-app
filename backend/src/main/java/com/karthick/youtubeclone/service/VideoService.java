@@ -2,7 +2,7 @@ package com.karthick.youtubeclone.service;
 
 import com.karthick.youtubeclone.dto.*;
 import com.karthick.youtubeclone.entity.*;
-import com.karthick.youtubeclone.repository.LikedVideoRepo;
+import com.karthick.youtubeclone.repository.LikeVideoRepo;
 import com.karthick.youtubeclone.repository.VideoRepository;
 import com.karthick.youtubeclone.repository.WatchedVideoRepo;
 import com.karthick.youtubeclone.servicelogic.VideoServiceLogic;
@@ -22,12 +22,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class VideoService {
 
     private final WatchedVideoService watchedVideoService;
 
-    private final LikedVideoRepo likedVideoRepo;
+    private final LikeVideoRepo likeVideoRepo;
 
 
     public UploadVideoResponse uploadFile(MultipartFile file) {
@@ -138,43 +136,13 @@ public class VideoService {
     }
 
 
-
-    public VideoDTO likeVideo(String videoId) {
-
-        // Get Video and user entity from DB
-        Video video = getVideoFromDB(videoId);
-        User user = userService.getCurrentUser();
-
-        //Updating like count based on different scenario
-        videoServiceLogic.likeVideo(video, user,videoId);
-
-        // After manipulating likes count and liked video list
-        // Save video and user entity to database
-        videoRepo.save(video);
-        userService.saveUser(user);
-
-        return mapperUtil.map(video, VideoDTO.class);
-
-
-    }
-    public VideoDTO dislikeVideo(String videoId) {
-
-        // Get Video and user entity from DB
-        Video video = getVideoFromDB(videoId);
-        User user = userService.getCurrentUser();
-
-        //Updating dislike count based on different scenario
-        videoServiceLogic.dislikeVideo(video, user,videoId);
-
-        // After manipulating dislikes count and disliked video list
-        // Save video and user entity to database
-        videoRepo.save(video);
-        userService.saveUser(user);
-
-        return mapperUtil.map(video, VideoDTO.class);
-
+    public VideoDTO likeVideo(String videoId, String userId){
+        return videoServiceLogic.likeVideo(videoId, userId);
     }
 
+    public VideoDTO dislikeVideo(String videoId, String userId){
+        return videoServiceLogic.likeVideo(videoId, userId);
+    }
 
 
     public List<VideoUserInfoDTO> getVideosAndUser(List<String> videos) {
@@ -253,8 +221,8 @@ public class VideoService {
             return null;
 
 //        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
-        List<LikedVideo> likedVideos = likedVideoRepo.getLikedVideos(user.getId(), page * size, size);
+        List<LikeVideo> likeVideos = likeVideoRepo.getLikedVideos(user.getId(), page * size, size);
 
-        return mapperUtil.mapToList(likedVideos, LikedVideoDTO.class);
+        return mapperUtil.mapToList(likeVideos, LikedVideoDTO.class);
     }
 }

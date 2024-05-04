@@ -23,7 +23,10 @@ export class CommentComponent implements OnInit {
   @Input()
   video!: VideoDto;
 
+  @Input()
   currentUser!: UserDto;
+
+  userProfileUrl!: string;
 
   comment!: string;
 
@@ -33,7 +36,7 @@ export class CommentComponent implements OnInit {
 
   comments: CommentDTO[] = [];
 
-  public isAuthenticated: boolean = false;
+  isAuthenticated: boolean = false;
 
   commentForm!: FormGroup;
 
@@ -66,10 +69,6 @@ export class CommentComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
-
-    if (this.isAuthenticated) {
-      this.currentUser = this.userService.getCurrentUser();
-    }
 
     this.getComments(this.video.id, this.page);
   }

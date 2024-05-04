@@ -69,6 +69,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SimpleVerticalAnimationComponent } from './components/animations/simple-vertical-animation/simple-vertical-animation.component';
+import { VideoCardSkeleton2Component } from './components/video-card-skeleton2/video-card-skeleton2.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,7 @@ import { SimpleVerticalAnimationComponent } from './components/animations/simple
     ShortsPlayerComponent,
     ShortsVidInfoComponent,
     SimpleVerticalAnimationComponent,
+    VideoCardSkeleton2Component,
   ],
   imports: [
     BrowserModule,
@@ -136,12 +139,14 @@ import { SimpleVerticalAnimationComponent } from './components/animations/simple
     DialogModule,
     OverlayPanelModule,
     InfiniteScrollModule,
+    ConfirmDialogModule,
     TimeagoModule.forRoot(),
     AuthModule.forRoot({
       config: {
         authority: 'https://karthick-v.us.auth0.com',
+        // redirectUrl: window.location.origin,
         redirectUrl: window.location.origin + '/login/callback',
-        postLogoutRedirectUri: window.location.origin + '/home/featured',
+        postLogoutRedirectUri: window.location.origin,
         clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
         scope:
           'openid profile email offline_access given_name family_name nickname phone address picture',

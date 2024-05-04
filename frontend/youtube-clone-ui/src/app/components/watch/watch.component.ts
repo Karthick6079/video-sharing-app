@@ -29,6 +29,8 @@ export class WatchComponent implements OnInit, OnDestroy {
   isVideoAvailable: boolean = false;
   descPanalOpen = false;
 
+  currentUser!: UserDto;
+
   suggestionVideos!: VideoDto[];
 
   page: number = 0;
@@ -43,10 +45,12 @@ export class WatchComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe((data) => {
       this.video = data['video'];
     });
+    this.currentUser = this.userSevice.getCurrentUser();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
+    this.isVideoAvailable = false;
     this.videoService
       .getSuggestedVideos(
         this.page,
@@ -57,6 +61,9 @@ export class WatchComponent implements OnInit, OnDestroy {
         this.isVideoAvailable = true;
         console.log(this.suggestionVideos);
       });
+
+    //Scroll to top
+    window.scrollTo(0, 0);
   }
 
   closeDesc() {

@@ -1,7 +1,7 @@
 .liked-video-container{
-    width: 40%;
+    width: 60%;
 }
 
 :host::ng-deep .suggestion-section{
-    height: 180px !important;
+    height: 18rem !important;
 }

@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 import {
   LogoutAuthOptions,
   OidcSecurityService,
@@ -12,7 +12,8 @@ export class LoginService implements OnInit {
   public isAuthenticated: boolean = false;
 
   constructor(
-    private oidcSecurityService: OidcSecurityService // private routerSnap: ActivatedRouteSnapshot
+    private oidcSecurityService: OidcSecurityService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -24,7 +25,8 @@ export class LoginService implements OnInit {
   }
 
   login() {
-    localStorage.setItem('loginBeforeUrl', window.location.href);
+    let routerState = this.router.routerState.snapshot;
+    localStorage.setItem('loginBeforeUrl', routerState.url);
     this.oidcSecurityService.authorize();
   }
 
@@ -34,5 +36,6 @@ export class LoginService implements OnInit {
     this.oidcSecurityService.logoffAndRevokeTokens();
     this.oidcSecurityService.logoffLocal();
     localStorage.removeItem('loginBeforeUrl');
+    sessionStorage.removeItem('currentUser');
   }
 }

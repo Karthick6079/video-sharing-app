@@ -1,24 +1,25 @@
 package com.karthick.youtubeclone.entity;
 
 
-import jdk.jfr.Registered;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
-@Document( collection = "likedVideos")
+@Document("subscriptions")
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class LikedVideo extends  VideoUserInfo{
+public class Subscription {
     @Id
     private String id;
 
-    private LocalDateTime likedOn;
+    private String userId;
 
-    private Set<String> likedTopics;
+    private String subscriptionUserId;
+
+    private LocalDateTime subscriptionOn;
 }

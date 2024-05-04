@@ -57,7 +57,7 @@ export class CommentService {
     );
   }
 
-  dislikeVideo(
+  dislikeComment(
     videoId: string,
     userId: string,
     commentId: string

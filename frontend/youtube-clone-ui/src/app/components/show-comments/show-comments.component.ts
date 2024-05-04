@@ -44,7 +44,11 @@ export class ShowCommentsComponent {
   disLikeComment() {
     if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
       this.commentService
-        .likeComment(this.comment.videoId, this.comment.userId, this.comment.id)
+        .dislikeComment(
+          this.comment.videoId,
+          this.comment.userId,
+          this.comment.id
+        )
         .subscribe((comment) => {
           this.comment = comment;
         });

@@ -1,32 +1,19 @@
 package com.karthick.youtubeclone.service;
 
-import com.karthick.youtubeclone.entity.LikedVideo;
-import com.karthick.youtubeclone.entity.VideoUserInfo;
-import com.karthick.youtubeclone.repository.LikedVideoRepo;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
+import com.karthick.youtubeclone.entity.LikeVideo;
+import com.karthick.youtubeclone.repository.LikeVideoRepo;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Filters.lte;
 
 @Service
 @RequiredArgsConstructor
 public class LikedVideoService {
 
 
-    private final LikedVideoRepo likedVideoRepo;
+    private final LikeVideoRepo likeVideoRepo;
 
 
 
@@ -40,13 +27,13 @@ public class LikedVideoService {
     public void addLikedVideoInDB(String userId, String videoId, Set<String> topics) {
 
 
-        LikedVideo likedVideo = new LikedVideo();
-        likedVideo.setVideoId(videoId);
-        likedVideo.setUserId(userId);
-        likedVideo.setLikedOn(LocalDateTime.now());
-        likedVideo.setLikedTopics(topics);
+        LikeVideo likeVideo = new LikeVideo();
+        likeVideo.setVideoId(videoId);
+        likeVideo.setUserId(userId);
+        likeVideo.setLikedOn(LocalDateTime.now());
+        likeVideo.setLikeTopics(topics);
 
-        likedVideoRepo.save(likedVideo);
+        likeVideoRepo.save(likeVideo);
 
 
     }
@@ -54,7 +41,7 @@ public class LikedVideoService {
 
     public void removeLikedVideoFromDB(String userId, String videoId){
 
-        likedVideoRepo.deleteByUserIdAndVideoId(userId, videoId);
+        likeVideoRepo.deleteByUserIdAndVideoId(userId, videoId);
 
     }
 

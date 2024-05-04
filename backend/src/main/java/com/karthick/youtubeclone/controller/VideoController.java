@@ -47,15 +47,15 @@ public class VideoController {
 
     @PutMapping("/watch/{videoId}/like")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO likeVideo(@PathVariable String videoId){
-        return videoService.likeVideo(videoId);
+    public VideoDTO likeVideo(@PathVariable String videoId, @RequestParam String userId){
+        return videoService.likeVideo(videoId, userId);
     }
 
 
     @PutMapping("/watch/{videoId}/dislike")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO dislikeVideo(@PathVariable String videoId){
-        return videoService.dislikeVideo(videoId);
+    public VideoDTO dislikeVideo(@PathVariable String videoId, @RequestParam String userId){
+        return videoService.dislikeVideo(videoId, userId);
     }
 
     @GetMapping("/suggestion-videos")

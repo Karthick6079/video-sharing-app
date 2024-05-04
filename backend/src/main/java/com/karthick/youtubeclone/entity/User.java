@@ -64,32 +64,6 @@ public class User {
         this.subscribedToCount.decrementAndGet();
     }
 
-    public void addToLikedVideo(String videoId){
-        this.likedVideos.add(videoId);
-    }
-
-    public void removeFromLikedVideo(String videoId){
-        this.likedVideos.remove(videoId);
-    }
-
-    public void addToDisLikedVideo(String videoId){
-        this.dislikedVideos.add(videoId);
-    }
-
-    public void removeFromDisLikedVideo(String videoId){
-        this.dislikedVideos.remove(videoId);
-    }
-
-    public boolean isVideoLikedByUser(String id){
-        return this.getLikedVideos().stream().anyMatch( videoId -> videoId.equals(id));
-    }
-    public boolean isVideoDisLikedByUser(String id){
-        return this.getDislikedVideos().stream().anyMatch( videoId -> videoId.equals(id));
-    }
-
-    public void addToVideoHistory(String videoId){
-        this.videoHistory.add(videoId);
-    }
 
 
 }

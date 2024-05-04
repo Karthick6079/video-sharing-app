@@ -45,11 +45,6 @@ export class HistoryComponent implements OnInit {
     a: KeyValue<string, WatchedVideoDTO[]>,
     b: KeyValue<string, WatchedVideoDTO[]>
   ): number => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const lastSevenDays = new Date(today);
-    lastSevenDays.setDate(today.getDate() - 7);
     if (
       a.key === 'Today' ||
       a.key === 'Yesterday' ||

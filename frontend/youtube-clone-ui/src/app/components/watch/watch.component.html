@@ -22,7 +22,7 @@
             </div>
             <div class="comments">
                 <div class="add-comment">
-                    <app-comment [video]="video"></app-comment>
+                    <app-comment [video]="video" [currentUser]="currentUser"></app-comment>
                 </div>
             </div>
         </div>
@@ -30,7 +30,11 @@
     <div class="suggestion-bar">
         <h2 class="suggest-title">Suggestions</h2>
         <div class="rightside-section" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="getSuggestionVideos()">
-            <app-suggestion *ngFor="let video of suggestionVideos"  [video]="video"></app-suggestion>
+            @if(isVideoAvailable){
+                <app-suggestion *ngFor="let video of suggestionVideos"  [video]="video"></app-suggestion>
+            }@else {
+                <app-video-card-skeleton2 *ngFor="let num of [1,2,3,4,5,6]" [myHeight]="120"></app-video-card-skeleton2>
+            }
         </div>
     </div>
 </div>

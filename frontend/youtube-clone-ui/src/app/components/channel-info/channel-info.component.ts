@@ -2,17 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from '../../services/login/login.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../services/user/user.service';
 import { VideoService } from '../../services/video/video.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-channel-info',
   templateUrl: './channel-info.component.html',
   styleUrl: './channel-info.component.css',
-  providers: [MessageService],
+  providers: [ConfirmationService, MessageService],
 })
 export class ChannelInfoComponent implements OnInit {
+  copyTheURL() {
+    throw new Error('Method not implemented.');
+  }
   @Input()
   video: VideoDto | undefined;
 
@@ -24,13 +28,19 @@ export class ChannelInfoComponent implements OnInit {
   videoUploadedUser!: UserDto;
   subscribersCount = 0;
 
+  videoURL!: string;
+
   constructor(
     private loginService: LoginService,
     private messageService: MessageService,
     private userService: UserService,
     private oidcSecurityService: OidcSecurityService,
-    private videoService: VideoService
-  ) {}
+    private videoService: VideoService,
+    private confirmationService: ConfirmationService
+  ) {
+    this.currentUser = this.userService.getCurrentUser();
+    this.videoURL = window.location.href;
+  }
 
   ngOnInit(): void {
     this.oidcSecurityService.isAuthenticated$.subscribe(
@@ -39,7 +49,7 @@ export class ChannelInfoComponent implements OnInit {
       }
     );
 
-    this.currentUser = this.userService.getCurrentUser();
+    // this.currentUser = this.userService.getCurrentUser();
 
     if (
       this.currentUser &&
@@ -79,13 +89,11 @@ export class ChannelInfoComponent implements OnInit {
     }
   }
   unsubscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .unsubscribeUser(String(this.video?.userId))
-        .subscribe((isUnsubscribed) => {
-          this.subscribed = !isUnsubscribed;
-        });
-    }
+    this.userService
+      .unsubscribeUser(String(this.video?.userId))
+      .subscribe((isUnsubscribed) => {
+        this.subscribed = !isUnsubscribed;
+      });
   }
   subscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
@@ -112,6 +120,69 @@ export class ChannelInfoComponent implements OnInit {
       sticky: false,
       life: 5000,
       key: 'tc',
+    });
+  }
+
+  unsubscribeConfirmationPopup() {
+    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
+      this.confirmationService.confirm({
+        // target: event.target as EventTarget,
+        key: 'unsubscriberConfirmation',
+        message: 'Are you sure that you want to proceed?',
+        header: 'Unsubscribe',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: 'none',
+        rejectIcon: 'none',
+        rejectButtonStyleClass: 'p-button-text',
+        accept: () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Confirmed',
+            detail: 'You have accepted',
+          });
+          this.subscribe();
+        },
+        reject: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Rejected',
+            detail: 'You have rejected',
+            life: 3000,
+          });
+        },
+      });
+    }
+  }
+
+  copyURL() {
+    navigator.clipboard.writeText(this.videoURL);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Copied!',
+      detail: 'Video link copied!',
+    });
+  }
+
+  shareVideoLink() {
+    this.confirmationService.confirm({
+      message: 'Copy the video link and share it! ',
+      key: 'shareConfirmation',
+      // icon: 'pi pi-share-alt',
+      header: 'Share',
+      acceptButtonStyleClass: 'p-button-text p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      acceptLabel: 'Ok',
+      rejectVisible: false,
+
+      accept: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Thank you for sharing!',
+        });
+      },
     });
   }
 }

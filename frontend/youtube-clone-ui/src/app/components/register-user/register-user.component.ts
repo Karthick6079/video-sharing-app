@@ -27,8 +27,8 @@ export class RegisterUserComponent implements OnInit {
         this.userService.setCurrentUser(userDto);
         let loginBeforeUrl = localStorage.getItem('loginBeforeUrl');
 
-        if (!loginBeforeUrl) {
-          loginBeforeUrl = '/';
+        if (loginBeforeUrl) {
+          this.router.navigateByUrl(loginBeforeUrl);
         }
         // window.location.assign(loginBeforeUrl);
       }

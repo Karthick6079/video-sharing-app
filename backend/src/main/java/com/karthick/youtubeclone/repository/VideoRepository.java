@@ -50,6 +50,15 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     })
     List<String> getShortsVideo();
 
+    @Aggregation(pipeline = {
+            "{$match: {title:{ $regex:?0, $options:'i'}}}",
+            "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
+            "{$unwind: '$user_info'}",
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+                    "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+    })
+    List<VideoUserInfo> findVideosBySearchText(String searchText);
+
 
 
 }

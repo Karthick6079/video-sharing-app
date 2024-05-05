@@ -14,11 +14,7 @@ export class SuggestionComponent implements OnInit {
   @Input()
   showDescription: boolean = false;
 
-  constructor(private router: Router) {
-    // this.router.routeReuseStrategy.shouldReuseRoute = function () {
-    //   return false;
-    // };
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     console.log(this.displayVideo);

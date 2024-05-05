@@ -9,7 +9,7 @@
             </div>
             <div class="comment">{{comment.text}}</div>
             <div class="comment-button-container">
-                <p-button icon="pi pi-thumbs-up" [rounded]="true" badge="{{comment.likes}}" [outlined]="true" [text]="true" size="large" (click)="likeComment()" styleClass="comment-like-button"></p-button>
+                <p-button icon="pi pi-thumbs-up" [rounded]="true" badge="{{comment.likes | indianFormatViewCount:'' }}" [outlined]="true" [text]="true" size="large" (click)="likeComment()" styleClass="comment-like-button"></p-button>
                 <p-button icon="pi pi-thumbs-down" [rounded]="true"  [outlined]="true"  [text]="true" size="large"(click)="disLikeComment()" styleClass="comment-dislike-button"></p-button>
             </div>
         </div>

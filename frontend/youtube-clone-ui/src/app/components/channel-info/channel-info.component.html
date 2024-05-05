@@ -25,7 +25,7 @@
              <!--Name and Subs count--> 
            <div class="name">{{video?.userDisplayName}}</div>
            <div class="subscribers-count" *ngIf="subscribersCount == 0">No Subscribers</div>
-           <div class="subscribers-count" *ngIf="subscribersCount > 0">{{subscribersCount == 1 ? '1 subscriber' :subscribersCount + ' subscribers'}}</div>
+           <div class="subscribers-count" *ngIf="subscribersCount > 0">{{subscribersCount == 1 ? '1 subscriber' :subscribersCount | indianFormatViewCount:' Subscribers'}}</div>
         </div>
          <!--Subscribe button--> 
         <div class="subscribe-button">

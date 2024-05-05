@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
 import { Router } from '@angular/router';
+import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
   selector: 'app-video-card',
@@ -8,7 +9,10 @@ import { Router } from '@angular/router';
   styleUrl: './video-card.component.css',
 })
 export class VideoCardComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private indianFormatViewCount: IndianFormatViewCount
+  ) {}
 
   @Input()
   video!: VideoDto;

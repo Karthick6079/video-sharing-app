@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit {
   name: string = '';
   userPictureUrl!: string;
 
+  isStudio = false;
+
   userData!: Observable<UserDataResult>;
 
   constructor(
@@ -39,6 +41,12 @@ export class HeaderComponent implements OnInit {
       }
     );
 
+    const url = this.router.url;
+
+    if (url.indexOf('studio') != -1) {
+      this.isStudio = true;
+    }
+
     console.log(this.userData);
   }
 
@@ -51,5 +59,21 @@ export class HeaderComponent implements OnInit {
 
   navigateToHome() {
     window.location.assign(window.location.origin);
+  }
+
+  searchVideos(searchText: string) {
+    this.router
+      .navigateByUrl('/home/search-results?searchText=' + searchText)
+      .then((e) => {
+        if (e) {
+          console.log('Navigation success!!');
+        } else {
+          console.log('Navigation failed!!');
+        }
+      });
+
+    // this.router.navigate(['home', 'search-results'], {
+    //   queryParams: { searchText: searchText },
+    // });
   }
 }

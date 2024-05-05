@@ -4,6 +4,7 @@ import { CommentService } from '../../services/comment/comment.service';
 import { MessageService } from 'primeng/api';
 import { LoginService } from '../../services/login/login.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
   selector: 'app-show-comments',
@@ -20,7 +21,8 @@ export class ShowCommentsComponent {
     private commentService: CommentService,
     private messageService: MessageService,
     private loginService: LoginService,
-    private oidcSecurityService: OidcSecurityService
+    private oidcSecurityService: OidcSecurityService,
+    private indianFormatViewCount: IndianFormatViewCount
   ) {}
 
   ngOnInit(): void {

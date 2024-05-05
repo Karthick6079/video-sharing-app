@@ -1,0 +1,8 @@
+.search-result-container{
+    width: 60%;
+    margin: 20px;
+}
+
+:host::ng-deep .suggestion-section{
+    height: 18.5rem !important;
+}

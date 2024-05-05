@@ -225,4 +225,10 @@ public class VideoService {
 
         return mapperUtil.mapToList(likeVideos, LikedVideoDTO.class);
     }
+
+    public List<VideoUserInfoDTO> getSearchedVideos(String searchText){
+           List<VideoUserInfo> videoUserInfoList = videoRepo.findVideosBySearchText(searchText);
+           Optional<List<VideoUserInfo>> videoUserInfoOptional = Optional.ofNullable(videoUserInfoList);
+        return mapperUtil.mapToList(videoUserInfoOptional.orElse(new ArrayList<>()), VideoUserInfoDTO.class);
+    }
 }

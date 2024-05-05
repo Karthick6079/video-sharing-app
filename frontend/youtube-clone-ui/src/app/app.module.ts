@@ -56,6 +56,7 @@ import { ThumbnailVideoPlayerComponent } from './components/thumbnail-video-play
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { LoadingAnimationComponent } from './components/loading-animation/loading-animation.component';
 import { RelativeTimeFilterPipe } from './pipes/relative-time-filter.pipe';
+import { IndianFormatViewCount } from './pipes/indianformatviewcount.pipe';
 import { TimeagoModule } from 'ngx-timeago';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/custom-routing-strategy';
@@ -71,6 +72,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SimpleVerticalAnimationComponent } from './components/animations/simple-vertical-animation/simple-vertical-animation.component';
 import { VideoCardSkeleton2Component } from './components/video-card-skeleton2/video-card-skeleton2.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +99,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RegisterUserComponent,
     LoadingAnimationComponent,
     RelativeTimeFilterPipe,
+    IndianFormatViewCount,
     HomepageSkeletonComponent,
     ShortsComponent,
     ShortsPageComponent,
@@ -104,6 +107,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ShortsVidInfoComponent,
     SimpleVerticalAnimationComponent,
     VideoCardSkeleton2Component,
+    SearchResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -164,6 +168,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     MessageService,
+    IndianFormatViewCount,
   ],
   bootstrap: [AppComponent],
 })

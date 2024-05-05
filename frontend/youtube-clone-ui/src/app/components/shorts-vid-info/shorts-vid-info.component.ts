@@ -13,6 +13,8 @@ export class ShortsVidInfoComponent implements OnInit {
   subscribed: boolean = false;
   unsubscribed: boolean = false;
 
+  currentUser!: UserDto;
+
   @Input()
   video!: VideoDto;
 
@@ -31,14 +33,28 @@ export class ShortsVidInfoComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    this.subscribed = this.isCurrentUserSubscribed();
+  }
+
+  isCurrentUserSubscribed() {
+    if (
+      this.currentUser &&
+      this.currentUser.subscribedToUsers.includes(this.video?.userId)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   unsubscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
         .unsubscribeUser(String(this.video.userId))
-        .subscribe((isUnsubscribed) => {
-          this.subscribed = !isUnsubscribed;
+        .subscribe((userDto: UserDto) => {
+          this.currentUser = userDto;
+          this.subscribed = this.isCurrentUserSubscribed();
         });
     }
   }
@@ -46,8 +62,9 @@ export class ShortsVidInfoComponent implements OnInit {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
         .subscribeUser(String(this.video.userId))
-        .subscribe((isSubscribed) => {
-          this.subscribed = isSubscribed;
+        .subscribe((userDto: UserDto) => {
+          this.currentUser = userDto;
+          this.subscribed = this.isCurrentUserSubscribed();
         });
     }
   }

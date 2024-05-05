@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  standalone: true,
   name: 'indianFormatViewCount',
 })
 export class IndianFormatViewCount implements PipeTransform {
@@ -9,29 +8,33 @@ export class IndianFormatViewCount implements PipeTransform {
   private lakh: number = 100000;
   private crore: number = 10000000;
 
-  transform(value: number): string {
+  transform(value: number, additionalText: string): string {
     let result;
     if (value) {
       if (value >= this.thousand && value < this.lakh) {
         result = value / this.thousand;
-        return this.addStringToNumber(result, 'K');
+        return this.addStringToNumber(result, 'K', additionalText);
       } else if (value >= this.lakh && value < this.crore) {
         result = value / this.lakh;
-        return this.addStringToNumber(result, ' lakh');
+        return this.addStringToNumber(result, ' lakh', additionalText);
       } else if (value >= this.crore) {
         result = value / this.crore;
-        return this.addStringToNumber(result, ' crore');
+        return this.addStringToNumber(result, ' crore', additionalText);
       } else {
         result = value;
-        return result + " views";
+        return result + additionalText;
       }
     }
 
-    return value;
+    return value.toString();
   }
 
-  addStringToNumber(result: number, type: string): string {
+  addStringToNumber(
+    result: number,
+    type: string,
+    additionalText: string
+  ): string {
     let res: string = result.toPrecision(2);
-    return res + type + ' views';
+    return res + type + additionalText;
   }
 }

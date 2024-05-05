@@ -1,9 +1,15 @@
 <p>
     
     <mat-toolbar color="primary">
-        <mat-toolbar-row>
+        <mat-toolbar-row class="header">
             <h2 class="app-logo" (click)="navigateToHome()">AVK</h2>
-            <span class="example-spacer"></span>
+            <!-- <span class="example-spacer"></span> -->
+
+            <!--Not show the search bar inside studio i.e video upload page-->
+            <div class="search-container" *ngIf="!isStudio">
+              <input type="text" #searchField placeholder="Search..." name="search">
+              <button type="button" (click)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
+            </div>
             
             @if (isAuthenticated) {
 

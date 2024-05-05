@@ -37,5 +37,8 @@ export class LoginService implements OnInit {
     this.oidcSecurityService.logoffLocal();
     localStorage.removeItem('loginBeforeUrl');
     sessionStorage.removeItem('currentUser');
+
+    //Navigate to home
+    window.location.assign(window.location.origin);
   }
 }

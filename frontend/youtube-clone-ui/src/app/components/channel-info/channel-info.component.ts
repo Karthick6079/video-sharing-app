@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../services/user/user.service';
 import { VideoService } from '../../services/video/video.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
   selector: 'app-channel-info',
@@ -36,7 +37,8 @@ export class ChannelInfoComponent implements OnInit {
     private userService: UserService,
     private oidcSecurityService: OidcSecurityService,
     private videoService: VideoService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private indianformatviewcount: IndianFormatViewCount
   ) {
     this.currentUser = this.userService.getCurrentUser();
     this.videoURL = window.location.href;
@@ -51,12 +53,7 @@ export class ChannelInfoComponent implements OnInit {
 
     // this.currentUser = this.userService.getCurrentUser();
 
-    if (
-      this.currentUser &&
-      this.currentUser.subscribedToUsers.includes(this.video?.userId)
-    ) {
-      this.subscribed = true;
-    }
+    this.subscribed = this.isCurrentUserSubscribed();
 
     if (this.video) {
       this.userService
@@ -67,6 +64,17 @@ export class ChannelInfoComponent implements OnInit {
             this.subscribersCount = userDto.subscribers.length;
           }
         });
+    }
+  }
+
+  isCurrentUserSubscribed() {
+    if (
+      this.currentUser &&
+      this.currentUser.subscribedToUsers.includes(this.video?.userId)
+    ) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -91,16 +99,23 @@ export class ChannelInfoComponent implements OnInit {
   unsubscribe() {
     this.userService
       .unsubscribeUser(String(this.video?.userId))
-      .subscribe((isUnsubscribed) => {
-        this.subscribed = !isUnsubscribed;
+      .subscribe((userDto) => {
+        this.currentUser = userDto;
+        this.subscribed = this.isCurrentUserSubscribed();
       });
   }
   subscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
         .subscribeUser(String(this.video?.userId))
-        .subscribe((isSubscribed) => {
-          this.subscribed = isSubscribed;
+        .subscribe((userDto) => {
+          this.currentUser = userDto;
+          this.subscribed = this.isCurrentUserSubscribed();
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Unsubscribed',
+            detail: '',
+          });
         });
     }
   }
@@ -134,23 +149,9 @@ export class ChannelInfoComponent implements OnInit {
         acceptIcon: 'none',
         rejectIcon: 'none',
         rejectButtonStyleClass: 'p-button-text',
-        accept: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Confirmed',
-            detail: 'You have accepted',
-          });
-          this.subscribe();
-        },
-        reject: () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rejected',
-            detail: 'You have rejected',
-            life: 3000,
-          });
-        },
       });
+
+      this.unsubscribe();
     }
   }
 
@@ -167,7 +168,6 @@ export class ChannelInfoComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Copy the video link and share it! ',
       key: 'shareConfirmation',
-      // icon: 'pi pi-share-alt',
       header: 'Share',
       acceptButtonStyleClass: 'p-button-text p-button-text',
       rejectButtonStyleClass: 'p-button-text p-button-text',
@@ -175,14 +175,6 @@ export class ChannelInfoComponent implements OnInit {
       rejectIcon: 'none',
       acceptLabel: 'Ok',
       rejectVisible: false,
-
-      accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Thank you for sharing!',
-        });
-      },
     });
   }
 }

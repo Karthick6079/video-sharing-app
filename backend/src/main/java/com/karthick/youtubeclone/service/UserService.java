@@ -111,24 +111,27 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void subscribe(String userId) {
+    public UserDTO subscribe(String userId) {
         User currentUser = getCurrentUser();
         User subscribeToUser = getUserById(userId);
 
         userLogic.subscribe(currentUser, subscribeToUser);
 
         userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
+
+        return mapper.map(currentUser, UserDTO.class);
     }
 
 
 
-    public void unsubscribe(String userId) {
+    public UserDTO unsubscribe(String userId) {
         User currentUser = getCurrentUser();
         User unsubscribeToUser = getUserById(userId);
 
         userLogic.unsubscribe(currentUser, unsubscribeToUser);
 
         userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
+        return mapper.map(currentUser, UserDTO.class);
     }
 
 }

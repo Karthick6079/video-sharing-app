@@ -51,15 +51,14 @@ public class UserController {
 
     @PutMapping("/subscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public boolean subscribe(@RequestParam String userId){
-        userService.subscribe(userId);
-        return true;
+    public UserDTO subscribe(@RequestParam String userId){
+        return userService.subscribe(userId);
     }
     @PutMapping("/unsubscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public boolean  unsubscribe(@RequestParam String userId){
-        userService.unsubscribe(userId);
-        return true;
+    public UserDTO  unsubscribe(@RequestParam String userId){
+        ;
+        return userService.unsubscribe(userId);
     }
 
     @GetMapping("/videos-history")

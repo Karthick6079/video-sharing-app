@@ -77,5 +77,10 @@ public class VideoController {
         return videoService.getSubscriptionVideos(page, size);
     }
 
+    @GetMapping("/search")
+    public List<VideoUserInfoDTO> getSearchVideos(@RequestParam String searchText){
+        return videoService.getSearchedVideos(searchText);
+    }
+
 
 }

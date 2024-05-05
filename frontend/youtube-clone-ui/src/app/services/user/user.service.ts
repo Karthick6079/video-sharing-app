@@ -48,10 +48,10 @@ export class UserService implements OnInit {
     );
   }
 
-  subscribeUser(userId: string): Observable<boolean> {
+  subscribeUser(userId: string): Observable<UserDto> {
     var formData = new FormData();
     formData.append('userId', userId);
-    return this.http.put<boolean>(
+    return this.http.put<UserDto>(
       this.getUserBaseUrl() + this.SUBSCRIBE_URL,
       formData
     );
@@ -85,10 +85,10 @@ export class UserService implements OnInit {
     );
   }
 
-  unsubscribeUser(userId: string): Observable<boolean> {
+  unsubscribeUser(userId: string): Observable<UserDto> {
     var formData = new FormData();
     formData.append('userId', userId);
-    return this.http.put<boolean>(
+    return this.http.put<UserDto>(
       this.getUserBaseUrl() + this.UN_SUBSCRIBE_URL,
       formData
     );

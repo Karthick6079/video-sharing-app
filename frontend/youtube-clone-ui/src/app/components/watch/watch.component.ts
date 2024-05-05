@@ -2,15 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { UserDto, VideoDto } from '../../dto/video-dto';
 import { VideoService } from '../../services/video/video.service';
-import {
-  Observable,
-  Subscription,
-  filter,
-  map,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { UserService } from '../../services/user/user.service';
 
 @Component({
@@ -18,7 +10,7 @@ import { UserService } from '../../services/user/user.service';
   templateUrl: './watch.component.html',
   styleUrl: './watch.component.css',
 })
-export class WatchComponent implements OnInit, OnDestroy {
+export class WatchComponent implements OnInit {
   video!: VideoDto;
   videoOb$: Observable<VideoDto | null> = of(null);
   suggestionVideos$!: Observable<VideoDto[]>;
@@ -46,7 +38,6 @@ export class WatchComponent implements OnInit, OnDestroy {
       this.video = data['video'];
     });
     this.currentUser = this.userSevice.getCurrentUser();
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
@@ -90,9 +81,5 @@ export class WatchComponent implements OnInit, OnDestroy {
         this.suggestionVideos.push(...videos);
         console.log(this.suggestionVideos);
       });
-  }
-
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
   }
 }

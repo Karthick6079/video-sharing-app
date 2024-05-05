@@ -19,6 +19,7 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { videoDataResolverResolver } from './resolver/video-data-resolver.resolver';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ShortsPageComponent } from './components/shorts-page/shorts-page.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: 'history',
         component: HistoryComponent,
+      },
+      {
+        path: 'search-results',
+        component: SearchResultsComponent,
       },
     ],
   },

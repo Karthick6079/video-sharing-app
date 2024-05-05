@@ -23,7 +23,7 @@
             styleClass="comment-button" [disabled]="!commentForm.get('comment')?.value"></p-button>
     </div>
     <h2 *ngIf="numberOfComments == 0" style="display: flex; justify-content: center;">{{'No Comments'}}</h2>
-    <h2 *ngIf="numberOfComments > 0">{{numberOfComments == 1 ? ' 1 Comment' :  numberOfComments + ' Comments'  }}</h2>
+    <h2 *ngIf="numberOfComments > 0">{{numberOfComments == 1 ? ' 1 Comment' :  numberOfComments | indianFormatViewCount:' Comments'  }}</h2>
     <hr *ngIf="numberOfComments > 0">
     <app-show-comments *ngFor="let comment of comments" [comment]="comment"></app-show-comments>
     

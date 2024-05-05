@@ -21,6 +21,8 @@ public class SecurityConfig {
 
     private final String GET_COMMENTS_ENDPOINT = "api/youtube/video/watch/{videoId}/comments";
 
+    private final String GET_USER_BY_ID_ENDPOINT = "/api/youtube/user/{id}";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -44,7 +46,15 @@ public class SecurityConfig {
 
         final String GET_COMMENTS_ENDPOINT = "api/youtube/video/watch/{videoId}/comments";
 
-        return  new String[]{SHORT_VIDEO_ENDPOINT, SUGGEST_VIDEO_ENDPOINT, GET_VIDEO_ENDPOINT, GET_COMMENTS_ENDPOINT};
+        final String GET_USER_BY_ID_ENDPOINT = "/api/youtube/user/{id}";
+
+        final String GET_SEARCH_ENDPOINT = "/api/youtube/video/search";
+
+
+        return  new String[]{SHORT_VIDEO_ENDPOINT,
+                SUGGEST_VIDEO_ENDPOINT, GET_VIDEO_ENDPOINT,
+                GET_COMMENTS_ENDPOINT, GET_USER_BY_ID_ENDPOINT,
+                GET_SEARCH_ENDPOINT};
     }
 
 

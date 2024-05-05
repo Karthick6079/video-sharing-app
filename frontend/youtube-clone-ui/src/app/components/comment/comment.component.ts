@@ -13,6 +13,7 @@ import { CommentDTO, UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { CommentService } from '../../services/comment/comment.service';
 import { UserService } from '../../services/user/user.service';
+import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
   selector: 'app-comment',
@@ -56,7 +57,8 @@ export class CommentComponent implements OnInit {
     private commentService: CommentService,
     private oidcSecurityService: OidcSecurityService,
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private indianFormatViewCount: IndianFormatViewCount
   ) {
     this.commentForm = this.fb.group({
       comment: [''],

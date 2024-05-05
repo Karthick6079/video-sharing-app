@@ -51,7 +51,12 @@ public class CommentService {
     }
 
     public List<CommentDTO> getAllComments(String videoId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "commentCreatedTime"));
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "likes")
+                .and(Sort.by(Sort.Direction.ASC, "dislikes"))
+                .and(Sort.by(Sort.Direction.DESC, "commentCreatedTime"));
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Comment> commentsPage = commentRepository.findByVideoId(videoId, pageable);
 
         if(commentsPage.hasContent()){

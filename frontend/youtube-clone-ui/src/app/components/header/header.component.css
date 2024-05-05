@@ -1,5 +1,5 @@
 .example-spacer {
-    flex: 1 1 auto;
+    flex: 1 1 1;
   }
 
   .app-logo{
@@ -16,3 +16,44 @@
   :host::ng-deep .mat-mdc-icon-button.mat-mdc-button-base  {
     padding:5px;
   }
+
+
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-container{
+  position: relative;
+  width: 45%;
+}
+
+ input{
+  width: 100%;
+  height: 45px;
+  border-radius: 20px;
+  outline: none;
+  padding: 10px;
+  padding-right: 50px;
+  font-family: 'Inter var';
+  font-size: 1.5rem;
+}
+
+
+.search-container button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 50px;
+    background: transparent;
+    border: transparent;
+    font-size: 20px;
+    color: #673ab7;
+    cursor: pointer;
+    outline: 0;
+}
+
+:host::ng-deep .pi{
+  font-size: 1.6rem;
+}

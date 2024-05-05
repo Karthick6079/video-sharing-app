@@ -114,4 +114,17 @@ export class VideoService {
       null
     );
   }
+
+  getSearchVideos(searchText: string): Observable<VideoDto[]> {
+    let params = new HttpParams().set('searchText', searchText);
+
+    const httpOptions = {
+      params: params,
+    };
+
+    return this.http.get<VideoDto[]>(
+      this.getVideoBaseUrl() + '/search',
+      httpOptions
+    );
+  }
 }

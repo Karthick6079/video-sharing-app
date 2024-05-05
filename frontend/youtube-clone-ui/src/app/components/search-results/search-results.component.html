@@ -1,0 +1,18 @@
+@if(isApiLoadingData){
+    <div class="search-result-container">
+        <app-video-card-skeleton2 *ngFor="let num of [1,2,3,4,5,6]" [myHeight]="120"></app-video-card-skeleton2>
+    </div>
+}@else {
+    @if(searchResultVideos.length == 0){
+        <h2  style="display: flex; justify-content: center;">No Results Found!</h2>
+    } @else {
+        
+        <div class="search-result-container">
+            <h2>{{searchResultVideos.length}} Search Results</h2>
+            <app-suggestion *ngFor="let video of searchResultVideos" [video]="video" [showDescription]="true"></app-suggestion>
+        </div>
+    }    
+}
+
+
+

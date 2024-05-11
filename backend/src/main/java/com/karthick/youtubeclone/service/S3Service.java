@@ -3,6 +3,7 @@ package com.karthick.youtubeclone.service;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,9 @@ public class S3Service implements FileService{
 
     private final String BUCKET_NAME = "youtube-clone-avk";
 
+    @Value("${spring.cloud.aws.credentials.access-key}")
+    private String awsAccessKey;
+
     @Override
     public String uploadFile(MultipartFile file) {
         // Upload a file to AWS S3 Service
@@ -34,9 +38,6 @@ public class S3Service implements FileService{
                 .contentType(file.getContentType())
                 .acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
-
-
-//        s3AsyncClient.cre
 
 
         try {

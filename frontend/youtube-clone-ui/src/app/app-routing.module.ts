@@ -20,6 +20,7 @@ import { videoDataResolverResolver } from './resolver/video-data-resolver.resolv
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ShortsPageComponent } from './components/shorts-page/shorts-page.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { authGuardGuard } from './guards/auth-guard.guard';
 
 const routes: Routes = [
   {
@@ -65,6 +66,7 @@ const routes: Routes = [
   {
     path: 'studio',
     component: StudioComponent,
+    canActivate: [authGuardGuard],
     children: [
       {
         path: 'upload',
@@ -86,7 +88,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/home/featured',
     pathMatch: 'full',
   },
   {
@@ -97,6 +99,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
+  // imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule],
   providers: [provideRouter(routes, withComponentInputBinding())],
 })

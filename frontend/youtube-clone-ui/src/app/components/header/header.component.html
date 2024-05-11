@@ -6,15 +6,15 @@
             <!-- <span class="example-spacer"></span> -->
 
             <!--Not show the search bar inside studio i.e video upload page-->
-            <div class="search-container" *ngIf="!isStudio">
+            <div class="search-container" *ngIf="!hideSearchBar">
               <input type="text" #searchField placeholder="Search..." name="search">
-              <button type="button" (click)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
+              <button type="button" (click)="searchVideos(searchField.value)" (keydown.enter)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
             </div>
             
             @if (isAuthenticated) {
 
               <div style="display: flex;">
-                <button mat-icon-button aria-label="Studio icon button to upload a video" routerLink="studio"> 
+                <button mat-icon-button aria-label="Studio icon button to upload a video" routerLink="studio/upload" *ngIf="!hideStudioButton"> 
                   <mat-icon>video_call</mat-icon>
                 </button>
   

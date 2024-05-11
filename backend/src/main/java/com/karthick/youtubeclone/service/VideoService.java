@@ -149,10 +149,6 @@ public class VideoService {
         return videos.stream().map(videoId -> {
             VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
 
-//            Long publishedInLong = videoUserInfo.getPublishedDateAndTime()
-//                    .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-//            videoUserInfoDTO.setPublishedDateAndTime(publishedInLong);
-
             return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
         }).toList();
     }
@@ -179,15 +175,7 @@ public class VideoService {
 
         List<WatchedVideo> watchedVideoList   = watchedVideoRepo.getUserVideoWatchHistory(userId, skip, size);
 
-        List<WatchedVideoDTO> watchedVideoDTOList = mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
-
-//        Map<LocalDate, List<WatchedVideoDTO>> result = watchedVideoDTOList.stream().
-//                collect(Collectors.groupingBy(item -> item.getWatchedOn().toLocalDate(), Collectors.toList()));
-//
-//        LinkedHashMap<LocalDate, List<WatchedVideoDTO>> sorted = result.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByKey())).
-//                collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        return watchedVideoDTOList;
+        return mapperUtil.mapToList(watchedVideoList, WatchedVideoDTO.class);
     }
 
     public List<VideoUserInfoDTO> getShortVideo(){
@@ -220,7 +208,6 @@ public class VideoService {
         if (likedVideosId.size() == 0)
             return null;
 
-//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("publishedDateAndTime").descending());
         List<LikeVideo> likeVideos = likeVideoRepo.getLikedVideos(user.getId(), page * size, size);
 
         return mapperUtil.mapToList(likeVideos, LikedVideoDTO.class);

@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { LoginService } from '../../services/login/login.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +19,16 @@ export class HeaderComponent implements OnInit {
   name: string = '';
   userPictureUrl!: string;
 
-  isStudio = false;
+  hideSearchBar = false;
+  hideStudioButton = false;
 
   userData!: Observable<UserDataResult>;
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
@@ -41,13 +44,21 @@ export class HeaderComponent implements OnInit {
       }
     );
 
-    const url = this.router.url;
+    this.hideButtons();
+  }
 
-    if (url.indexOf('studio') != -1) {
-      this.isStudio = true;
-    }
+  hideButtons() {
+    this.userService.hideSearchBarEventEmitter.subscribe(
+      (isStudio: boolean) => {
+        this.hideSearchBar = isStudio;
+      }
+    );
 
-    console.log(this.userData);
+    this.userService.hideStudioButtonEventEmitter.subscribe(
+      (hideStudioButton: boolean) => {
+        this.hideStudioButton = hideStudioButton;
+      }
+    );
   }
 
   login() {
@@ -63,7 +74,7 @@ export class HeaderComponent implements OnInit {
 
   searchVideos(searchText: string) {
     this.router
-      .navigateByUrl('/home/search-results?searchText=' + searchText)
+      .navigateByUrl(`/home/search-results?searchText=${searchText}`)
       .then((e) => {
         if (e) {
           console.log('Navigation success!!');
@@ -71,9 +82,5 @@ export class HeaderComponent implements OnInit {
           console.log('Navigation failed!!');
         }
       });
-
-    // this.router.navigate(['home', 'search-results'], {
-    //   queryParams: { searchText: searchText },
-    // });
   }
 }

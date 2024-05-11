@@ -1,29 +1,47 @@
+
+
 .page{
-    display: flex
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-form{
+    width: 47%;
+    padding-left: 1.7rem;
 }
 
 .preview-player{
-    width: 60%;
-    /* height: 100vh; */
-    /* border: 2px red solid; */
+    width: 50%;
+    height: 70vh;
+   
 }
 
 :host::ng-deep .p-component{
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+}
+
+.input-text-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-label{
+    font-size: 1.25em;
+    margin-bottom: 5px;
+}
+
+.input-box{
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.input-info{
+    font-size: 11px;
 }
 
 
-.edit-form{
-    width: 40%;
-    padding-left: 1.7rem;
-    /* height: 100vh; */
-    /* border: 2px black solid; */
-}
-
-.edit-form .form-items{
-    margin-top: 1.7rem;
-    display: block;
-}
+/*Thumbnail Element classes*/
 
 .thumbnail{
     margin-bottom: 10px;
@@ -40,12 +58,67 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
+    height: 10rem;
     border: 2px solid #e5e7eb;
 }
 
 :host ::ng-deep .p-toast-message-content{
     background: white;
+}
+
+
+:host ::ng-deep .p-fileupload-filename{
+    display: none;
+}
+
+:host ::ng-deep .remove-cancel-button{
+    display: none;
+} 
+
+/*Drop down class*/
+
+.p-element.p-dropdown-label.p-inputtext.p-placeholder{
+    margin: auto 10px;
+    font-size: 18px;
+}
+
+:host ::ng-deep .p-element.p-inputwrapper.p-chips-clearable{
+    width: 100%;
+    height: 45px;
+}
+
+.class1{
+    width: 50%;
+    height: 40px;
+}
+
+:host ::ng-deep .class1.p-dropdown.p-component.p-inputwrapper {
+    width: 100%;
+    height: 40px;
+}
+
+:host ::ng-deep .class1.p-dropdown.p-component.p-inputwrapper span{
+    margin: auto 10px;
+    font-size: 14px; 
+}
+
+/*Video Tags class*/
+
+:host ::ng-deep .p-inputtext.p-chips-multiple-container{
+    width: 100%;
+    height: 45px;
+}
+
+:host ::ng-deep .p-chips.p-component.p-input-wrapper {
+    width: 100%;
+}
+
+:host ::ng-deep .p-chips-input-token.p-chips-clearable input{
+ font-size: 14px;
+}
+
+:host ::ng-deep .p-chips-token-label{
+    font-size: 14px;
 }
 
 .preview-player{
@@ -58,10 +131,26 @@
     justify-content: flex-end;
 }
 
-:host ::ng-deep .p-fileupload-filename{
-    display: none;
+:host ::ng-deep .p-button{
+    width: 140px;
+    height: 40px;
 }
 
-:host ::ng-deep .remove-cancel-button{
-    display: none;
-} 
+:host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
+    padding: 1rem;
+}
+
+:host ::ng-deep .p-fileupload .p-fileupload-content{
+    padding: 1rem;
+}
+
+:host ::ng-deep .p-fileupload .p-fileupload-row > div {
+    padding: 0 0;
+    margin-right: 10px;
+}
+
+:host ::ng-deep .p-fileupload-row>div {
+    width: auto;
+}
+
+

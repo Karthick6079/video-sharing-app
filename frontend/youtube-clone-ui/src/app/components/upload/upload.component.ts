@@ -5,6 +5,7 @@ import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UploadVideoResponse } from '../../dto/upload-video-response';
 import { VideoDataService } from '../../data/video-data.service';
+import { UserService } from '../../services/user/user.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -21,6 +22,7 @@ interface UploadEvent {
 export class UploadComponent {
   videoId!: string;
   videoUrl!: string;
+  isApiUploading = false;
 
   fileUploaded: boolean = false;
   showCancel: boolean = true;
@@ -32,7 +34,8 @@ export class UploadComponent {
     private messageService: MessageService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private dataService: VideoDataService
+    private dataService: VideoDataService,
+    private userService: UserService
   ) {}
 
   private formData: FormData | undefined;
@@ -58,12 +61,15 @@ export class UploadComponent {
 
   uploadVideo() {
     this.showCancel = false;
+    this.isApiUploading = true;
     if (this.formData) {
       this.videoService
         .uploadVideo(this.formData)
         .subscribe((response: UploadVideoResponse) => {
           this.videoId = response.videoId;
           this.dataService.setVideoUploadResonse(response);
+          this.isApiUploading = false;
+          this.userService.studioStepperIndex.next(1);
           this.successMessage();
           this.navigateToEditVideoMetaData();
         });

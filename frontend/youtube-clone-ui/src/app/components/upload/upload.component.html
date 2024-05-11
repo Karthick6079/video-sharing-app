@@ -5,10 +5,16 @@
         [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true" [previewWidth]="50"
         chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button" life="3000">
         <ng-template pTemplate="content">
-            <div *ngIf="!fileUploaded" class="file-upload-info">Drop (or) Browse file </div>
-            <ul *ngIf="uploadedFiles.length">
-                <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-            </ul>
+
+            <div *ngIf="!isApiUploading">
+                <div *ngIf="!fileUploaded" class="file-upload-info">Drop (or) Browse file </div>
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                </ul>
+            </div>
+            
+
+            <app-simple-vertical-animation *ngIf="isApiUploading"></app-simple-vertical-animation>
         </ng-template>
     </p-fileUpload>
 

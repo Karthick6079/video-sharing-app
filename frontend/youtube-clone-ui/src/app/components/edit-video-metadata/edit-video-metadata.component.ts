@@ -21,7 +21,8 @@ import { VideoDto, VideoStatus } from '../../dto/video-dto';
 })
 export class EditVideoMetadataComponent implements OnInit {
   thumbnailUrl: string = '';
-  videoUrl: string = '';
+  videoUrl: string =
+    'https://youtube-clone-avk.s3.ap-south-1.amazonaws.com/6bce94ea-4113-40f9-990f-73619037c122.mp4';
   videoId: string = '';
   loading: boolean = false;
   fileUploaded: boolean = false;
@@ -30,6 +31,9 @@ export class EditVideoMetadataComponent implements OnInit {
   videoStatus!: VideoStatus[];
   uploadVideoResponse!: UploadVideoResponse;
   showCancel: boolean = true;
+
+  isApiUploadingImage = false;
+  isApiUploadingDetails = false;
 
   constructor(
     private videoService: VideoService,
@@ -84,13 +88,15 @@ export class EditVideoMetadataComponent implements OnInit {
   uploadImage() {
     this.thumbnailUrl = '';
     this.showCancel = false;
+    this.isApiUploadingImage = true;
     if (this.formData) {
       this.videoService
         .uploadThumnail(this.formData, this.videoId)
         .subscribe((response) => {
           console.log(response);
           this.thumbnailUrl = response.videoUrl;
-          this.successMessage('Thumbnail Updated!');
+          this.isApiUploadingImage = false;
+          this.successMessage('Thumbnail uploaded!');
         });
     }
   }
@@ -98,16 +104,21 @@ export class EditVideoMetadataComponent implements OnInit {
   successMessage(message: string) {
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
+      summary: 'Uploaded',
       detail: message,
+      life: 3000,
     });
   }
 
   submit() {
     this.updateFormDetails();
     const requestBody: string = this.convertFormValuesToResponseBody();
+    this.isApiUploadingDetails = true;
     this.videoService.editVideoMeta(requestBody).subscribe((response) => {
-      this.successMessage('Video Details updated!');
+      this.successMessage('Video Uploaded!');
+      this.isApiUploadingDetails = false;
+      const navigateUrl = `/watch/${response.id}`;
+      this.router.navigateByUrl(navigateUrl);
     });
   }
 

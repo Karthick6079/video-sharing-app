@@ -1,55 +1,74 @@
 <div class="page">
     <!--Edit Video Meta data form-->
-    <form class="edit-form" [formGroup]="editVideoDetailsForm">
+    <div class="edit-form" [formGroup]="editVideoDetailsForm">
 
-        <div class="card flex justify-content-center" >
-            <p-toast styleClass="add-color" sticky=true></p-toast>
-            <!--Title-->
-            <span class="p-float-label form-items">
-                <input pInputText id="title" formControlName="title" />
-                <label for="title">Title</label>
-            </span>
+        <p-toast styleClass="add-color" sticky=true></p-toast>
+        <!--Title-->
+        <div class="input-text-container">
+            <label for="title" class="input-label">Title</label>
+            <input pInputText id="title" class="input-box" aria-describedby="video-title-help"
+                formControlName="title" />
+            <!-- <small id="video-title-help" class="input-info">
+                Enter your video title name.
+            </small> -->
+        </div>
 
-            <!--Description-->
-            <span class="p-float-label form-items">
-                <textarea id="float-input" rows="3" cols="30" pInputTextarea formControlName="description"></textarea>
-                <label for="float-input">Description</label>
-            </span>
+        <!--Description-->
+        <div class="input-text-container">
+            <label for="float-input" class="input-label">Description</label>
+            <textarea id="float-input" rows="4" cols="30" pInputTextarea formControlName="description"></textarea>
+        </div>
+        
 
-            <!--Thumbnail-->
 
-             <div class="form-items">
-                <div class="thumbnail">Thumbnail</div>
-                <p-fileUpload id = "thumbnail" mode = "advanced" name="file[]" (uploadHandler)="onUpload($event)" accept="image/*" [maxFileSize]=10485760 [fileLimit]="1"
-                    [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true"[previewWidth]=75
-                    chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button">
-                    <ng-template pTemplate="content">
-                        <div *ngIf="!fileUploaded" class="file-upload-info">Drop (or) Browse file </div>
-                    </ng-template>
-                </p-fileUpload>
+        <!--Thumbnail-->
 
-            </div>
-            <!-- <span id="username-help">Description about the video.</span><br> -->
+        <div class="input-text-container">
+            <div class="input-label">Thumbnail</div>
+            <p-fileUpload id = "thumbnail" mode = "advanced" name="file[]" (uploadHandler)="onUpload($event)" accept="image/*" [maxFileSize]=10485760 [fileLimit]="1"
+                [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true" 
+                [previewWidth]=100 
+                chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button">
+                <ng-template pTemplate="content">
+                    <div *ngIf="!fileUploaded" class="file-upload-info">Drop (or) Browse file </div>
 
-            <!--Video Privacy-->
-            <p-dropdown  dataKey="code" class="form-items" formControlName="videoStatus" [options]="videoStatus" optionLabel="name" placeholder="Select Video Privacy"></p-dropdown>
-
-            <!--Tags-->
-            <div class="form-items">
-                <p-chips  formControlName="tags" placeholder="Video Tags" [showClear]="true"></p-chips>
-            </div>
+                    <app-simple-vertical-animation *ngIf="isApiUploadingImage"></app-simple-vertical-animation>
+                </ng-template>
+            </p-fileUpload>
 
         </div>
 
+         <!--Video Privacy-->
+        <div class="input-text-container">
+            <label for="video-privacy" class="input-label">Video Privacy</label>
+            <p-dropdown dataKey="code" name="video-privacy" class="class1" formControlName="videoStatus" [options]="videoStatus"
+                optionLabel="name" placeholder="Select Video Privacy" styleClass="class1" panelStyleClass="class2"></p-dropdown>
+        </div>
 
-    </form>
+        <!--Description-->
+        <div class="input-text-container">
+            <label for="video-tags" class="input-label">Tags</label>
+            <p-chips  separator=","  formControlName="tags"
+             placeholder="Hint: Tag1,Tag2,Tag3" [showClear]="true" [allowDuplicate]="false" [max]="50"></p-chips>
+        </div>
+
+        
+
+
+
+
+
+    </div>
     <div class="preview-player">
         <app-video-player [url]="videoUrl"></app-video-player>
 
         <!--Submit Button-->
-       <div class="submit-container">
-        <p-button label="Submit"  [loading]="loading" [disabled]="!editVideoDetailsForm.valid" (click)="submit()"></p-button>
-       </div>
+        <div class="submit-container">
+            <p-button label="Submit" [loading]="loading" [disabled]="!editVideoDetailsForm.valid"
+                (click)="submit()" size="large"  [loading]="isApiUploadingDetails"
+                loadingIcon="pi pi-spinner">
+            </p-button>
+        </div>
 
 
     </div>

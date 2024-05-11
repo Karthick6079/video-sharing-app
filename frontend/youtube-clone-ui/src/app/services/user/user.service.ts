@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
   LikedVideoDTO,
   UserDto,
@@ -26,6 +26,12 @@ export class UserService implements OnInit {
     private http: HttpClient,
     private oidcSecurityService: OidcSecurityService
   ) {}
+
+  hideSearchBarEventEmitter = new EventEmitter<boolean>();
+
+  hideStudioButtonEventEmitter = new EventEmitter<boolean>();
+
+  studioStepperIndex = new Subject<number>();
 
   private currentUserDto!: UserDto;
 
@@ -110,5 +116,13 @@ export class UserService implements OnInit {
     }
 
     return currentUser;
+  }
+
+  hideSearchBar(input: boolean) {
+    this.hideSearchBarEventEmitter.emit(input);
+  }
+
+  hideStudioButton(input: boolean) {
+    this.hideStudioButtonEventEmitter.emit(input);
   }
 }

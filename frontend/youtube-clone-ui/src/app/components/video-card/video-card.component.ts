@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
@@ -11,6 +11,7 @@ import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 export class VideoCardComponent implements OnInit {
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private indianFormatViewCount: IndianFormatViewCount
   ) {}
 
@@ -40,6 +41,8 @@ export class VideoCardComponent implements OnInit {
   }
 
   watchVideo() {
-    this.router.navigate(['../../watch', this.video.id]);
+    const url = `/watch/${this.video.id}`;
+    this.router.navigateByUrl(url);
+    // this.router.navigate(['../../watch', this.video.id], {relativeTo:this.route});
   }
 }

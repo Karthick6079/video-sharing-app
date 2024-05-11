@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -7,6 +8,14 @@ import { MenuItem } from 'primeng/api';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
+  constructor(private router: Router) {}
+
+  navigateToUpload() {
+    const url = `/studio/edit-video-info/123`;
+
+    this.router.navigateByUrl(url);
+  }
+
   NewMethod() {
     alert('New Method called');
   }

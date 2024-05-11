@@ -31,16 +31,19 @@ ul > li {
     display: inline;
 }
 
-.sidebar-button{
-    font-size: 18px;
-    color: var(--app-font-color);
-    margin-left: 12px;
-}
+
 
 .item-4{
     margin-top: 1rem;
 }
 
-.material-icons{
+:host ::ng-deep .material-icons{
     color: var(--app-font-color);
+    font-size: 20px;
+}
+
+.sidebar-button{
+    font-size: 17.5px;
+    color: var(--app-font-color);
+    margin-left: 12px;
 }

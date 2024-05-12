@@ -10,6 +10,9 @@ import { VideoService } from '../../services/video/video.service';
   styleUrl: './subscriptions.component.css',
 })
 export class SubscriptionsComponent implements OnInit {
+  unAuthUIInfotitle = 'Don’t miss new videos';
+  unAuthUIInfoDesc = `Sign in to see updates from your favorite channels`;
+
   getSubscriptionVideos() {
     throw new Error('Method not implemented.');
   }

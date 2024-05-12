@@ -18,6 +18,9 @@ export class FeaturedComponent implements OnInit {
 
   isVideosAvailable: boolean = false;
 
+  //By default fetch all
+  selectedTopic = 'getAll';
+
   constructor(private videoService: VideoService) {
     this.topics = [
       'Vijaykanth',
@@ -36,11 +39,28 @@ export class FeaturedComponent implements OnInit {
     ];
   }
   ngOnInit(): void {
+    this.isVideosAvailable = false;
+    //Get Trending videos
+    this.videoService.getTrendingTopics().subscribe((topics) => {
+      this.topics = topics;
+      // this.isVideosAvailable = true;
+    });
+
+    //get Suggesstion videos
+
     this.videoService.getSuggestedVideos(this.page, 6).subscribe((videos) => {
       this.videos = videos;
       this.isVideosAvailable = true;
       console.log(this.videos);
     });
+  }
+
+  moveright() {
+    window.scrollBy(50, 0);
+  }
+
+  moveleft() {
+    window.scrollBy(-50, 0);
   }
 
   getSuggestionVideos() {
@@ -57,5 +77,24 @@ export class FeaturedComponent implements OnInit {
         }
         console.log(this.videos);
       });
+  }
+
+  getVideosByTopic(topic: string) {
+    if (topic === 'getAll') {
+      this.page = 0;
+      this.selectedTopic = 'getAll';
+      this.getSuggestionVideos();
+      return;
+    }
+
+    this.selectedTopic = topic;
+
+    this.videoService.getVideosByTopic(topic).subscribe((videos) => {
+      if (videos) {
+        this.videos = videos;
+      } else {
+        this.videos = [];
+      }
+    });
   }
 }

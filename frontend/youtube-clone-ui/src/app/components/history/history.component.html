@@ -10,5 +10,8 @@
 </div>
 
 <h1 *ngIf="!isAuthenticated">
-    Please login to check your watched videos!!!!
+    <app-unauth-ui
+     materialIconName="history_toggle_off"
+     [infoTextTitle]="unAuthUIInfotitle"
+     [infoTextDesc]="unAuthUIInfoDesc"></app-unauth-ui>
 </h1>

@@ -1,8 +1,7 @@
 .sidebar-container{
     display: flex;
     flex-direction: column;
-    padding:15px;
-    /* border: 1px solid; */
+    padding-left: 0;
     height: 100%;
     margin-top: 0;
     padding-top: 0;
@@ -23,6 +22,11 @@ ul > li {
 
 
 .item:hover{
+    background: rgb(228, 228, 228);
+    border-radius: 10px;
+}
+
+.item.active{
     background: rgb(228, 228, 228);
     border-radius: 10px;
 }

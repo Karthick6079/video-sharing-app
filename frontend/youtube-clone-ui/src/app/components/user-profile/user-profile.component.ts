@@ -12,6 +12,9 @@ import { KeyValue } from '@angular/common';
   styleUrl: './user-profile.component.css',
 })
 export class UserProfileComponent {
+  unAuthUIInfotitle = 'Enjoy your favorite videos';
+  unAuthUIInfoDesc = `Sign in to access videos that you’ve liked`;
+
   watchedVideos!: VideoDto[];
   isDataAvailable = false;
   isAuthenticated!: boolean;

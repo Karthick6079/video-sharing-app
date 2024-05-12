@@ -82,5 +82,15 @@ public class VideoController {
         return videoService.getSearchedVideos(searchText);
     }
 
+    @GetMapping("/trending-topics")
+    public List<String> getTrendingTopics(){
+        return videoService.getTrendingTopics();
+    }
+
+    @GetMapping("/topic-videos")
+    public List<VideoUserInfoDTO> getVideosByTopic(@RequestParam String topic){
+        return videoService.getVideosByTopic(topic);
+    }
+
 
 }

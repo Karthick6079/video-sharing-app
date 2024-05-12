@@ -218,4 +218,28 @@ public class VideoService {
            Optional<List<VideoUserInfo>> videoUserInfoOptional = Optional.ofNullable(videoUserInfoList);
         return mapperUtil.mapToList(videoUserInfoOptional.orElse(new ArrayList<>()), VideoUserInfoDTO.class);
     }
+
+    public List<String> getTrendingTopics(){
+        List<String> topics = videoRepo.getTrendingTopics();
+        return removeDuplicateTopics(topics);
+
+    }
+
+    private List<String> removeDuplicateTopics(List<String> topics){
+
+        List<String> distinctTopics =  new ArrayList<>();
+
+        if(topics != null){
+            distinctTopics = Arrays.stream(topics.toArray(new String[0])).distinct().toList();
+            return distinctTopics;
+        }
+
+        return distinctTopics;
+    }
+
+    public List<VideoUserInfoDTO> getVideosByTopic(String topic){
+        List<VideoUserInfo> videoUserInfoList = videoRepo.findVideosByTopics(topic);
+        Optional<List<VideoUserInfo>> videoUserInfoOptional = Optional.ofNullable(videoUserInfoList);
+        return mapperUtil.mapToList(videoUserInfoOptional.orElse(new ArrayList<>()), VideoUserInfoDTO.class);
+    }
 }

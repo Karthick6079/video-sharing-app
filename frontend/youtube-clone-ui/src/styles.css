@@ -30,6 +30,7 @@ html{
     --app-light-background: #efefef;
     --app-skeleton-color: #dedede;
     --mdc-icon-button-icon-size: 48px;
+    --app-toolbar-standard-height:60px
 }
 
 .splitter{

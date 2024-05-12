@@ -127,4 +127,21 @@ export class VideoService {
       httpOptions
     );
   }
+
+  getTrendingTopics(): Observable<string[]> {
+    return this.http.get<string[]>(this.getVideoBaseUrl() + '/trending-topics');
+  }
+
+  getVideosByTopic(topic: string): Observable<VideoDto[]> {
+    let params = new HttpParams().set('topic', topic);
+
+    const httpOptions = {
+      params: params,
+    };
+
+    return this.http.get<VideoDto[]>(
+      this.getVideoBaseUrl() + '/topic-videos',
+      httpOptions
+    );
+  }
 }

@@ -9,5 +9,8 @@
 </div>
 
 <h1 *ngIf="!isAuthenticated">
-    Please login to check your watched videos!!!!
+    <app-unauth-ui
+    materialIconName="subscriptions"
+    [infoTextTitle]="unAuthUIInfotitle"
+    [infoTextDesc]="unAuthUIInfoDesc"></app-unauth-ui>
 </h1>

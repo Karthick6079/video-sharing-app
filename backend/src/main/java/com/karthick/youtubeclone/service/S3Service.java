@@ -39,6 +39,8 @@ public class S3Service implements FileService{
                 .acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
 
+//        s3Template.read().
+
 
         try {
             return s3Template.upload(BUCKET_NAME, key, file.getInputStream(), objectMetadata).getURL().toString();

@@ -3,11 +3,13 @@
 }
 
 .sidebar{
-    width: 15%;
     height: 100%;
+    margin-right: 24px;
+    margin-top: calc(var(--app-toolbar-standard-height) +10);
 }
 
 .featured{
     flex : 1;
     height: 100%;
+    margin-top: calc(var(--app-toolbar-standard-height)+10);
 }

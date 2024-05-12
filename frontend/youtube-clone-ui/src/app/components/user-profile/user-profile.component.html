@@ -12,5 +12,8 @@
 </div>
 
 <h1 *ngIf="!isAuthenticated">
-    Please login to check your watched videos!!!!
+    <app-unauth-ui
+    materialIconName="thumb_up_off_alt"
+    [infoTextTitle]="unAuthUIInfotitle"
+    [infoTextDesc]="unAuthUIInfoDesc"></app-unauth-ui>
 </h1>

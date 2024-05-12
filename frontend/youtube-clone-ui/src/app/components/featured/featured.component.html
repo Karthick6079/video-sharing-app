@@ -1,13 +1,17 @@
 <div class="featured-page">
 
     @if(isVideosAvailable){
-        <div class="topics">
-            <div class="card flex align-items-center gap-2 flex-wrap">
-                @for(topic of topics;track topic){
-                    <span><p-chip [label]="topic" styleClass="video-topics"></p-chip></span>
-                }
+        <div class="chips-wrapper">
+            <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" (click)="moveleft()"/>
+            <div class="chip-content">
+                <div class="scroll-container">
+                    <div class="chip" [class.active]="selectedTopic == 'getAll'" (click)="getVideosByTopic('getAll')" >All</div>
+                    <div class="chip" [class.active]="selectedTopic == topic" *ngFor="let topic of topics" (click)="getVideosByTopic(topic)">{{topic}}</div>
+                </div>
             </div>
+            <p-button icon="pi pi-angle-right" [rounded]="true" [text]="true" (click)="moveright()"/>
         </div>
+       
     } @else {
         <div class="topics-skel">
             <!-- <hr> -->

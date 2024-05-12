@@ -73,6 +73,7 @@ import { SimpleVerticalAnimationComponent } from './components/animations/simple
 import { VideoCardSkeleton2Component } from './components/video-card-skeleton2/video-card-skeleton2.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
     SimpleVerticalAnimationComponent,
     VideoCardSkeleton2Component,
     SearchResultsComponent,
+    UnauthUiComponent,
   ],
   imports: [
     BrowserModule,

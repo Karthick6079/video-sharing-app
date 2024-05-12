@@ -58,6 +58,26 @@ public interface VideoRepository extends MongoRepository<Video, String> {
                     "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     List<VideoUserInfo> findVideosBySearchText(String searchText);
+    @Aggregation(pipeline = {
+            "{$unwind:'$tags'}",
+            "{$sort:{viewCount:-1,likes:-1}}",
+            "{$group:{_id:{'tags':'$tags','viewCount':'$viewCount','likes':'$likes'}}}",
+            "{$sort:{'_id.viewCount':-1,'_id.likes':-1}}",
+            "{$project:{_id:0,topics:'$_id.tags'}}"
+    })
+    List<String> getTrendingTopics();
+
+
+    @Aggregation(pipeline = {
+            "{$match: {tags: {$eq:?0} }}",
+            "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
+            "{$unwind: '$user_info'}",
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+                    "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+    })
+    List<VideoUserInfo> findVideosByTopics(String topic);
+
+
 
 
 

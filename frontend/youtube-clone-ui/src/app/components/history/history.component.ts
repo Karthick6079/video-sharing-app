@@ -14,6 +14,9 @@ import { KeyValue } from '@angular/common';
   styleUrl: './history.component.css',
 })
 export class HistoryComponent implements OnInit {
+  unAuthUIInfotitle = 'Keep track of what you watch';
+  unAuthUIInfoDesc = `Watch history isn't viewable when signed out`;
+
   watchedVideos!: VideoDto[];
   isDataAvailable = false;
   isAuthenticated!: boolean;

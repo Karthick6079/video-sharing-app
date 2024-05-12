@@ -91,6 +91,6 @@ hr{
 }
 
 .chip.active{
-    background-color: var(--app-font-color);
+    background-color: var(--app-primary-color);
     color: #fff;
 }

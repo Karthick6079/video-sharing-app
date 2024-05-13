@@ -7,19 +7,25 @@
             </div>
             
             <!--Video Title-->
-            <div class="video-title">
+            <div class="video-title" [title]="video.title">
                 {{video.title }}
             </div>
             <app-channel-info [video]="video"></app-channel-info>
             <div class="video-description">
-                <p-inplace styleClass="description" [active]="false" [closable]="true">
-                    <ng-template pTemplate="display">
-                        <div class="short-description"><p>{{video.description }}</p></div>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <div class="isClick"(click)="closeDesc()">{{video.description}} </div>
-                    </ng-template>
-                </p-inplace>
+                <div class="description">
+                    <div class="video-info">
+                        <span class="view-count">{{video.viewCount | indianFormatViewCount:" views"}}</span> &nbsp; <span class="view-count">{{video.publishedDateAndTime | timeago}}</span>
+                        &nbsp; <span class="video-tags" *ngFor="let tag of video.tags">#{{tag}} </span>
+                    </div>
+                    <div class="short-description-container">
+                        <div class="container">
+                            <p class="show-desc-less" *ngIf="!showMoreDescription" (click)="toggleDescription()">{{video.description}} </p>
+                            <p class="show-desc-more" *ngIf="showMoreDescription"> {{video.description}} </p>
+                            <div><p-button [label]="!showMoreDescription ? 'Show more..':'Show less..'" size="large" [text]="true" [plain]="true" (click)="toggleDescription()"></p-button></div>
+                        </div>
+                        </div>
+                </div>
+                
             </div>
             <div class="comments">
                 <div class="add-comment">

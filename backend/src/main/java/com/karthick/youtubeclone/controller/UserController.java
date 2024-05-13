@@ -51,12 +51,12 @@ public class UserController {
 
     @PutMapping("/subscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserDTO subscribe(@RequestParam String userId){
+    public Map<String, Object> subscribe(@RequestParam String userId){
         return userService.subscribe(userId);
     }
     @PutMapping("/unsubscribe")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserDTO  unsubscribe(@RequestParam String userId){
+    public Map<String, Object>  unsubscribe(@RequestParam String userId){
         ;
         return userService.unsubscribe(userId);
     }

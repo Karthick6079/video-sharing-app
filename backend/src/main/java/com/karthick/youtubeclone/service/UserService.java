@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -46,13 +48,22 @@ public class UserService {
         User user;
         user = getUserFromDB(jwt.getSubject());
         if (user != null) {
+            removeSubscriberDetailsFromUser(user);
             return convertUsertoUserDto(user, mapper);
         }
 
         // Get User information from auth provider using jwt token
         user = getUserInfoFromAuthProvider(jwt);
         User savedUser = userRepository.save(user);
+        removeSubscriberDetailsFromUser(savedUser);
         return convertUsertoUserDto(savedUser, mapper);
+    }
+
+
+    private void removeSubscriberDetailsFromUser(User user){
+
+        user.setSubscribedToUsers(null);
+        user.setSubscribers(null);
     }
 
     private User getUserInfoFromAuthProvider(Jwt jwt) {
@@ -111,27 +122,35 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserDTO subscribe(String userId) {
+    public Map<String, Object> subscribe(String userId) {
         User currentUser = getCurrentUser();
         User subscribeToUser = getUserById(userId);
 
         userLogic.subscribe(currentUser, subscribeToUser);
-
         userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
 
-        return mapper.map(currentUser, UserDTO.class);
+        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
+        Map<String, Object> returnMap = new LinkedHashMap<>();
+        returnMap.put("currentUser", currentUserDTO);
+        returnMap.put("videoUploadedSubscribersCount", subscribeToUser.getSubscribersCount());
+
+        return returnMap;
     }
 
 
 
-    public UserDTO unsubscribe(String userId) {
+    public Map<String, Object> unsubscribe(String userId) {
         User currentUser = getCurrentUser();
         User unsubscribeToUser = getUserById(userId);
 
         userLogic.unsubscribe(currentUser, unsubscribeToUser);
-
         userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
-        return mapper.map(currentUser, UserDTO.class);
+
+        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
+        Map<String, Object> returnMap = new LinkedHashMap<>();
+        returnMap.put("currentUser", currentUserDTO);
+        returnMap.put("videoUploadedSubscribersCount", unsubscribeToUser.getSubscribersCount());
+        return returnMap;
     }
 
 }

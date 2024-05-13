@@ -88,17 +88,22 @@ export class VideoService {
     );
   }
 
-  likeVideo(videoId: string): Observable<VideoDto> {
+  likeVideo(videoId: string, userId: string): Observable<VideoDto> {
+    let formData = new FormData();
+    formData.append('userId', userId);
     return this.http.put<VideoDto>(
       this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/like',
-      null
+      formData
     );
   }
 
-  dislikeVideo(videoId: string): Observable<VideoDto> {
+  dislikeVideo(videoId: string, userId: string): Observable<VideoDto> {
+    let formData = new FormData();
+    formData.append('userId', userId);
+
     return this.http.put<VideoDto>(
       this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike',
-      null
+      formData
     );
   }
 

@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   Inject,
   OnInit,
   ViewChild,
@@ -87,6 +88,7 @@ export class ShortsPageComponent implements OnInit {
   }
 
   getShortVideo() {
+    console.log('scroll-event-called..');
     this.videoService.getShortsVideo().subscribe((videos) => {
       this.videos.push(...videos);
     });

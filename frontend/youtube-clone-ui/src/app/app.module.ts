@@ -74,6 +74,7 @@ import { VideoCardSkeleton2Component } from './components/video-card-skeleton2/v
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
+import { ShortsScrollDirective } from './directives/shorts-scroll.directive';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
     VideoCardSkeleton2Component,
     SearchResultsComponent,
     UnauthUiComponent,
+    ShortsScrollDirective,
   ],
   imports: [
     BrowserModule,

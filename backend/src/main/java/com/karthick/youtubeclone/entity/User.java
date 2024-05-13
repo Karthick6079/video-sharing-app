@@ -41,12 +41,6 @@ public class User {
     @JsonIgnore
     private Set<String> subscribers = ConcurrentHashMap.newKeySet();
     private AtomicLong subscribersCount = new AtomicLong(0);
-    @JsonIgnore
-    private List<String> videoHistory = new CopyOnWriteArrayList<>();
-    @JsonIgnore
-    private Set<String> likedVideos = ConcurrentHashMap.newKeySet();
-    @JsonIgnore
-    private Set<String> dislikedVideos = ConcurrentHashMap.newKeySet();
 
     public void incrementSubscriberCount(){
         this.subscribersCount.incrementAndGet();

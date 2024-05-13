@@ -203,10 +203,6 @@ public class VideoService {
     public List<LikedVideoDTO> getLikedVideos(int page, int size) {
 
         User user = userService.getCurrentUser();
-        List<String> likedVideosId = new ArrayList<>(user.getLikedVideos());
-
-        if (likedVideosId.size() == 0)
-            return null;
 
         List<LikeVideo> likeVideos = likeVideoRepo.getLikedVideos(user.getId(), page * size, size);
 

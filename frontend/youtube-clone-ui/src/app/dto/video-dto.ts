@@ -40,6 +40,8 @@ export interface UserDto {
   videoHistory?: any[];
   likedVideos?: any[];
   dislikedVideos?: any[];
+  subscribedToCount?: number;
+  subscribersCount?: number;
 }
 
 export interface CommentDTO {

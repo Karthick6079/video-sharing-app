@@ -1,16 +1,18 @@
 <!-- <p>shorts-vid-info works!</p> -->
+<p-toast />
 
+<p-confirmDialog key="unsubscriberConfirmation"></p-confirmDialog>
 <div class="container">
     <p-avatar [image]="video.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
     <span class="channal-name">{{video.userDisplayName}}</span>
     <div class="subscribe-button">
         
         @if (!subscribed) {
-        <p-button [rounded]="true" size="small" label="Subscribe" (click)="subscribe()" styleClass="items"></p-button>
+        <p-button [rounded]="true"  size="small" label="Subscribe" (click)="subscribe()" styleClass="subscribe-button"></p-button>
         }
         @else{
-        <p-button [rounded]="true" [outlined]="true" size="small" label="Subscribed" styleClass="items"
-            (click)="unsubscribe()"></p-button>
+        <p-button [rounded]="true"  [outlined]="true" size="small" label="Subscribed" styleClass="unsubscribe-button"
+            (click)="unsubscribeConfirmationPopup()"></p-button>
         }
     </div>
 </div>

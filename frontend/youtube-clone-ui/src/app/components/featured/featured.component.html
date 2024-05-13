@@ -2,9 +2,9 @@
 
     @if(isVideosAvailable){
         <div class="chips-wrapper">
-            <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" (click)="moveleft()"/>
+            <p-button icon="pi pi-angle-left" *ngIf="showLeftAngleButton" [rounded]="true" [text]="true" (click)="moveleft()"/>
             <div class="chip-content">
-                <div class="scroll-container">
+                <div class="scroll-container" id="scroll-container" #scrollContent>
                     <div class="chip" [class.active]="selectedTopic == 'getAll'" (click)="getVideosByTopic('getAll')" >All</div>
                     <div class="chip" [class.active]="selectedTopic == topic" *ngFor="let topic of topics" (click)="getVideosByTopic(topic)">{{topic}}</div>
                 </div>

@@ -22,12 +22,12 @@ ul > li {
 
 
 .item:hover{
-    background: rgb(242 235 255);
+    background: var(--app-secondary-color);
     border-radius: 10px;
 }
 
 .item.active{
-    background: rgb(242 235 255);
+    background: var(--app-secondary-color);
     border-radius: 10px;
 }
 
@@ -42,7 +42,7 @@ ul > li {
 }
 
 :host ::ng-deep .material-icons{
-    color: var(--app-primary-color);
+    color: #6639b5;
     font-size: 20px;
 }
 

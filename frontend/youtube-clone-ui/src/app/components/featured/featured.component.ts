@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { VideoService } from '../../services/video/video.service';
 import { VideoDto } from '../../dto/video-dto';
 import { Observable } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-featured',
@@ -18,10 +25,19 @@ export class FeaturedComponent implements OnInit {
 
   isVideosAvailable: boolean = false;
 
+  showLeftAngleButton = false;
+
   //By default fetch all
   selectedTopic = 'getAll';
 
-  constructor(private videoService: VideoService) {
+  @ViewChild('scrollContent')
+  scrollContent: ElementRef;
+
+  constructor(
+    private videoService: VideoService,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    //Some random default topics
     this.topics = [
       'Vijaykanth',
       'Movie',
@@ -56,11 +72,17 @@ export class FeaturedComponent implements OnInit {
   }
 
   moveright() {
-    window.scrollBy(50, 0);
+    //scroll to right horizontally
+    this.showLeftAngleButton = true;
+    this.scrollContent.nativeElement.scrollLeft += 75;
   }
 
   moveleft() {
-    window.scrollBy(-50, 0);
+    const scrollLeftPosition = this.scrollContent.nativeElement.scrollLeft;
+    this.scrollContent.nativeElement.scrollLeft -= 75;
+    if (scrollLeftPosition == 0) {
+      this.showLeftAngleButton = false;
+    }
   }
 
   getSuggestionVideos() {

@@ -15,9 +15,6 @@ import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
   providers: [ConfirmationService, MessageService],
 })
 export class ChannelInfoComponent implements OnInit {
-  copyTheURL() {
-    throw new Error('Method not implemented.');
-  }
   @Input()
   video: VideoDto | undefined;
 
@@ -26,10 +23,14 @@ export class ChannelInfoComponent implements OnInit {
   unsubscribed: boolean = false;
 
   currentUser!: UserDto;
+  currentUserFromApiCall!: UserDto;
   videoUploadedUser!: UserDto;
   subscribersCount = 0;
 
   videoURL!: string;
+
+  isLikedVideo: boolean = false;
+  isDisLikedVideo: boolean = false;
 
   constructor(
     private loginService: LoginService,
@@ -51,26 +52,35 @@ export class ChannelInfoComponent implements OnInit {
       }
     );
 
-    // this.currentUser = this.userService.getCurrentUser();
+    if (this.currentUser) {
+      this.getCurrentUserInfo();
+    }
+  }
 
-    this.subscribed = this.isCurrentUserSubscribed();
+  getCurrentUserInfo() {
+    // Get user subscribers details for currentUser;
+    this.userService
+      .getUserInfoById(this.currentUser.id)
+      .subscribe((userDto) => {
+        this.currentUserFromApiCall = userDto;
+        this.subscribed = this.isCurrentUserSubscribed();
+      });
 
+    // Get video uploaded user information details;
     if (this.video) {
       this.userService
         .getUserInfoById(this.video.userId)
         .subscribe((userDto) => {
           this.videoUploadedUser = userDto;
-          if (userDto.subscribers) {
-            this.subscribersCount = userDto.subscribers.length;
-          }
+          this.subscribersCount = this.videoUploadedUser.subscribersCount;
         });
     }
   }
 
   isCurrentUserSubscribed() {
     if (
-      this.currentUser &&
-      this.currentUser.subscribedToUsers.includes(this.video?.userId)
+      this.currentUserFromApiCall &&
+      this.currentUserFromApiCall.subscribedToUsers.includes(this.video?.userId)
     ) {
       return true;
     } else {
@@ -81,43 +91,57 @@ export class ChannelInfoComponent implements OnInit {
   likeVideo() {
     if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
       this.videoService
-        .likeVideo(String(this.video?.id))
+        .likeVideo(String(this.video?.id), this.currentUser.id)
         .subscribe((video: VideoDto) => {
-          this.video = video;
+          // this.isLikedVideo = !this.isLikedVideo;
+          this.video.likes = video.likes;
         });
     }
   }
   dislikeVideo() {
     if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
       this.videoService
-        .dislikeVideo(String(this.video?.id))
+        .dislikeVideo(String(this.video?.id), this.currentUser.id)
         .subscribe((video: VideoDto) => {
-          this.video = video;
+          this.video.dislikes = video.dislikes;
+          // this.isDisLikedVideo = !this.isDisLikedVideo;
         });
     }
   }
-  unsubscribe() {
-    this.userService
-      .unsubscribeUser(String(this.video?.userId))
-      .subscribe((userDto) => {
-        this.currentUser = userDto;
-        this.subscribed = this.isCurrentUserSubscribed();
-      });
-  }
+
   subscribe() {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
         .subscribeUser(String(this.video?.userId))
-        .subscribe((userDto) => {
-          this.currentUser = userDto;
+        .subscribe((responseMap: Record<string, any>) => {
+          if (responseMap['currentUser']) {
+            this.currentUserFromApiCall = responseMap['currentUser'];
+          }
+
+          if (responseMap['videoUploadedSubscribersCount'] != undefined) {
+            this.subscribersCount =
+              responseMap['videoUploadedSubscribersCount'];
+          }
+
           this.subscribed = this.isCurrentUserSubscribed();
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Unsubscribed',
-            detail: '',
-          });
         });
     }
+  }
+
+  unsubscribe() {
+    this.userService
+      .unsubscribeUser(String(this.video?.userId))
+      .subscribe((responseMap: Record<string, any>) => {
+        if (responseMap['currentUser']) {
+          this.currentUserFromApiCall = responseMap['currentUser'];
+        }
+
+        if (responseMap['videoUploadedSubscribersCount'] != undefined) {
+          this.subscribersCount = responseMap['videoUploadedSubscribersCount'];
+        }
+
+        this.subscribed = this.isCurrentUserSubscribed();
+      });
   }
 
   showLoginMessageIfNot(message?: string) {
@@ -146,12 +170,13 @@ export class ChannelInfoComponent implements OnInit {
         message: 'Are you sure that you want to proceed?',
         header: 'Unsubscribe',
         icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.unsubscribe();
+        },
         acceptIcon: 'none',
         rejectIcon: 'none',
         rejectButtonStyleClass: 'p-button-text',
       });
-
-      this.unsubscribe();
     }
   }
 

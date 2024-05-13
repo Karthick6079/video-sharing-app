@@ -54,11 +54,20 @@ export class UserService implements OnInit {
     );
   }
 
-  subscribeUser(userId: string): Observable<UserDto> {
+  subscribeUser(userId: string): Observable<Record<string, Object>> {
     var formData = new FormData();
     formData.append('userId', userId);
-    return this.http.put<UserDto>(
+    return this.http.put<Record<string, Object>>(
       this.getUserBaseUrl() + this.SUBSCRIBE_URL,
+      formData
+    );
+  }
+
+  unsubscribeUser(userId: string): Observable<Record<string, Object>> {
+    var formData = new FormData();
+    formData.append('userId', userId);
+    return this.http.put<Record<string, Object>>(
+      this.getUserBaseUrl() + this.UN_SUBSCRIBE_URL,
       formData
     );
   }
@@ -91,15 +100,6 @@ export class UserService implements OnInit {
     );
   }
 
-  unsubscribeUser(userId: string): Observable<UserDto> {
-    var formData = new FormData();
-    formData.append('userId', userId);
-    return this.http.put<UserDto>(
-      this.getUserBaseUrl() + this.UN_SUBSCRIBE_URL,
-      formData
-    );
-  }
-
   getLoggedInUserData() {
     return this.loggedInUserData;
   }
@@ -110,7 +110,7 @@ export class UserService implements OnInit {
 
   getCurrentUser() {
     const currentUserString = window.sessionStorage.getItem('currentUser');
-    let currentUser: UserDto = { subscribedToUsers: [] };
+    let currentUser;
     if (currentUserString) {
       currentUser = JSON.parse(currentUserString);
     }

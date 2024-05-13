@@ -31,7 +31,9 @@ html{
     --app-skeleton-color: #dedede;
     --mdc-icon-button-icon-size: 48px;
     --app-toolbar-standard-height:60px;
-    --app-primary-color:#673ab7
+    --app-primary-color:#673ab7;
+    --app-secondary-color:rgb(242 235 255);
+
 }
 
 .splitter{

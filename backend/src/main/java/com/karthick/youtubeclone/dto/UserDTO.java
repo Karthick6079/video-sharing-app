@@ -25,7 +25,6 @@ public class UserDTO {
     private String nickname;
     private Set<String> subscribedToUsers;
     private Set<String> subscribers;
-    private Set<String> videoHistory;
-    private Set<String> likedVideos;
-    private Set<String> dislikedVideos;
+    private Long subscribedToCount;
+    private Long subscribersCount;
 }

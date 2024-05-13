@@ -12,7 +12,8 @@
     } @else {
         
         <div class="search-result-container">
-            <h2>{{searchResultVideos.length}} Search Results</h2>
+            <h2 *ngIf="searchResultVideos.length == 1"> Search Result</h2>
+            <h2 *ngIf="searchResultVideos.length > 1"> Search Results</h2>
             <app-suggestion *ngFor="let video of searchResultVideos" [video]="video" [showDescription]="true"></app-suggestion>
         </div>
     }    

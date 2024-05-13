@@ -10,7 +10,9 @@ import { UserService } from '../../services/user/user.service';
   templateUrl: './watch.component.html',
   styleUrl: './watch.component.css',
 })
-export class WatchComponent implements OnInit, OnDestroy {
+export class WatchComponent implements OnInit {
+  showMoreDescription = false;
+
   video!: VideoDto;
   videoOb$: Observable<VideoDto | null> = of(null);
   suggestionVideos$!: Observable<VideoDto[]>;
@@ -22,7 +24,6 @@ export class WatchComponent implements OnInit, OnDestroy {
   descPanalOpen = false;
 
   currentUser!: UserDto;
-
   suggestionVideos!: VideoDto[];
 
   page: number = 0;
@@ -38,6 +39,7 @@ export class WatchComponent implements OnInit, OnDestroy {
       this.video = data['video'];
     });
     this.currentUser = this.userSevice.getCurrentUser();
+    // this.router.
     this.router.routeReuseStrategy.shouldReuseRoute = () => {
       return false;
     };
@@ -58,7 +60,6 @@ export class WatchComponent implements OnInit, OnDestroy {
 
     //Scroll to top
     window.scrollTo(0, 0);
-    this.userSevice.hideSearchBar(false);
   }
 
   closeDesc() {
@@ -87,7 +88,7 @@ export class WatchComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.userSevice.hideSearchBar(false);
+  toggleDescription() {
+    this.showMoreDescription = !this.showMoreDescription;
   }
 }

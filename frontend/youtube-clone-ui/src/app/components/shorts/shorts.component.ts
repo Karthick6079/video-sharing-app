@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { VideoService } from '../../services/video/video.service';
 import { LoginService } from '../../services/login/login.service';
 import { UserService } from '../../services/user/user.service';
+import { ShortsServiceService } from '../../services/shorts-service.service';
 
 @Component({
   selector: 'app-shorts',
@@ -15,6 +16,9 @@ import { UserService } from '../../services/user/user.service';
 export class ShortsComponent implements OnInit {
   @Input()
   video!: VideoDto;
+
+  @Input()
+  playShorts: boolean = false;
 
   user: UserDto | undefined;
 
@@ -34,7 +38,8 @@ export class ShortsComponent implements OnInit {
     private oidcSecurityService: OidcSecurityService,
     private videoService: VideoService,
     private loginService: LoginService,
-    private userService: UserService
+    private userService: UserService,
+    private shortsService: ShortsServiceService
   ) {
     this.currentUser = this.userService.getCurrentUser();
   }
@@ -45,6 +50,14 @@ export class ShortsComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    // this.userService.playShortsOnFocus.subscribe((playVideo) => {
+    //   console.log('Hii222');
+    //   this.playVideo = playVideo;
+    // });
+    // this.shortsService.playShortsSubject.subscribe((playVideo) => {
+    //   this.playVideo = playVideo;
+    // });
   }
 
   showComments() {

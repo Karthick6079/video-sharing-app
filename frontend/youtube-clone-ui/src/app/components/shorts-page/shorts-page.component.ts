@@ -7,114 +7,101 @@ import {
   HostListener,
   Inject,
   OnInit,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
 import { VideoService } from '../../services/video/video.service';
 import { DOCUMENT } from '@angular/common';
+import { entries } from 'lodash';
+import { ShortsServiceService } from '../../services/shorts-service.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-shorts-page',
   templateUrl: './shorts-page.component.html',
   styleUrl: './shorts-page.component.css',
 })
-export class ShortsPageComponent implements OnInit {
-  @ViewChild('shorts')
-  shortsElement: ElementRef | undefined;
+export class ShortsPageComponent
+  implements OnInit, AfterViewInit, AfterViewChecked
+{
+  @ViewChild('shortsContainer')
+  shortsContainerElement: ElementRef | undefined;
+
+  @ViewChildren('shortsContainer')
+  shortsElements: QueryList<ElementRef>;
+
+  playShorts: boolean = false;
+
+  observer: any;
 
   constructor(
     private videoService: VideoService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private shortsService: ShortsServiceService,
+    public userService: UserService
   ) {}
 
-  testNewMethod() {
-    let shortsContainer = this.document.querySelector('.shorts-container');
+  ngAfterViewInit(): void {
+    console.log(this.shortsContainerElement.nativeElement);
+    // this.callIntersectionObserver();
+  }
 
-    if (!this.shortsElement) {
-      return;
-    }
+  callIntersectionObserver() {
+    setTimeout(this.registerObserver, 2000);
+  }
 
+  registerObserver() {
     const options = {
-      root: shortsContainer,
+      root: null,
       threshold: 0.5,
     };
 
-    // const threshold = 0.2; // how much % of the element is in view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          console.log('Intersecting observer working..!');
-          // run your animation code here
-          // observer.disconnect(); // disconnect if you want to stop observing else it will rerun every time its back in view. Just make sure you disconnect in ngOnDestroy instead
-        }
-      });
+    console.log(this.document.querySelectorAll('.vid-shorts'));
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        // this.userService.playShorts(true);
+        console.log('The current shorts on foucs');
+        console.log(entries[0].target);
+      }
     }, options);
-    observer.observe(this.shortsElement.nativeElement);
+
+    this.document.querySelectorAll('.vid-shorts').forEach((element) => {
+      this.observer.observe(element);
+    });
   }
 
-  // ngAfterViewInit() {
-  //   let shortsContainer = this.document.querySelector('.shorts-container');
-
-  //   if (!this.shortsElement) {
-  //     this.shortsElement = new ElementRef('');
-  //   }
-
-  //   const options = {
-  //     root: shortsContainer,
-  //     threshold: 0.5,
-  //   };
-
-  //   // const threshold = 0.2; // how much % of the element is in view
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting) {
-  //         console.log('Intersecting observer working..!');
-  //         // run your animation code here
-  //         // observer.disconnect(); // disconnect if you want to stop observing else it will rerun every time its back in view. Just make sure you disconnect in ngOnDestroy instead
-  //       }
-  //     });
-  //   }, options);
-  //   observer.observe(this.shortsElement.nativeElement);
-  // }
+  ngAfterViewChecked(): void {
+    // const options = {
+    //   root: this.shortsContainerElement,
+    //   threshold: 0.5,
+    // };
+    // let observer = new IntersectionObserver(this.playShortsVideo);
+    // this.document.querySelectorAll('.vid-shorts').forEach((element) => {
+    //   observer.observe(element);
+    // });
+  }
 
   videos!: VideoDto[];
   ngOnInit(): void {
     this.videoService.getShortsVideo().subscribe((videos) => {
       this.videos = videos;
-      setTimeout(this.testNewMethod, 2000);
+      // this.registerObserver();
     });
-
-    // this.testMethod();
   }
 
   getShortVideo() {
-    console.log('scroll-event-called..');
     this.videoService.getShortsVideo().subscribe((videos) => {
       this.videos.push(...videos);
+      // this.callIntersectionObserver();
     });
   }
 
-  testMethod() {
-    let shorts = this.document.querySelector('.vid-shorts');
-
-    if (!shorts) {
-      shorts = new Element();
-    }
-
-    const observer = new window.IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          console.log('Short on FOUCS');
-          return;
-        }
-        console.log('Short on not FOUCS');
-      },
-      {
-        root: null,
-        threshold: 0.5, // set offset 0.1 means trigger if atleast 10% of element in viewport
-      }
-    );
-
-    observer.observe(shorts);
+  onVisible() {
+    // console.log('From compone');
+    // this.playShorts = true;
+    // this.shortsService.playShortsVideo(true);
+    // this.userService.playShortsOnFocus.emit(true);
   }
 }

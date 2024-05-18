@@ -1,7 +1,7 @@
 <div class="video-panel">
     <div class="shorts-video-info-container">
         <div class="vid-shorts-player box">
-            <app-shorts-player [url]="video.videoUrl"></app-shorts-player>
+            <app-shorts-player [url]="video.videoUrl" [autoplay]="playShorts"></app-shorts-player>
         </div>
         <div class="video-info-container overlay">
             <app-shorts-vid-info [video]="video"></app-shorts-vid-info>

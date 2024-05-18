@@ -87,6 +87,7 @@ hr{
     align-items: center;
     display: inline-flex;
     background: var(--app-secondary-color);
+    /* color: var(--app-primary-color); */
     margin-right: 10px;
 }
 

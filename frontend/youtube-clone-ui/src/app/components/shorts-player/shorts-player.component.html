@@ -9,7 +9,7 @@
 
 
         <video [vgMedia]="$any(media)" #media id="singleVideo" class="player" disablepictureinpicture
-            (ended)="callMethodOnEnd()" [autoplay]="false">
+            (ended)="callMethodOnEnd()" [autoplay]="autoplay" (play)="autoplay">
             <source [src]="url" type="video/mp4">
         </video>
     </vg-player>

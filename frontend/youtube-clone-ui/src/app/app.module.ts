@@ -75,6 +75,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
 import { ShortsScrollDirective } from './directives/shorts-scroll.directive';
+import { AppObserverDirective } from './directives/app-observer.directive';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { ShortsScrollDirective } from './directives/shorts-scroll.directive';
     SearchResultsComponent,
     UnauthUiComponent,
     ShortsScrollDirective,
+    AppObserverDirective,
   ],
   imports: [
     BrowserModule,

@@ -31,6 +31,8 @@ export class UserService implements OnInit {
 
   hideStudioButtonEventEmitter = new EventEmitter<boolean>();
 
+  playShortsOnFocus = new EventEmitter<boolean>();
+
   studioStepperIndex = new Subject<number>();
 
   private currentUserDto!: UserDto;
@@ -124,5 +126,9 @@ export class UserService implements OnInit {
 
   hideStudioButton(input: boolean) {
     this.hideStudioButtonEventEmitter.emit(input);
+  }
+
+  playShorts(input: boolean) {
+    this.playShortsOnFocus.emit(input);
   }
 }

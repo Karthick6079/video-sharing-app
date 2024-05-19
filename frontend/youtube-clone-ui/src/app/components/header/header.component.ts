@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
 
   hideSearchBar = false;
   hideStudioButton = false;
+  showSidebarOverlay = false;
 
   userData!: Observable<UserDataResult>;
 
@@ -82,5 +83,9 @@ export class HeaderComponent implements OnInit {
           console.log('Navigation failed!!');
         }
       });
+  }
+
+  showSideBar() {
+    console.log(this.router.getCurrentNavigation);
   }
 }

@@ -1,9 +1,34 @@
-.example-spacer {
+  .header-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .example-spacer {
     flex: 1 1 1;
   }
 
-  .app-logo{
+  .logo-brand-name{
+    display: flex;
+    align-items: center;
+  }
+
+  .app-brand-name{
     cursor: pointer;
+    display: flex;
+  }
+
+  .humburger-menu{
+    padding: 0;
+  }
+
+  .icon-user-button{
+    display: none;
+  }
+
+  .mobile-search-button{
+    display: none;
   }
 
 
@@ -27,6 +52,8 @@
   position: relative;
   width: 45%;
 }
+
+
 
  input{
   width: 100%;
@@ -56,4 +83,59 @@
 
 :host::ng-deep .pi{
   font-size: 1.6rem;
+}
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+  .app-brand-name{
+    cursor: pointer;
+    /* margin-right:  auto; */
+  }
+
+  .icon-user-button{
+    display: block;
+  }
+
+  .bold-user-button{
+    display: none;
+  }
+
+  .search-container{
+    position: relative;
+    width: 55%;
+  }
+
+  .mobile-search-button{
+    display: block;
+  }
+
+  .search-container input{
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .search-container button{
+    font-size: 1.4rem;
+  }
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
 }

@@ -12,15 +12,12 @@
 }
 
 .content{
+   position: relative;
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(340px,1fr));
+   grid-template-columns: repeat(auto-fill, minmax(var(--app-grid-item-max-width),1fr));
    grid-gap: 2em;
    cursor: pointer;
    padding: 1.6em 0;
-   --app-rich-grid-items-per-row:3;
-   --app-rich-grid-item-max-width:340px;
-   --app-rich-grid-item-margin:16px;
-   --app-rich-grid-content-max-width: calc(var(--app-rich-grid-items-per-row)*(var(--app-rich-grid-item-max-width) + var(--app-rich-grid-item-margin)) - var( --app-rich-grid-item-margin ))
 }
 
 hr{
@@ -31,22 +28,22 @@ hr{
 .topic-skeleton{
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(50px, 1fr));
-    /* grid-auto-rows: 20px; */
     column-gap: 0.7em;
 }
 
 .chips-wrapper{
     /* position: fixed; */
-    /* top: calc(var(--app-toolbar-standard-height)+ 48); */
-    width: 100%;
-    background-color: #fff;
-    z-index: 2000;
+    z-index: 100;
     display: flex;
-    /* justify-content: center; */
+    top:var(--mat-toolbar-standard-height);
+    min-height: 40px;
+    position: sticky;
+    background: white;
+    padding: 8px 0;
 }
 
 .chip-content{
-    max-width: 1254px;
+    max-width: 90vw;
     padding: 0 8px;
 }
 
@@ -95,3 +92,47 @@ hr{
     background-color: var(--app-primary-color);
     color: #fff;
 }
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+
+    .chips-wrapper{
+        width: auto;
+        justify-content: space-between;
+    }
+    .chip-content{
+        max-width: 84vw;
+    }
+
+    .content{
+        padding: 8px;
+    }
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+    .chip-content{
+        max-width: 75.25vw;
+    }
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+    .chip-content{
+        max-width: 82vw;
+    }
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+    .chip-content{
+        max-width: 82vw;
+    }
+}
+

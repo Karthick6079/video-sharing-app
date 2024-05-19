@@ -1,15 +1,22 @@
-<p>
+
     
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="header-container">
         <mat-toolbar-row class="header">
-            <h2 class="app-logo" (click)="navigateToHome()">AVK</h2>
+           <div class="logo-brand-name">
+            <button mat-icon-button  aria-label="brand name" class="humburger-menu" (click)="showSideBar()">
+              <i class="material-icons">dehaze</i>
+            </button>
+            <h2 class="app-brand-name" (click)="navigateToHome()">AVK</h2>
+           </div>
+
             <!-- <span class="example-spacer"></span> -->
 
             <!--Not show the search bar inside studio i.e video upload page-->
             <div class="search-container" *ngIf="!hideSearchBar">
-              <input type="text" #searchField placeholder="Search..." name="search">
-              <button type="button" (click)="searchVideos(searchField.value)" (keydown.enter)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
+              <input type="text" #searchField placeholder="Search..." name="search" class="search-input">
+              <button class = "search-button" type="button" (click)="searchVideos(searchField.value)" (keydown.enter)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
             </div>
+
             
             @if (isAuthenticated) {
 
@@ -33,12 +40,11 @@
                 </mat-menu>
               </div>
             } @else {
-              <button mat-flat-button (click)="login()">Sign in</button>
+              <button mat-flat-button (click)="login()" class="bold-user-button">Sign in</button>
+              <button mat-icon-button (click)="login()" class="icon-user-button"><mat-icon>perm_identity</mat-icon></button>
             }
           </mat-toolbar-row>
     </mat-toolbar>
 
-    
-    
-    </p>
+
     

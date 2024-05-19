@@ -33,6 +33,11 @@ html{
     --app-toolbar-standard-height:60px;
     --app-primary-color:#673ab7;
     --app-secondary-color:rgb(242 235 255);
+    --mat-toolbar-standard-height: 64px;
+    --app-sidebar-width:200px;
+    --app-grid-items-per-row:3;
+    --app-grid-item-max-width:340px;
+    --app-grid-item-margin:16px;
 
 }
 

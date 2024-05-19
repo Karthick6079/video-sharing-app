@@ -10,6 +10,8 @@ import { MenuItem } from 'primeng/api';
 export class SidebarComponent {
   constructor(private router: Router) {}
 
+  showLess = false;
+
   navigateToUpload() {
     const url = `/studio/edit-video-info/123`;
 

@@ -86,6 +86,11 @@ export class HeaderComponent implements OnInit {
   }
 
   showSideBar() {
-    console.log(this.router.getCurrentNavigation);
+    const currentURL = this.router.routerState.snapshot.url;
+
+    let isHomeRouteActivated = currentURL.indexOf('home') == -1 ? false : true;
+
+    if (isHomeRouteActivated) {
+    }
   }
 }

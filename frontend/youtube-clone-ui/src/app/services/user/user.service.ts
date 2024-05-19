@@ -35,6 +35,8 @@ export class UserService implements OnInit {
 
   studioStepperIndex = new Subject<number>();
 
+  showLessSideBarSubject = new Subject<boolean>();
+
   private currentUserDto!: UserDto;
 
   ngOnInit(): void {
@@ -130,5 +132,9 @@ export class UserService implements OnInit {
 
   playShorts(input: boolean) {
     this.playShortsOnFocus.emit(input);
+  }
+
+  showSidebarLess() {
+    this.showLessSideBarSubject.next(true);
   }
 }

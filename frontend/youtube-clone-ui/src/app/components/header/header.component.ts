@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
 
   userData!: Observable<UserDataResult>;
 
+  isMobileScreen = false;
+
   constructor(
     private oidcSecurityService: OidcSecurityService,
     private loginService: LoginService,
@@ -46,6 +48,10 @@ export class HeaderComponent implements OnInit {
     );
 
     this.hideButtons();
+
+    if (window.matchMedia('(max-width: 480px)').matches) {
+      this.isMobileScreen = true;
+    }
   }
 
   hideButtons() {
@@ -95,6 +101,10 @@ export class HeaderComponent implements OnInit {
     if (isHomeRouteActivated) {
       this.userService.toggleSideBar();
     } else {
+      this.userService.toggleSideBarOnOverlay();
+    }
+
+    if (this.isMobileScreen) {
       this.userService.toggleSideBarOnOverlay();
     }
   }

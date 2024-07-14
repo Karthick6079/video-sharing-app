@@ -37,6 +37,12 @@ export class UserService implements OnInit {
 
   showLessSideBarSubject = new Subject<boolean>();
 
+  showLessSideBarOverlaySubject = new Subject<boolean>();
+
+  showLessSidebar = false;
+
+  showSidebarOnOverlay = false;
+
   private currentUserDto!: UserDto;
 
   ngOnInit(): void {
@@ -134,7 +140,12 @@ export class UserService implements OnInit {
     this.playShortsOnFocus.emit(input);
   }
 
-  showSidebarLess() {
-    this.showLessSideBarSubject.next(true);
+  toggleSideBar() {
+    this.showLessSidebar = !this.showLessSidebar;
+    this.showLessSideBarSubject.next(this.showLessSidebar);
+  }
+  toggleSideBarOnOverlay() {
+    this.showSidebarOnOverlay = !this.showSidebarOnOverlay;
+    this.showLessSideBarOverlaySubject.next(this.showSidebarOnOverlay);
   }
 }

@@ -1,3 +1,13 @@
+<div class="overlay-container" *ngIf="showSidebarOnOverlay">
+    <div class="sidebar-content">
+        <app-sidebar ></app-sidebar>
+    </div>
+    <div class="overlay-background" (click)="closeSideBar()">
+
+    </div>
+</div>
+
 <app-header></app-header>
 <router-outlet></router-outlet>
+
 

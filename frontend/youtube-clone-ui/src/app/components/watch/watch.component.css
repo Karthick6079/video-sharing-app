@@ -4,6 +4,7 @@
 
 .watch-page{
     display: flex;
+    margin-top: var(--mat-toolbar-standard-height);
 }
 
 .video-container{
@@ -118,4 +119,69 @@ figure {
 .show-desc-more {
     font-size: 1.35rem;
     line-height: 1.475;
+}
+
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+    .watch-page{
+        flex-direction: column;
+        width: 100%;
+    }
+    .video-container{
+        flex: 1;
+        margin-left: 0.2em;
+    }
+
+    .video-loading-area{
+        height: 30em;
+     }
+
+     .suggestion-bar{
+        width: 100%;
+        margin-top: 1em;
+        margin-left: 0.2em;
+    }
+
+    .video-title{
+        font-size: 1.3rem;
+        line-height: 1.8rem;
+        max-height: 40px;
+    }
+
+    .video-info{
+        font-size: 1.15rem;
+        line-height: 1.4;
+    }
+    
+    .video-info .view-count{
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .show-desc-less, .show-desc-more{
+        font-size: 1.2rem;
+    }
+
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
 }

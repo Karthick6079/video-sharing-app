@@ -1,23 +1,33 @@
 .home-container{
     display: flex;
+    margin-top: var(--mat-toolbar-standard-height);
 }
 
 
 .sidebar{
     position: fixed;
-    top: calc(var(--mat-toolbar-standard-height));
     height: 100vh;
-    margin-top: 15px;
+    width: 175px;
+    max-width: 200px;
+    margin-top: 10px;
     background-color: white;
     z-index: 100;
 }
 
 .featured{
     position: relative;
-    top: calc(var(--mat-toolbar-standard-height));
-    left: var(--app-sidebar-width);
+    margin-left: var(--app-sidebar-width);
+    margin-top: 10px;
+    flex: 1;
     height: 100%;
-    margin-top: calc(var(--app-toolbar-standard-height)+10);
+}
+
+.show-less-featured{
+    margin-left: 60px;
+}
+
+.show-less {
+    width:  50px ;
 }
 
 
@@ -26,6 +36,13 @@
 
     .sidebar{
        display: none
+    }
+    .featured{
+        margin-left: 0px;
+    }
+
+    .show-less-featured{
+        margin-left: 0px;
     }
 
 }

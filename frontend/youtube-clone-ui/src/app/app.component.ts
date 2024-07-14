@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { UserService } from './services/user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,24 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent implements OnInit {
   title = 'youtube-clone-ui';
 
-  constructor(private oidcSecurityService: OidcSecurityService) {}
+  showSidebarOnOverlay = false;
+
+  constructor(
+    private oidcSecurityService: OidcSecurityService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.oidcSecurityService.checkAuth().subscribe(() => {
       console.log('Application check auth method called');
     });
+
+    this.userService.showLessSideBarOverlaySubject.subscribe((value) => {
+      this.showSidebarOnOverlay = value;
+    });
+  }
+
+  closeSideBar() {
+    this.userService.toggleSideBarOnOverlay();
   }
 }

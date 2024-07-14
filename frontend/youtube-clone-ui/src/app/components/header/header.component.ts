@@ -90,7 +90,12 @@ export class HeaderComponent implements OnInit {
 
     let isHomeRouteActivated = currentURL.indexOf('home') == -1 ? false : true;
 
+    console.log('it is in home page? ', isHomeRouteActivated);
+
     if (isHomeRouteActivated) {
+      this.userService.toggleSideBar();
+    } else {
+      this.userService.toggleSideBarOnOverlay();
     }
   }
 }

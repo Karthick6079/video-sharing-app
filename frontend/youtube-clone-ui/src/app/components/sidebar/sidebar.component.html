@@ -1,29 +1,29 @@
 <ul class="sidebar-container">
-    <li class="item" [class.show-less]="" routerLink="featured" routerLinkActive="active">
-        <i class="material-icons">home</i>
-        <div class="sidebar-button" >Home</div>
+    <li class="item" [class.show-less]="showLess" routerLink="/home/featured" routerLinkActive="active" title="Home">
+        <i class="material-icons" >home</i>
+        <div class="sidebar-button" *ngIf="!showLess">Home</div>
     </li>
 
-    <li class="item" routerLink="shorts" routerLinkActive="active">
+    <li class="item" [class.show-less]="showLess" routerLink="/home/shorts" routerLinkActive="active" title="Shorts">
         <i class="material-icons">video_collection</i>
-        <div class="sidebar-button" >Shorts</div>
+        <div class="sidebar-button" *ngIf="!showLess">Shorts</div>
     </li>
 
-    <li class="item" routerLink="subscriptions" routerLinkActive="active">
+    <li class="item" [class.show-less]="showLess" routerLink="/home/subscriptions" routerLinkActive="active" title="Subscriptions">
         <i class="material-icons">subscriptions</i>
-        <div class="sidebar-button" >Subscriptions</div>
+        <div class="sidebar-button" *ngIf="!showLess">Subscriptions</div>
     </li>
 
     <p-divider></p-divider>
 
-    <li class="item" routerLink="user-profile" routerLinkActive="active">
+    <li class="item" [class.show-less]="showLess" routerLink="/home/user-profile" routerLinkActive="active" title="You(Liked videos)">
         <i class="material-icons">account_circle</i>
-        <div class="sidebar-button" >You</div>
+        <div class="sidebar-button" *ngIf="!showLess">You</div>
     </li>
 
-    <li class="item" routerLink="history" routerLinkActive="active">
+    <li class="item" [class.show-less]="showLess" routerLink="/home/history" routerLinkActive="active" title="Watched videos">
         <i class="material-icons">history_toggle_off</i>
-        <div class="sidebar-button" >History</div>
+        <div class="sidebar-button" *ngIf="!showLess">History</div>
     </li>
 
 </ul>

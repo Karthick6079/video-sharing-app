@@ -1,8 +1,10 @@
+
+
 <div class="home-container">
-    <div class="sidebar">
+    <div class="sidebar" [class.show-less]="showLessSideBar">
         <app-sidebar></app-sidebar>
     </div>
-    <div class="featured">
+    <div class="featured" [class.show-less-featured]="showLessSideBar">
         <router-outlet></router-outlet>
     </div>
 </div>

@@ -17,13 +17,18 @@
 <div class="uploaded-user-info">
     <!--Channal logo and Name--> 
     <div class="channal-container">
-        <p-avatar [image]="video?.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
-        <div class="channal-name items">
-             <!--Name and Subs count--> 
-           <div class="name">{{video?.userDisplayName}}</div>
-           <div class="subscribers-count" *ngIf="subscribersCount == 0">No Subscribers</div>
-           <div class="subscribers-count" *ngIf="subscribersCount > 0">{{subscribersCount == 1 ? '1 subscriber' :subscribersCount | indianFormatViewCount:' Subscribers'}}</div>
+
+        <div class="channel-logo-nd-name">
+            <p-avatar [image]="video?.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+            <div class="channal-name items">
+                 <!--Name and Subs count--> 
+               <div class="name">{{video?.userDisplayName}}</div>
+               <div class="subscribers-count" *ngIf="subscribersCount == 0">No Subscribers</div>
+               <div class="subscribers-count" *ngIf="subscribersCount > 0">{{subscribersCount == 1 ? '1 subscriber' :subscribersCount | indianFormatViewCount:' Subscribers'}}</div>
+            </div>
         </div>
+
+       
          <!--Subscribe button--> 
         <div class="subscribe-button">
         

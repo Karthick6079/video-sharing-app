@@ -32,14 +32,13 @@ hr{
 }
 
 .chips-wrapper{
-    /* position: fixed; */
     z-index: 100;
     display: flex;
-    top:var(--mat-toolbar-standard-height);
+    top:calc(var(--mat-toolbar-standard-height));
     min-height: 40px;
+    align-items: center;
     position: sticky;
     background: white;
-    padding: 8px 0;
 }
 
 .chip-content{

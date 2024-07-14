@@ -47,6 +47,11 @@ ul > li {
     font-size: 20px;
 }
 
+.show-less{
+    align-self: center;
+   
+}
+
 .sidebar-button{
     font-size: 17.5px;
     /* color: var(--app-primary-color); */

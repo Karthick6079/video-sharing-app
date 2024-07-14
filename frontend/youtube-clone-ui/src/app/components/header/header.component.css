@@ -16,8 +16,9 @@
 
   .app-brand-name{
     cursor: pointer;
-    display: flex;
+    margin-top: -5px;
   }
+
 
   .humburger-menu{
     padding: 0;
@@ -90,6 +91,7 @@
 
   .app-brand-name{
     cursor: pointer;
+    font-size: 15px;
     /* margin-right:  auto; */
   }
 
@@ -117,6 +119,10 @@
   
   .search-container button{
     font-size: 1.4rem;
+  }
+
+  :host::ng-deep .mat-toolbar-row {
+    padding: 0px;
   }
 }
 

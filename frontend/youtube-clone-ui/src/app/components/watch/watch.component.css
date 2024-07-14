@@ -135,13 +135,18 @@ figure {
     }
 
     .video-loading-area{
-        height: 30em;
+        height: 24em;
      }
 
      .suggestion-bar{
         width: 100%;
         margin-top: 1em;
         margin-left: 0.2em;
+    }
+
+    .video-description{
+        max-height: 20em;
+        overflow-y: scroll;
     }
 
     .video-title{

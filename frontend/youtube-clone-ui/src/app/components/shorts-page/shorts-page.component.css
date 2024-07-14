@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 80vh;
-    width: 28vw;
+    width: 23vw;
     gap: 1em;
     scroll-snap-type: y mandatory;
     margin-top: 2em;
@@ -11,7 +11,7 @@
 
 .vid-shorts{
     min-height: 75vh;
-    min-width: 28vw;
+    min-width: 23vw;
     scroll-snap-align: start;
 }
 
@@ -45,4 +45,53 @@
 :host::ng-deep .p-toast {
     width: 50rem;
     /* color: #8b5cf6; */
+}
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+    .shorts-container{
+        width: 100%;
+        margin-top: 0;
+    }
+
+    :host::ng-deep .p-button.p-button-outlined {
+        color: #fff;
+    }
+
+    :host::ng-deep .p-button.p-button-icon-only.p-button-rounded{
+        height: 3.25em;
+    }
+    
+    :host::ng-deep .p-button.p-button-icon-only{
+        width: 3.25em;
+    }
+
+    :host::ng-deep .p-button.p-button-lg .p-button-icon{
+        font-size: 1.25em;
+    }
+
+    :host::ng-deep .p-component{
+        font-size: 1.1rem;
+    }
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
 }

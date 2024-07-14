@@ -33,6 +33,8 @@ export class ShortsComponent implements OnInit {
 
   currentUser!: UserDto;
 
+  isMobileScreen = false;
+
   constructor(
     private messageService: MessageService,
     private oidcSecurityService: OidcSecurityService,
@@ -58,6 +60,10 @@ export class ShortsComponent implements OnInit {
     // this.shortsService.playShortsSubject.subscribe((playVideo) => {
     //   this.playVideo = playVideo;
     // });
+
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      this.isMobileScreen = true;
+    }
   }
 
   showComments() {

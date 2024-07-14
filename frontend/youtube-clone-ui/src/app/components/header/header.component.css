@@ -105,7 +105,7 @@
 
   .search-container{
     position: relative;
-    width: 55%;
+    width: 50%;
   }
 
   .mobile-search-button{
@@ -113,7 +113,7 @@
   }
 
   .search-container input{
-    height: 40px;
+    height: 35px;
     font-size: 1.2rem;
   }
   
@@ -123,6 +123,10 @@
 
   :host::ng-deep .mat-toolbar-row {
     padding: 0px;
+  }
+
+  :host::ng-deep .pi{
+    font-size: 1.4rem;
   }
 }
 

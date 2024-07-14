@@ -6,33 +6,38 @@
         <div class="video-info-container overlay">
             <app-shorts-vid-info [video]="video"></app-shorts-vid-info>
         </div>
+        <div class="engagement-panel">
+            <div class="engage-comp">
+               <p-button icon="pi pi-thumbs-up" size="large" severity="primary" (click)="likeVideo()" [text]="true" 
+               styleClass="like-button" pTooltip="Likes" />
+               <span class="info-text">{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span> 
+            </div> 
+       
+            <div class="engage-comp">
+                   <p-button icon="pi pi-thumbs-down"  [text]="true" size="large"
+                   styleClass="dislike-button" pTooltip="DisLikes" />
+                   <span class="info-text" >DisLike</span>
+               </div>
+       
+               <div class="engage-comp">
+                   
+               <p-button icon="pi pi-comments"  [text]="true" size="large" severity="primary"  pTooltip="Comments"
+               (click)="showComments()"></p-button>
+               <span class="info-text" >Comments</span>
+               </div>
+       
+               <div class="engage-comp">
+                   <p-button icon="pi pi-align-left" [text]="true" size="large" severity="primary" (click)="op.toggle($event)"
+                   pTooltip="Description"></p-button>
+                   <span class="info-text" >Description</span>
+               </div>
+           </div>
     </div>
-    <div class="engagement-panel">
-     <div class="engage-comp">
-        <p-button icon="pi pi-thumbs-up" size="large" severity="primary" (click)="likeVideo()" [rounded]="true" [outlined]="!isLikedVideo"
-        styleClass="like-button" pTooltip="Likes" />
-        <span class="info-text">{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span> 
-     </div> 
 
-     <div class="engage-comp">
-            <p-button icon="pi pi-thumbs-down" [rounded]="true" [outlined]="!isDisLikedVideo" (click)="dislikeVideo()" size="large"
-            styleClass="dislike-button" pTooltip="DisLikes" />
-            <span class="info-text" >DisLike</span>
-        </div>
 
-        <div class="engage-comp">
-            
-        <p-button icon="pi pi-comments" [rounded]="true" size="large" severity="primary"  [outlined]="true" pTooltip="Comments"
-        (click)="showComments()"></p-button>
-        <span class="info-text" >Comments</span>
-        </div>
 
-        <div class="engage-comp">
-            <p-button icon="pi pi-align-left" [rounded]="true" size="large" severity="primary" [outlined]="true" (click)="op.toggle($event)"
-            pTooltip="Description"></p-button>
-            <span class="info-text" >Description</span>
-        </div>
-    </div>
+    
+    
     <p-dialog [header]="video.title" [(visible)]="visible" [modal]="false" [style]="{ width: '50rem', height: '53rem' }"
         [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" position="right">
         <div class="comments">

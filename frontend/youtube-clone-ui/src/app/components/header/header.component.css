@@ -128,6 +128,14 @@
   :host::ng-deep .pi{
     font-size: 1.4rem;
   }
+
+  :host::ng-deep .mat-mdc-icon-button.mat-mdc-button-base  {
+    padding:11px;
+  }
+
+  .app-brand-name{
+    margin-top: 0;
+  }
 }
 
 /*iPads, Tablets*/

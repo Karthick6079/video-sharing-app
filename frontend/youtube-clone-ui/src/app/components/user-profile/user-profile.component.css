@@ -5,3 +5,92 @@
 :host::ng-deep .suggestion-section{
     height: 18rem !important;
 }
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+    .liked-video-container{
+        width: 100%;
+    }
+
+    :host::ng-deep .suggestion-section{
+        flex-direction: column;
+    }
+
+    :host::ng-deep .suggestion-thumbnail{
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    :host::ng-deep .video-and-channal-info{
+        width: 100% !important;
+        margin-top: 10px !important;
+    }
+
+    :host::ng-deep .video-desc.channal-name{
+        display: none;
+    }
+
+    :host::ng-deep .suggestion-section{
+        height: 26.5rem !important;
+        
+    }
+
+    :host::ng-deep .video-title {
+        height: 15px !important;
+        max-height: 30px !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+    .liked-video-container{
+        width: 100%;
+    }
+
+    :host::ng-deep .suggestion-section{
+        flex-direction: column;
+    }
+
+    :host::ng-deep .suggestion-thumbnail{
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    :host::ng-deep .video-and-channal-info{
+        width: 100% !important;
+        margin-top: 10px !important;
+    }
+
+    :host::ng-deep .video-desc.channal-name{
+        display: none;
+    }
+
+    :host::ng-deep .suggestion-section{
+        height: 26.5rem !important;
+        
+    }
+
+    :host::ng-deep .video-title {
+        height: 15px !important;
+        max-height: 30px !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
+}

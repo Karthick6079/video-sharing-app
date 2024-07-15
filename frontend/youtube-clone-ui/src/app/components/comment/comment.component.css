@@ -140,10 +140,33 @@
     overflow-y: scroll;
   }
 
+  :host::ng-deep .p-component{
+    font-size: 1.25rem;
+  }
+
+  .user-circle{
+    height: 35px;
+    width: 38px;
+  }
+
 }
 
 /*iPads, Tablets*/
 @media only screen and (min-width: 481px) and (max-width:768px){
+
+  .show-comments-container{
+    max-height: 35em;
+    overflow-y: scroll;
+  }
+
+  :host::ng-deep .p-component{
+    font-size: 1.375rem;
+  }
+
+  .user-circle{
+    height: 35px;
+    width: 38px;
+  }
 
 }
 

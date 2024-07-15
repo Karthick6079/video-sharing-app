@@ -42,11 +42,22 @@
 
 /*Mobile devices*/
 @media only screen and (min-width: 320px) and (max-width:480px){
+    .user-and-comment .comment{
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+
+    .user-and-comment .name{
+        font-size: 1.175rem;
+    }
 }
 
 /*iPads, Tablets*/
 @media only screen and (min-width: 481px) and (max-width:768px){
 
+    .user-and-comment .comment{
+        font-size: 1.3rem;
+    }
 }
 
 /*Small screens, laptops*/

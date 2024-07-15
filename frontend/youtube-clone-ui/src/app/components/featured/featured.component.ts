@@ -9,6 +9,7 @@ import { VideoService } from '../../services/video/video.service';
 import { VideoDto } from '../../dto/video-dto';
 import { Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-featured',
@@ -27,6 +28,8 @@ export class FeaturedComponent implements OnInit {
 
   showLeftAngleButton = false;
 
+  isMobileScreen = false;
+
   //By default fetch all
   selectedTopic = 'getAll';
 
@@ -35,6 +38,7 @@ export class FeaturedComponent implements OnInit {
 
   constructor(
     private videoService: VideoService,
+    private userService: UserService,
     @Inject(DOCUMENT) private document: Document
   ) {
     //Some random default topics
@@ -69,6 +73,10 @@ export class FeaturedComponent implements OnInit {
       this.isVideosAvailable = true;
       console.log(this.videos);
     });
+
+    if (window.matchMedia('(max-width: 770px)').matches) {
+      this.isMobileScreen = true;
+    }
   }
 
   moveright() {

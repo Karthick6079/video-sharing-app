@@ -33,8 +33,6 @@ export class ShortsComponent implements OnInit {
 
   currentUser!: UserDto;
 
-  isMobileScreen = false;
-
   constructor(
     private messageService: MessageService,
     private oidcSecurityService: OidcSecurityService,
@@ -52,18 +50,6 @@ export class ShortsComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
-
-    // this.userService.playShortsOnFocus.subscribe((playVideo) => {
-    //   console.log('Hii222');
-    //   this.playVideo = playVideo;
-    // });
-    // this.shortsService.playShortsSubject.subscribe((playVideo) => {
-    //   this.playVideo = playVideo;
-    // });
-
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      this.isMobileScreen = true;
-    }
   }
 
   showComments() {

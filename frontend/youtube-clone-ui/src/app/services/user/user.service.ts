@@ -45,6 +45,8 @@ export class UserService implements OnInit {
 
   private currentUserDto!: UserDto;
 
+  isMobileScreen = false;
+
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
       if (response.userData) {
@@ -147,5 +149,9 @@ export class UserService implements OnInit {
   toggleSideBarOnOverlay() {
     this.showSidebarOnOverlay = !this.showSidebarOnOverlay;
     this.showLessSideBarOverlaySubject.next(this.showSidebarOnOverlay);
+  }
+
+  public isMobileScreenFn(): boolean {
+    return this.isMobileScreen;
   }
 }

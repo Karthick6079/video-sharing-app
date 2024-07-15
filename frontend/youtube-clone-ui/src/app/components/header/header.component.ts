@@ -23,9 +23,9 @@ export class HeaderComponent implements OnInit {
   hideStudioButton = false;
   showSidebarOverlay = false;
 
-  userData!: Observable<UserDataResult>;
-
   isMobileScreen = false;
+
+  userData!: Observable<UserDataResult>;
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
 
     this.hideButtons();
 
-    if (window.matchMedia('(max-width: 480px)').matches) {
+    if (window.matchMedia('(max-width: 770px)').matches) {
       this.isMobileScreen = true;
     }
   }
@@ -98,13 +98,9 @@ export class HeaderComponent implements OnInit {
 
     console.log('it is in home page? ', isHomeRouteActivated);
 
-    if (isHomeRouteActivated) {
+    if (isHomeRouteActivated && !this.isMobileScreen) {
       this.userService.toggleSideBar();
     } else {
-      this.userService.toggleSideBarOnOverlay();
-    }
-
-    if (this.isMobileScreen) {
       this.userService.toggleSideBarOnOverlay();
     }
   }

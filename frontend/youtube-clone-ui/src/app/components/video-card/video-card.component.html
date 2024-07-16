@@ -1,10 +1,6 @@
 <div class="video-card" (click)="watchVideo()">
     <div class="image-container" (mouseover)="displayVideoOnOver(true)" (mouseleave)="displayVideoOnOver(false)">
-        @if(displayVideo){
-            <app-thumbnail-video-player [url]="video.videoUrl" ></app-thumbnail-video-player>
-        }@else {
-            <img [src]="video.thumbnailUrl" [alt]="video.title">
-        }
+        <app-thumbnail-video-player [url]="video.videoUrl" [thumbnailImageUrl]="video.thumbnailUrl"></app-thumbnail-video-player>
     </div>
     
     <div>

@@ -2,7 +2,7 @@
 
 <div id="videoContainer"class="video-container">
     <video id="singleVideo" preload="auto" class="player" onmouseenter="this.play()" 
-    onmouseleave="this.pause()" [muted]="true">
+    onmouseleave="this.pause()" [muted]="true" [poster]="thumbnailImageUrl">
         <source [src]="url" type="video/mp4">
     </video>
 </div>

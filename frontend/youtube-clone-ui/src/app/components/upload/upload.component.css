@@ -33,3 +33,35 @@
     background: white;
 }
 
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+    .file-upload-ui{
+        width: 100%;
+        margin: 4em auto;
+    }
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+    .file-upload-ui{
+        width: 100%;
+        margin: 4em auto;
+    }
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
+}

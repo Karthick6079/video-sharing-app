@@ -61,15 +61,13 @@
     </div>
     <div class="preview-player">
         <app-video-player [url]="videoUrl"></app-video-player>
-
-        <!--Submit Button-->
-        <div class="submit-container">
-            <p-button label="Submit" [loading]="loading" [disabled]="!editVideoDetailsForm.valid"
-                (click)="submit()" size="large"  [loading]="isApiUploadingDetails"
-                loadingIcon="pi pi-spinner">
-            </p-button>
-        </div>
-
-
     </div>
+</div>
+
+ <!--Submit Button-->
+ <div class="submit-container">
+    <p-button label="Submit" [loading]="loading" [disabled]="!editVideoDetailsForm.valid"
+        (click)="submit()" size="large"  [loading]="isApiUploadingDetails"
+        loadingIcon="pi pi-spinner">
+    </p-button>
 </div>

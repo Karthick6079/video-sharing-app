@@ -36,6 +36,7 @@
     justify-content: space-between;
     margin: 0 10px;
     height: 300px;
+    z-index: 1000;
     
 }
 
@@ -69,7 +70,6 @@ span{
         position: absolute;
         right: 0;
         top: 100px;
-        z-index: 1000;
         height: 275px;
         margin: 0 8px;
         /* background-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgb(0 0 0)); */

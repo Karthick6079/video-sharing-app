@@ -118,9 +118,15 @@ public class VideoService {
         User currentUser = userService.getCurrentUser();
 
 
+
         // 3. Update watch history table
         if(currentUser != null)
             watchedVideoService.updateWatchHistory(videoUserInfo, database, currentUser);
+
+        // 4.Update video uploaded user subscribers count
+
+        User videoUploadUser = userService.getUserById(videoUserInfo.getUserId());
+        videoUserInfo.setUserSubscribersCount(videoUploadUser.getSubscribersCount());
 
         return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
     }

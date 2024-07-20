@@ -25,5 +25,6 @@ public class VideoUserInfoDTO {
     private String username; //uniquename
     private String userDisplayName;
     private String userPicture;
+    private AtomicLong userSubscribersCount;
 
 }

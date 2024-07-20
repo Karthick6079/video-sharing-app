@@ -55,6 +55,10 @@ export class ChannelInfoComponent implements OnInit {
     if (this.currentUser) {
       this.getCurrentUserInfo();
     }
+
+    this.subscribersCount = this.video.userSubscribersCount;
+
+    console.log(this.video);
   }
 
   getCurrentUserInfo() {

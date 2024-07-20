@@ -15,6 +15,7 @@ export interface VideoDto {
   username: string;
   userDisplayName: string;
   userPicture: string;
+  userSubscribersCount: number;
 }
 
 export interface WatchedVideoDTO extends VideoDto {

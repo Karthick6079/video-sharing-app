@@ -93,7 +93,6 @@ export class EditVideoMetadataComponent implements OnInit {
       this.videoService
         .uploadThumnail(this.formData, this.videoId)
         .subscribe((response) => {
-          console.log(response);
           this.thumbnailUrl = response.videoUrl;
           this.isApiUploadingImage = false;
           this.successMessage('Thumbnail uploaded!');
@@ -136,7 +135,6 @@ export class EditVideoMetadataComponent implements OnInit {
   convertFormValuesToResponseBody() {
     const str = this.editVideoDetailsForm.value;
     const videoDto = JSON.stringify(str);
-    console.log(videoDto);
     return videoDto;
   }
 }

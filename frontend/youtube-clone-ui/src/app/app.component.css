@@ -8,6 +8,11 @@
     z-index: 100001;
 }
 
+.overlay-container:has(.app-studio){
+
+    margin-top: 56px;
+}
+
 .sidebar-content{
     position: fixed;
     height: 100vh;
@@ -31,6 +36,10 @@
 
     .sidebar-content{
         width: 15rem;
+    }
+
+    .overlay-container{
+        margin-top: -8px;
     }
     
 

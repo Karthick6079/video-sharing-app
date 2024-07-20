@@ -86,8 +86,6 @@ export class AppObserverDirective implements OnDestroy, OnInit, AfterViewInit {
       return;
     }
 
-    console.log(this.element.nativeElement);
-
     this.observer.observe(this.element.nativeElement);
 
     this.subject$
@@ -98,8 +96,6 @@ export class AppObserverDirective implements OnDestroy, OnInit, AfterViewInit {
 
         if (isStillVisible) {
           this.visible.emit(target);
-
-          // console.log(target);
 
           let videoElement: HTMLVideoElement =
             this.element.nativeElement.querySelector('#singleVideo');

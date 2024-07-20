@@ -32,8 +32,14 @@ export class SubscriptionsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.videoService.getSubscriptionVideos().subscribe((videos) => {
-      console.log(videos);
-      this.subscribedChannalVideos = videos;
+      if (videos) {
+        this.subscribedChannalVideos = videos;
+      }
+
+      if (!this.subscribedChannalVideos) {
+        this.unAuthUIInfoDesc =
+          "Subscribe you're favorite channel to see updates from that";
+      }
       this.isDataAvailable = true;
     });
   }

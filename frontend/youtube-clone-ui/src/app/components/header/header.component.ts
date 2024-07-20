@@ -84,9 +84,7 @@ export class HeaderComponent implements OnInit {
       .navigateByUrl(`/home/search-results?searchText=${searchText}`)
       .then((e) => {
         if (e) {
-          console.log('Navigation success!!');
         } else {
-          console.log('Navigation failed!!');
         }
       });
   }

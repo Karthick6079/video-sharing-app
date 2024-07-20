@@ -7,12 +7,9 @@ import { Subject } from 'rxjs';
 export class ShortsServiceService implements OnInit {
   playShortsSubject = new Subject<boolean>();
   constructor() {}
-  ngOnInit(): void {
-    console.log('Shorts Service Loaded!');
-  }
+  ngOnInit(): void {}
 
   playShortsVideo(play: boolean) {
-    console.log('Hi3333');
     this.playShortsSubject.next(play);
   }
 }

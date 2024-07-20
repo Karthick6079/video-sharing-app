@@ -16,14 +16,12 @@ export class ShortsPlayerComponent implements OnInit {
   ngOnInit(): void {
     this.shortsService.playShortsSubject.subscribe((play) => {
       if (play) {
-        console.log('Inside shorts player');
         this.playVideo();
       }
     });
 
     this.userService.playShortsOnFocus.subscribe((play) => {
       if (play) {
-        console.log('Inside shorts player');
         this.playVideo();
       }
     });
@@ -40,9 +38,7 @@ export class ShortsPlayerComponent implements OnInit {
   @Input()
   autoplay = false;
 
-  callMethodOnEnd() {
-    console.log('Complete video played!!!');
-  }
+  callMethodOnEnd() {}
 
   playVideo() {
     this.videoElement.nativeElement.play();

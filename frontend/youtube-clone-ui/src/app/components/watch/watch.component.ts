@@ -55,7 +55,6 @@ export class WatchComponent implements OnInit {
       .subscribe((videos) => {
         this.suggestionVideos = videos;
         this.isVideoAvailable = true;
-        console.log(this.suggestionVideos);
       });
 
     //Scroll to top
@@ -64,14 +63,11 @@ export class WatchComponent implements OnInit {
 
   closeDesc() {
     this.descPanalOpen = false;
-    console.log('Deactivate method called from closeDesc');
   }
 
   subsribed: boolean = false;
 
-  onDeactivate(event: Event) {
-    console.log('Deactivate method called');
-  }
+  onDeactivate(event: Event) {}
 
   getSuggestionVideos() {
     //Fetching only 12 suggestion videos
@@ -84,7 +80,6 @@ export class WatchComponent implements OnInit {
       .getSuggestedVideos(this.page, this.SIZE)
       .subscribe((videos) => {
         this.suggestionVideos.push(...videos);
-        console.log(this.suggestionVideos);
       });
   }
 

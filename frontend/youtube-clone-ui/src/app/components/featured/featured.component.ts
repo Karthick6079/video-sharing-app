@@ -71,7 +71,6 @@ export class FeaturedComponent implements OnInit {
     this.videoService.getSuggestedVideos(this.page, 6).subscribe((videos) => {
       this.videos = videos;
       this.isVideosAvailable = true;
-      console.log(this.videos);
     });
 
     if (window.matchMedia('(max-width: 770px)').matches) {
@@ -95,7 +94,6 @@ export class FeaturedComponent implements OnInit {
 
   getSuggestionVideos() {
     this.page = this.page + 1;
-    console.log('On scroll method called, The page value is ', this.page);
     this.videoService
       .getSuggestedVideos(this.page, this.SIZE)
       .subscribe((videos) => {
@@ -105,7 +103,6 @@ export class FeaturedComponent implements OnInit {
           // If video null means no further video in DB. So reseting the page value to 0
           this.page = 0;
         }
-        console.log(this.videos);
       });
   }
 

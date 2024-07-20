@@ -44,7 +44,6 @@ export class ShortsPageComponent
   ) {}
 
   ngAfterViewInit(): void {
-    console.log(this.shortsContainerElement.nativeElement);
     // this.callIntersectionObserver();
   }
 
@@ -58,12 +57,8 @@ export class ShortsPageComponent
       threshold: 0.5,
     };
 
-    console.log(this.document.querySelectorAll('.vid-shorts'));
     this.observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        // this.userService.playShorts(true);
-        console.log('The current shorts on foucs');
-        console.log(entries[0].target);
       }
     }, options);
 
@@ -98,10 +93,5 @@ export class ShortsPageComponent
     });
   }
 
-  onVisible() {
-    // console.log('From compone');
-    // this.playShorts = true;
-    // this.shortsService.playShortsVideo(true);
-    // this.userService.playShortsOnFocus.emit(true);
-  }
+  onVisible() {}
 }

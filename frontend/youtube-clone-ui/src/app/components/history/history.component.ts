@@ -67,12 +67,13 @@ export class HistoryComponent implements OnInit {
       this.userService
         .getWatchedVideos(this.page, this.size)
         .subscribe((videos) => {
-          console.log(videos);
           videos = videos;
-
-          this.groupByDays(videos);
-
-          this.isDataAvailable = true;
+          if (videos && videos.length > 0) {
+            this.groupByDays(videos);
+            this.isDataAvailable = true;
+          } else {
+            this.unAuthUIInfoDesc = 'You yet to watch videos!';
+          }
         });
     }
   }
@@ -105,8 +106,6 @@ export class HistoryComponent implements OnInit {
       this.videosGroupedByDay,
       groupByDay
     );
-
-    console.log(this.videosGroupedByDay);
   }
 
   mergeDictionary(existing: any, newDict: any) {

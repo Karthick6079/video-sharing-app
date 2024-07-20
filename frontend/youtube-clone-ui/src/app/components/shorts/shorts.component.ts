@@ -62,7 +62,7 @@ export class ShortsComponent implements OnInit {
         .likeVideo(String(this.video?.id), this.currentUser.id)
         .subscribe((video: VideoDto) => {
           this.isLikedVideo = true;
-          this.video = video;
+          this.video.likes = video.likes;
         });
     }
   }
@@ -72,7 +72,7 @@ export class ShortsComponent implements OnInit {
         .dislikeVideo(String(this.video?.id), this.currentUser.id)
         .subscribe((video: VideoDto) => {
           this.isDisLikedVideo = true;
-          this.video = video;
+          this.video.dislikes = video.dislikes;
         });
     }
   }

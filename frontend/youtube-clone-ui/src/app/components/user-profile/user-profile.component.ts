@@ -15,7 +15,7 @@ export class UserProfileComponent {
   unAuthUIInfotitle = 'Enjoy your favorite videos';
   unAuthUIInfoDesc = `Sign in to access videos that you’ve liked`;
 
-  watchedVideos!: VideoDto[];
+  likedVideos!: VideoDto[];
   isDataAvailable = false;
   isAuthenticated!: boolean;
   page: number = 0;
@@ -67,10 +67,15 @@ export class UserProfileComponent {
       this.userService
         .getLikedVideos(this.page, this.size)
         .subscribe((videos) => {
-          console.log(videos);
-          this.watchedVideos = videos;
-          this.groupByDays(videos);
-          this.isDataAvailable = true;
+          this.likedVideos = videos;
+
+          if (videos && videos.length > 0) {
+            this.groupByDays(videos);
+            this.isDataAvailable = true;
+          } else {
+            this.unAuthUIInfoDesc =
+              'You yet to like videos. Like your favorite videos and get personalized recommendations';
+          }
         });
     }
   }
@@ -103,8 +108,6 @@ export class UserProfileComponent {
       this.videosGroupedByDay,
       groupByDay
     );
-
-    console.log(this.videosGroupedByDay);
   }
 
   mergeDictionary(existing: any, newDict: any) {

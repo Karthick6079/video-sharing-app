@@ -19,7 +19,7 @@ public interface LikeVideoRepo extends MongoRepository<LikeVideo, String> {
              "{$match: { userId: ?0 }}",
              "{$lookup: {from: 'videos',let: {videoId: '$videoId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$videoId'}]}}}],as: 'video_info'}}",
              "{$unwind: '$video_info'}",
-             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
+             "{$lookup: {from: 'users',let: {userId: '$video_info.userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
              "{$sort: {likedOn: -1}}",
              "{$skip: ?1}",
              "{$limit: ?2}",

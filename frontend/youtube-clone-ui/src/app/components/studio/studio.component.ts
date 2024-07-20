@@ -23,13 +23,10 @@ export class StudioComponent implements OnInit, OnDestroy {
     this.items = [
       {
         label: 'Upload',
-        // command:(event:any) => { console.log("Cannot go to previous tab") }
-        // routerLink: 'upload',
       },
       {
         label: 'Edit Video Details',
         command: (event: any) => {},
-        // routerLink: 'edit-video-info',
       },
     ];
     this.userService.hideSearchBar(true);

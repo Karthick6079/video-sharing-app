@@ -7,6 +7,15 @@
             <hr>
         </div>
     </div>
+    <div *ngIf="!videosGroupedByDay">
+        <div class="not-subscribed-info-box">
+            <app-unauth-ui
+            materialIconName="thumb_up_off_alt"
+            [infoTextTitle]="unAuthUIInfotitle"
+            [infoTextDesc]="unAuthUIInfoDesc"
+            [toHome]="true"></app-unauth-ui>
+        </div>
+    </div>
 </div>
 
 <h1 *ngIf="!isAuthenticated">

@@ -21,15 +21,15 @@
 
 /*Modifying the primeng styles*/
 
-:host::ng-deep .p-button.p-button-lg .p-button-icon{
+:host::ng-deep .engagement-panel .p-button.p-button-lg .p-button-icon{
     font-size: 1.5em;
 }
 
-:host::ng-deep .p-button.p-button-icon-only.p-button-rounded{
+:host::ng-deep .engagement-panel .p-button.p-button-icon-only.p-button-rounded{
     height: 3.75em;
 }
 
-:host::ng-deep .p-button.p-button-icon-only{
+:host::ng-deep .engagement-panel .p-button.p-button-icon-only{
     width: 3.75em;
 }
 
@@ -55,19 +55,19 @@
         margin-top: 0;
     }
 
-    :host::ng-deep .p-button.p-button-outlined {
+    :host::ng-deep .engagement-panel .p-button.p-button-outlined {
         color: #fff;
     }
 
-    :host::ng-deep .p-button.p-button-icon-only.p-button-rounded{
+    :host::ng-deep .engagement-panel .p-button.p-button-icon-only.p-button-rounded{
         height: 3.25em;
     }
     
-    :host::ng-deep .p-button.p-button-icon-only{
+    :host::ng-deep .engagement-panel  .p-button.p-button-icon-only{
         width: 3.25em;
     }
 
-    :host::ng-deep .p-button.p-button-lg .p-button-icon{
+    :host::ng-deep .engagement-panel .p-button.p-button-lg .p-button-icon{
         font-size: 1.25em;
     }
 

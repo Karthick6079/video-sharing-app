@@ -38,11 +38,11 @@
 
     
     
-    <p-dialog [header]="video.title" [(visible)]="visible" [modal]="false" [style]="{ width: '50rem', height: '53rem' }"
+    <p-dialog [header]="video.title" [(visible)]="visible" [modal]="false" [style]="{ width: '45rem', height: '50rem' }"
         [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" position="right">
         <div class="comments">
             <div class="add-comment">
-                <app-comment [video]="video"></app-comment>
+                <app-comment [video]="video" [currentUser]="currentUser"></app-comment>
             </div>
         </div>
     </p-dialog>

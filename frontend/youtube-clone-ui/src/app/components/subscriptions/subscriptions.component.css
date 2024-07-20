@@ -5,3 +5,7 @@
    cursor: pointer;
    padding: 1.6em 0;
 }
+
+.content:has(.not-subscribed-info-box) {
+   grid-template-columns: repeat(auto-fit, minmax(340px,1fr));
+}

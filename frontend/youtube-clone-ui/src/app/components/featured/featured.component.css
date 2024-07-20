@@ -124,14 +124,14 @@ hr{
 /*Desktops, large screens*/
 @media only screen and (min-width: 1025px) and (max-width:1200px){
     .chip-content{
-        max-width: 82vw;
+        max-width: 80vw;
     }
 }
 
 /*Extra large screens, TV*/
 @media only screen and (min-width: 1200px) {
     .chip-content{
-        max-width: 82vw;
+        max-width: 80vw;
     }
 }
 

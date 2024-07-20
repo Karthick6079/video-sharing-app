@@ -32,7 +32,7 @@
     align-items: center;
     position: absolute;
     right: 0;
-    top: 150px;
+    top: 130px;
     justify-content: space-between;
     margin: 0 10px;
     height: 300px;
@@ -55,7 +55,7 @@
     font-size: 1.2em;
 }
 
-:host::ng-deep .p-button.p-button-text{
+:host::ng-deep .engagement-panel .p-button.p-button-text{
     color: #fff;
 }
 
@@ -69,7 +69,7 @@ span{
     .engagement-panel{
         position: absolute;
         right: 0;
-        top: 100px;
+        top: 90px;
         height: 275px;
         margin: 0 8px;
         /* background-image: linear-gradient(to right, rgba(255, 0, 0, 0), rgb(0 0 0)); */
@@ -79,7 +79,7 @@ span{
         color: #fff;
     }
 
-    :host::ng-deep .p-button.p-button-text{
+    :host::ng-deep .engagement-panel .p-button.p-button-text{
         color: #fff;
     }
 

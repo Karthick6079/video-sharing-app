@@ -31,8 +31,6 @@ export class LoginService implements OnInit {
   }
 
   logout() {
-    console.log('Logoff method called');
-
     this.oidcSecurityService.logoffAndRevokeTokens();
     this.oidcSecurityService.logoffLocal();
     localStorage.removeItem('loginBeforeUrl');

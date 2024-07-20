@@ -1,7 +1,15 @@
 <div  *ngIf="isAuthenticated">
     <div class="content" infiniteScroll [infiniteScrollDistance]="1" (scrolled)="getSubscriptionVideos()">
-        @if(isDataAvailable){
+        @if(isDataAvailable && subscribedChannalVideos){
             <app-video-card *ngFor="let video of subscribedChannalVideos " [video]="video"></app-video-card>
+        }@else if(!subscribedChannalVideos){
+            <div class="not-subscribed-info-box">
+                <app-unauth-ui
+                materialIconName="subscriptions"
+                [infoTextTitle]="unAuthUIInfotitle"
+                [infoTextDesc]="unAuthUIInfoDesc"
+                [toHome]="true"></app-unauth-ui>
+            </div>
         }@else {
             <app-homepage-skeleton *ngFor="let num of [1,2,3,4,5,6]"></app-homepage-skeleton>
         }

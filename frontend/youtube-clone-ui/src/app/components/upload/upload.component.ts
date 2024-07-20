@@ -81,9 +81,7 @@ export class UploadComponent {
       .navigate(['../edit-video-info', this.videoId], {
         relativeTo: this.activatedRoute,
       })
-      .then((value) => {
-        console.log('Navigate successfull');
-      });
+      .then((value) => {});
   }
 
   successMessage() {

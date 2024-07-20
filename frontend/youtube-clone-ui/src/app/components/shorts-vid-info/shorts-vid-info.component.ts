@@ -39,7 +39,6 @@ export class ShortsVidInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.video);
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
         this.isAuthenticated = isAuthenticated;

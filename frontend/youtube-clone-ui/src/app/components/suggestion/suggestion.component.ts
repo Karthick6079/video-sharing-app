@@ -16,9 +16,7 @@ export class SuggestionComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    console.log(this.displayVideo);
-  }
+  ngOnInit(): void {}
 
   displayVideoOrThumbnail(value: boolean) {
     if (this.video) {
@@ -34,11 +32,6 @@ export class SuggestionComponent implements OnInit {
   displayVideo: boolean = true;
 
   watchVideo() {
-    console.log('The navigate method called from suggestion bar');
-    // this.router.navigateByUrl('/watch/' + this.video.id);
-    // this.router
-    //   .navigateByUrl('/', { skipLocationChange: true })
-    //   .then(() => this.router.navigate(['./watch', this.video.id]));
     this.router.navigate(['../../watch', this.video.id]);
   }
 }

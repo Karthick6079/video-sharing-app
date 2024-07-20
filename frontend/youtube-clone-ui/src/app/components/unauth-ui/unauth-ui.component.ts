@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-unauth-ui',
@@ -7,7 +8,7 @@ import { LoginService } from '../../services/login/login.service';
   styleUrl: './unauth-ui.component.css',
 })
 export class UnauthUiComponent implements OnInit {
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   @Input()
   materialIconName!: string;
@@ -18,11 +19,18 @@ export class UnauthUiComponent implements OnInit {
   @Input()
   infoTextDesc!: string;
 
+  @Input()
+  toHome: boolean = false;
+
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
   }
 
   signin() {
     this.loginService.login();
+  }
+
+  navigateToHome() {
+    this.router.navigateByUrl('/');
   }
 }

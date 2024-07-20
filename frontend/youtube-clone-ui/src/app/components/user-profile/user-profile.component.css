@@ -19,6 +19,7 @@
 
     :host::ng-deep .suggestion-thumbnail{
         width: 100% !important;
+        height: 80% !important;
         margin-right: 0 !important;
     }
 

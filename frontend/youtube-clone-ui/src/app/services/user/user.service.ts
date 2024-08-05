@@ -9,6 +9,7 @@ import {
   WatchedVideoDTO,
 } from '../../dto/video-dto';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,7 @@ export class UserService implements OnInit {
   }
 
   private getUserBaseUrl(): string {
-    return AppSettings.HOST + AppSettings.SERVICE_NAME + '/user';
+    return environment.HOST + environment.SERVICE_NAME + '/user';
   }
 
   registerUser(): Observable<UserDto> {

@@ -1,10 +1,21 @@
+spring:
+  profiles:
+    active: dev
+
 logging:
  level:
   io:
    awspring:
     cloud: debug
 
+server:
+  port: 8081
+  address: 0.0.0.0
+---
 spring:
+  config:
+    activate:
+      on-profile: dev
   data:
     mongodb:
       uri: ${MONGODB_URI}

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { UploadVideoResponse } from '../../dto/upload-video-response';
 import { FormGroup } from '@angular/forms';
 import { CommentDTO, VideoDto } from '../../dto/video-dto';
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +29,7 @@ export class VideoService {
   constructor(private http: HttpClient) {}
 
   getVideoBaseUrl(): string {
-    return AppSettings.HOST + AppSettings.SERVICE_NAME + '/video';
+    return environment.HOST + environment.SERVICE_NAME + '/video';
   }
 
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {

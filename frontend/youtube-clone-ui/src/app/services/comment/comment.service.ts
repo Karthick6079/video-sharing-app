@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { CommentDTO } from '../../dto/video-dto';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class CommentService {
   constructor(private httpclient: HttpClient) {}
 
   getVideoBaseUrl(): string {
-    return AppSettings.HOST + AppSettings.SERVICE_NAME + '/video';
+    return environment.HOST + environment.SERVICE_NAME + '/video';
   }
 
   addComment(videoId: string, commentBody: any) {

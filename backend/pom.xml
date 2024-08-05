@@ -7,21 +7,24 @@
     <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
     <!-- that they should prefer consuming it instead. -->
     <!-- do_not_remove: published-with-gradle-metadata -->
-    <modelVersion>4.0.0</modelVersion>
-
 
     <parent>
-        <artifactId>youtube-clone</artifactId>
-        <groupId>com.karthick</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <artifactId>backend</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.karthick</groupId>
+    <artifactId>video-sharing-app-backend</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <spring-aws-version>3.1.0</spring-aws-version>
+        <java.version>17</java.version>
     </properties>
 
 
@@ -125,5 +128,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>avk-video-sharing-app</finalName>
     </build>
 </project>

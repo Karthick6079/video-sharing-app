@@ -1,0 +1,11 @@
+**/build
+**/.idea
+**/.settings
+**/.run
+**/.git
+**/READMD.md
+**/LICENSE
+**/coverage
+**/.env
+**/.editorconfig
+**/.aws

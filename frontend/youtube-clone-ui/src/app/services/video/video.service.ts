@@ -29,7 +29,7 @@ export class VideoService {
   constructor(private http: HttpClient) {}
 
   getVideoBaseUrl(): string {
-    return environment.HOST + environment.SERVICE_NAME + '/video';
+    return environment.SERVICE_NAME + '/video';
   }
 
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {

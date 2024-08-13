@@ -14,7 +14,7 @@ export class CommentService {
   constructor(private httpclient: HttpClient) {}
 
   getVideoBaseUrl(): string {
-    return environment.HOST + environment.SERVICE_NAME + '/video';
+    return environment.SERVICE_NAME + '/video';
   }
 
   addComment(videoId: string, commentBody: any) {

@@ -11,13 +11,13 @@ export class UnauthUiComponent implements OnInit {
   constructor(private loginService: LoginService, private router: Router) {}
 
   @Input()
-  materialIconName!: string;
+  materialIconName: string = 'highlight_off';
 
   @Input()
-  infoTextTitle!: string;
+  infoTextTitle: string = 'Unauthorized Access';
 
   @Input()
-  infoTextDesc!: string;
+  infoTextDesc: string = 'Please sign in and access the content';
 
   @Input()
   toHome: boolean = false;

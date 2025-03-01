@@ -1,7 +1,7 @@
 <div class="file-upload-ui">
     <p-toast styleClass="add-color" sticky=true></p-toast>
     
-    <p-fileUpload name="file[]" (uploadHandler)="onUpload($event)" accept="video/*" [maxFileSize]=104857600 [fileLimit]="1"
+    <p-fileUpload name="file[]" (uploadHandler)="onUpload($event)" accept="video/*" [maxFileSize]=52428800 [fileLimit]="1"
         [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true" [previewWidth]="50"
         chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button" life="3000">
         <ng-template pTemplate="content">

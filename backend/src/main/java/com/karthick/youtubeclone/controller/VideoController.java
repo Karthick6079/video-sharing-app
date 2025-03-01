@@ -5,6 +5,8 @@ import com.karthick.youtubeclone.dto.VideoUserInfoDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,11 +21,14 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    private final Logger logger = LoggerFactory.getLogger(VideoController.class);
+
 
 
     @PostMapping(path = "/upload")
     @ResponseStatus(HttpStatus.CREATED)
     public UploadVideoResponse upload(@RequestParam("file") MultipartFile file){
+        logger.info("The upload file called in controller");
         return videoService.uploadFile(file);
     }
 

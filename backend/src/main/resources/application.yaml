@@ -3,14 +3,16 @@ spring:
     active: dev
 
 logging:
- level:
-  io:
-   awspring:
-    cloud: debug
+  level:
+    io:
+      awspring:
+        cloud: debug
 
 server:
-  port: 8081
+  port: 8080
   address: 0.0.0.0
+
+
 ---
 spring:
   config:
@@ -22,8 +24,8 @@ spring:
       database: videoStreamingDB
   servlet:
     multipart:
-      max-file-size: 200MB
-      max-request-size: 200MB
+      max-file-size: 50MB
+      max-request-size: 100MB
   services:
     path: /api/youtube
   cloud:
@@ -35,6 +37,8 @@ spring:
         static: ap-south-1
       stack:
         auto: false
+      s3:
+        enabled: true
   security:
     oauth2:
       resourceserver:
@@ -42,6 +46,18 @@ spring:
           issuer-uri: https://karthick-v.us.auth0.com/
   auth:
     user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
+  aws-s3:
+    bucket-name: amzn-s3-videostreaming-app-bucket
+logging:
+  level:
+    root: INFO
+    org.package: INFO
+    io:
+      awspring:
+        cloud: debug
+
+
+
 
     
 

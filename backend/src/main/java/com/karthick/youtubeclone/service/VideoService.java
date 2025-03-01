@@ -2,6 +2,8 @@ package com.karthick.youtubeclone.service;
 
 import com.karthick.youtubeclone.dto.*;
 import com.karthick.youtubeclone.entity.*;
+import com.karthick.youtubeclone.exceptions.BusinessException;
+import com.karthick.youtubeclone.exceptions.FileSizeExceededException;
 import com.karthick.youtubeclone.repository.LikeVideoRepo;
 import com.karthick.youtubeclone.repository.VideoRepository;
 import com.karthick.youtubeclone.repository.WatchedVideoRepo;
@@ -17,11 +19,13 @@ import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -49,30 +53,48 @@ public class VideoService {
 
     private final LikeVideoRepo likeVideoRepo;
 
+    private final double MB_MULTIPLIER = 0.00000095367432;
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String allowedVideoFileSize;
+
 
     public UploadVideoResponse uploadFile(MultipartFile file) {
+        validateUploadedFileSize(file, allowedVideoFileSize);
         String url = s3Service.uploadFile(file);
-
         Video video = new Video();
         video.setVideoUrl(url);
-
         Video savedVideo =  videoRepo.save(video);
-
         return new UploadVideoResponse(url, savedVideo.getId());
 
     }
 
     public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {
+        validateUploadedFileSize(file, allowedVideoFileSize);
         String url = s3Service.uploadFile(file);
 
         Video savedVideo = findVideoById(videoId)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find video by Id" + videoId));
+                .orElseThrow(() -> new BusinessException("Cannot find video by Id" + videoId));
         savedVideo.setThumbnailUrl(url);
 
         videoRepo.save(savedVideo);
 
         return new UploadVideoResponse(url, savedVideo.getId());
 
+    }
+
+    public void validateUploadedFileSize(MultipartFile file, String allowedSize){
+        if(file == null){
+            throw new BusinessException("Uploaded file is empty!");
+        }
+        double actualSize = file.getSize() * MB_MULTIPLIER;
+
+        double allowedSizeDouble =  Double.parseDouble(allowedSize.substring(0, allowedSize.length()-2));
+
+        if(actualSize > allowedSizeDouble){
+            String message = "The " + file.getOriginalFilename() + " exceeded the application's allowed size = " + allowedSize;
+            throw new FileSizeExceededException(message);
+        }
     }
 
     public VideoDTO editVideoMetaData(VideoDTO videoDto) {

@@ -16,6 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): any {
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      console.log('token', token);
       const clonedReq = req.clone({
         setHeaders: { Authorization: 'Bearer ' + token },
       });

@@ -21,6 +21,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { ShortsPageComponent } from './components/shorts-page/shorts-page.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { authGuardGuard } from './guards/auth-guard.guard';
+import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
         component: SearchResultsComponent,
       },
     ],
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthUiComponent,
   },
   {
     path: 'login/callback',

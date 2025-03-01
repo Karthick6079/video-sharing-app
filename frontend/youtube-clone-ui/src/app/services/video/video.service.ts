@@ -1,11 +1,17 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { UploadVideoResponse } from '../../dto/upload-video-response';
 import { FormGroup } from '@angular/forms';
 import { CommentDTO, VideoDto } from '../../dto/video-dto';
 import { environment } from '../../../environments/environment';
+import { FileSizeExceededException } from '../../exceptions/file-size-exceeded.exception';
 @Injectable({
   providedIn: 'root',
 })
@@ -33,10 +39,18 @@ export class VideoService {
   }
 
   uploadVideo(formData: FormData): Observable<UploadVideoResponse> {
-    return this.http.post<UploadVideoResponse>(
-      this.getVideoBaseUrl() + this.UPLOAD_URL,
-      formData
-    );
+    return this.http
+      .post<UploadVideoResponse>(
+        this.getVideoBaseUrl() + this.UPLOAD_URL,
+        formData
+      )
+      .pipe(catchError(this.handleUploadFileErrorRespone));
+  }
+
+  handleUploadFileErrorRespone(err: HttpErrorResponse) {
+    console.log(err);
+
+    return throwError(() => err);
   }
 
   uploadThumnail(
@@ -44,10 +58,17 @@ export class VideoService {
     videoId: string
   ): Observable<UploadVideoResponse> {
     formData.append('videoId', videoId);
-    return this.http.post<UploadVideoResponse>(
-      this.getVideoBaseUrl() + this.ThUMBNAIL_URL,
-      formData
-    );
+    return this.http
+      .post<UploadVideoResponse>(
+        this.getVideoBaseUrl() + this.ThUMBNAIL_URL,
+        formData
+      )
+      .pipe(
+        catchError((error) => {
+          console.log('File Upload error', error);
+          throw new FileSizeExceededException();
+        })
+      );
   }
 
   editVideoMeta(requestBody: string): Observable<VideoDto> {

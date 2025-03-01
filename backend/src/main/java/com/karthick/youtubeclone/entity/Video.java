@@ -29,7 +29,7 @@ public class Video {
     private VideoStatus videoStatus;
     private String videoUrl;
     private String thumbnailUrl;
-    private List<Comment> commentList = new CopyOnWriteArrayList<>();
+//    private List<Comment> commentList = new CopyOnWriteArrayList<>();
     private AtomicLong viewCount = new AtomicLong(0);
     private LocalDateTime publishedDateAndTime;
 
@@ -53,8 +53,8 @@ public class Video {
         this.getDisLikes().decrementAndGet();
     }
 
-    public void addComment(Comment comment) {
-        commentList.add(comment);
-    }
+//    public void addComment(Comment comment) {
+//        commentList.add(comment);
+//    }
 
 }

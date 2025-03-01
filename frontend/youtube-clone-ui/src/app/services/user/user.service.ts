@@ -57,7 +57,7 @@ export class UserService implements OnInit {
   }
 
   private getUserBaseUrl(): string {
-    return environment.HOST + environment.SERVICE_NAME + '/user';
+    return environment.SERVICE_NAME + '/user';
   }
 
   registerUser(): Observable<UserDto> {

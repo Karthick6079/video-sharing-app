@@ -81,7 +81,8 @@
               "buildTarget": "youtube-clone-ui:build:prod"
             },
             "dev": {
-              "buildTarget": "youtube-clone-ui:build:dev"
+              "buildTarget": "youtube-clone-ui:build:dev",
+              "proxyConfig": "./proxy.conf.json"
             }
           },
           "defaultConfiguration": "dev"

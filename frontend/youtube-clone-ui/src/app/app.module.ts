@@ -76,6 +76,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
 import { ShortsScrollDirective } from './directives/shorts-scroll.directive';
 import { AppObserverDirective } from './directives/app-observer.directive';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -153,20 +154,19 @@ import { AppObserverDirective } from './directives/app-observer.directive';
     TimeagoModule.forRoot(),
     AuthModule.forRoot({
       config: {
-        authority: 'https://karthick-v.us.auth0.com',
+        authority: environment.AUTH0_CONFIG.AUTHORITY,
         // redirectUrl: window.location.origin,
-        redirectUrl: window.location.origin + '/login/callback',
-        postLogoutRedirectUri: window.location.origin,
-        clientId: 'w4oDolUdBgotpHMD1VLgTwNW46KDNr5E',
-        scope:
-          'openid profile email offline_access given_name family_name nickname phone address picture',
-        responseType: 'code',
-        silentRenew: true,
-        useRefreshToken: true,
-        logLevel: LogLevel.Debug,
-        secureRoutes: ['http://localhost:8080/'],
+        redirectUrl: environment.AUTH0_CONFIG.REDIRECT_URL,
+        postLogoutRedirectUri: environment.AUTH0_CONFIG.POSTLOGOUT_REDIRECTURI,
+        clientId: environment.AUTH0_CONFIG.CLIENT_ID,
+        scope: environment.AUTH0_CONFIG.SCOPE,
+        responseType: environment.AUTH0_CONFIG.RESPONSE_TYPE,
+        silentRenew: environment.AUTH0_CONFIG.SILENT_RENEW,
+        useRefreshToken: environment.AUTH0_CONFIG.USE_REFRESH_TOKEN,
+        logLevel: environment.AUTH0_CONFIG.LOGLEVEL,
+        secureRoutes: environment.AUTH0_CONFIG.SECURE_ROUTES,
         customParamsAuthRequest: {
-          audience: 'http://localhost:8080',
+          audience: environment.AUTH0_CONFIG.AUDIENCE,
         },
       },
     }),

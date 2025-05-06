@@ -44,6 +44,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://karthick-v.us.auth0.com/
+          audience: https://api.avkarthick.in  
   auth:
     user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
   aws-s3:

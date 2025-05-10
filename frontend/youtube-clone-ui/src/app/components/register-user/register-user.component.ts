@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-register-user',
@@ -9,14 +10,19 @@ import { UserService } from '../../services/user/user.service';
   styleUrl: './register-user.component.css',
 })
 export class RegisterUserComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, 
+	      private router: Router,
+	     private oidcSecurityService: OidcSecurityService) {}
 
   isAPILoading = false;
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.registerUserInDB();
-    }, 2000);
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated }) => {
+      console.log("isAuthenticated: ", isAuthenticated);
+      if (isAuthenticated) {
+        this.registerUserInDB();
+      }
+    })
   }
 
   registerUserInDB() {

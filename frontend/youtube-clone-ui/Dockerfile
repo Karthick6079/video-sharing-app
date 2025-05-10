@@ -10,7 +10,9 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --prod
+RUN npm run build --omit=dev
+
+#RUN npm run build
 
 #scp -r dist/* ubuntu@ip-172-31-1-255:/var/www/html/
 

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { AppSettings } from '../../constants/AppSettings';
 import { Observable, Subject } from 'rxjs';
@@ -61,9 +61,14 @@ export class UserService implements OnInit {
   }
 
   registerUser(): Observable<UserDto> {
+    // const token = this.oidcSecurityService.getAccessToken();
+    // const headers = new HttpHeaders({
+    //   Authorization: `Bearer ${token}`,
+    // });
     return this.http.post<UserDto>(
       this.getUserBaseUrl() + this.REGISTER_URL,
-      null
+      null,
+      // {headers}
     );
   }
 

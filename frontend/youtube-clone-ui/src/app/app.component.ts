@@ -18,11 +18,10 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.oidcSecurityService.checkAuth().subscribe(() => {});
-
     this.userService.showLessSideBarOverlaySubject.subscribe((value) => {
       this.showSidebarOnOverlay = value;
     });
+    
   }
 
   closeSideBar() {

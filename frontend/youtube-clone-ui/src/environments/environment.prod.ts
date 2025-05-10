@@ -13,8 +13,8 @@ export const environment = {
     RESPONSE_TYPE: 'code',
     SILENT_RENEW: true,
     USE_REFRESH_TOKEN: true,
-    LOGLEVEL: 1,
-    SECURE_ROUTES: ['https://www.avkarthick.in/api'],
+    LOGLEVEL: 0,
+    SECURE_ROUTES: 'https://www.avkarthick.in/api',
     AUDIENCE: 'https://api.avkarthick.in',
   }
 }

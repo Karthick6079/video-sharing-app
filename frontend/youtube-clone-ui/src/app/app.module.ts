@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from 'angular-auth-oidc-client';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { UploadComponent } from './components/upload/upload.component';
 import { EditVideoMetadataComponent } from './components/edit-video-metadata/edit-video-metadata.component';
 import { StudioComponent } from './components/studio/studio.component';
@@ -164,7 +164,7 @@ import { environment } from '../environments/environment';
         silentRenew: environment.AUTH0_CONFIG.SILENT_RENEW,
         useRefreshToken: environment.AUTH0_CONFIG.USE_REFRESH_TOKEN,
         logLevel: environment.AUTH0_CONFIG.LOGLEVEL,
-        secureRoutes: environment.AUTH0_CONFIG.SECURE_ROUTES,
+        secureRoutes: [environment.AUTH0_CONFIG.SECURE_ROUTES],
         customParamsAuthRequest: {
           audience: environment.AUTH0_CONFIG.AUDIENCE,
         },

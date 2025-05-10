@@ -24,76 +24,88 @@ public class VideoController {
     private final Logger logger = LoggerFactory.getLogger(VideoController.class);
 
 
-
     @PostMapping(path = "/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public UploadVideoResponse upload(@RequestParam("file") MultipartFile file){
-        logger.info("The upload file called in controller");
+    public UploadVideoResponse upload(@RequestParam("file") MultipartFile file) {
+        logger.info("The video controller received an request to upload video file to AWS S3");
         return videoService.uploadFile(file);
     }
 
     @PostMapping(path = "/thumbnail")
     @ResponseStatus(HttpStatus.CREATED)
-    public UploadVideoResponse uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam String videoId){
-       return videoService.uploadThumbnail(file, videoId);
+    public UploadVideoResponse uploadThumbnail(@RequestParam("file") MultipartFile file, @RequestParam String videoId) {
+        logger.info("Upload video thumbnail to AWS S3 request received in video controller");
+        return videoService.uploadThumbnail(file, videoId);
     }
 
     @PutMapping("/editMetadata")
     @ResponseStatus(HttpStatus.OK)
-    public VideoDTO editVideoMetaData(@RequestBody VideoDTO videoDto){
-      return videoService.editVideoMetaData(videoDto);
+    public VideoDTO editVideoMetaData(@RequestBody VideoDTO videoDto) {
+        logger.info("Update video metadata in database request received in video controller");
+        logger.debug("The received video meta data: {}", videoDto);
+        return videoService.editVideoMetaData(videoDto);
     }
 
     @GetMapping("/watch/{videoId}")
     @ResponseStatus(HttpStatus.OK)
-    public VideoUserInfoDTO getVideoForWatch(@PathVariable String videoId){
+    public VideoUserInfoDTO getVideoForWatch(@PathVariable String videoId) {
+        logger.info("Get video information from database request received in video controller");
         return videoService.getVideoUserInfo(videoId);
     }
 
     @PutMapping("/watch/{videoId}/like")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO likeVideo(@PathVariable String videoId, @RequestParam String userId){
+    public VideoDTO likeVideo(@PathVariable String videoId, @RequestParam String userId) {
+        logger.info("Update like count of video request received in  video controller");
         return videoService.likeVideo(videoId, userId);
     }
 
 
     @PutMapping("/watch/{videoId}/dislike")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO dislikeVideo(@PathVariable String videoId, @RequestParam String userId){
+    public VideoDTO dislikeVideo(@PathVariable String videoId, @RequestParam String userId) {
+        logger.info("Update dislike count of video request received in video controller");
         return videoService.dislikeVideo(videoId, userId);
     }
 
     @GetMapping("/suggestion-videos")
     @ResponseStatus(HttpStatus.OK)
-    public List<VideoUserInfoDTO> getSuggestedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
-                                             @RequestParam( value = "size", defaultValue = "6") int size){
-
+    public List<VideoUserInfoDTO> getSuggestedVideos(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                     @RequestParam(value = "size", defaultValue = "6") int size) {
+        logger.info("Get new suggestion videos request received in video controller");
+        logger.debug("The suggestion videos for page: {} and size: {}", page, size);
         return videoService.getSuggestionVideos(page, size);
     }
 
     @GetMapping("/short-video")
-    public List<VideoUserInfoDTO> getShortsVideo(){
+    public List<VideoUserInfoDTO> getShortsVideo() {
+        logger.info("Get shorts videos request received on video controller");
         return videoService.getShortVideo();
     }
 
     @PostMapping("/subscription-videos")
-    public List<VideoUserInfoDTO> getSubscriptionVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
-                                                 @RequestParam( value = "size", defaultValue = "6") int size){
+    public List<VideoUserInfoDTO> getSubscriptionVideos(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                        @RequestParam(value = "size", defaultValue = "6") int size) {
+        logger.info("Get new subscription videos request received in video controller");
+        logger.debug("The subscription videos for page: {} and size: {}", page, size);
         return videoService.getSubscriptionVideos(page, size);
     }
 
     @GetMapping("/search")
-    public List<VideoUserInfoDTO> getSearchVideos(@RequestParam String searchText){
+    public List<VideoUserInfoDTO> getSearchVideos(@RequestParam String searchText) {
+        logger.info("Search the video based user given input text request received on video controller");
         return videoService.getSearchedVideos(searchText);
     }
 
     @GetMapping("/trending-topics")
-    public List<String> getTrendingTopics(){
+    public List<String> getTrendingTopics() {
+        logger.info("Get Trending topics for user request received on video controller");
         return videoService.getTrendingTopics();
     }
 
     @GetMapping("/topic-videos")
-    public List<VideoUserInfoDTO> getVideosByTopic(@RequestParam String topic){
+    public List<VideoUserInfoDTO> getVideosByTopic(@RequestParam String topic) {
+        logger.info("Fetching videos by topic request received on video controller");
         return videoService.getVideosByTopic(topic);
     }
 

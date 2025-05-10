@@ -4,6 +4,8 @@ spring:
 
 logging:
   level:
+    root: INFO
+    org.package: INFO
     io:
       awspring:
         cloud: debug
@@ -48,14 +50,8 @@ spring:
   auth:
     user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
   aws-s3:
-    bucket-name: amzn-s3-videostreaming-app-bucket
-logging:
-  level:
-    root: INFO
-    org.package: INFO
-    io:
-      awspring:
-        cloud: debug
+    bucket-name: ${AWS_S3_BUCKET_NAME}
+
 
 
 

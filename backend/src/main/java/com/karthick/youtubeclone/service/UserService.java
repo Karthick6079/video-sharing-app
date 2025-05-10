@@ -12,6 +12,8 @@ import com.karthick.youtubeclone.servicelogic.UserLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,17 +45,20 @@ public class UserService {
 
     private final String ANONYMOUS_USER = "anonymousUser";
 
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     public UserDTO registerUser(Jwt jwt) {
         User user;
+        logger.info("Fetching logged in user from database");
         user = getUserFromDB(jwt.getSubject());
         if (user != null) {
             removeSubscriberDetailsFromUser(user);
             return convertUsertoUserDto(user, mapper);
         }
-
         // Get User information from auth provider using jwt token
         user = getUserInfoFromAuthProvider(jwt);
+        logger.info("Store newly signed up user information into database ");
         User savedUser = userRepository.save(user);
         removeSubscriberDetailsFromUser(savedUser);
         return convertUsertoUserDto(savedUser, mapper);
@@ -70,6 +75,7 @@ public class UserService {
         User user;
         RestClient restClient = RestClient.create();
         try {
+            logger.info("Getting necessary information from Auth provider using JWT token for user: {}", jwt.getSubject());
             user = restClient.get()
                     .uri(userInfoEndpoint)
                     .header("Authorization", "Bearer " + jwt.getTokenValue())
@@ -81,6 +87,7 @@ public class UserService {
     }
 
     public UserDTO getUserProfileInformation() {
+        logger.info("Getting user profile information using token");
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User savedUser = getUserFromDB(jwt.getSubject());
@@ -89,6 +96,7 @@ public class UserService {
     }
 
     public UserDTO convertUsertoUserDto(User user, ModelMapper mapper) {
+        logger.info("Mapping the user entity values to User DTO");
         if (mapper.getTypeMap(User.class, UserDTO.class) == null) {
             TypeMap<User, UserDTO> typeMapper = mapper.createTypeMap(User.class, UserDTO.class);
             typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
@@ -98,6 +106,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
+        logger.info("Getting currently logged in user information based on access token");
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
         if(securityContext != null && ANONYMOUS_USER.equals(securityContext.getAuthentication().getPrincipal())){
@@ -109,11 +118,13 @@ public class UserService {
     }
 
     public User getUserFromDB(String sub) {
+        logger.info("Getting user from database using jwt sub");
         Optional<User> userOp = userRepository.findBySub(sub);
         return userOp.orElse(null);
     }
 
     public User getUserById(String userId) {
+        logger.info("Getting user from database using userid");
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User cannot find using id - " + userId));
     }
@@ -123,14 +134,19 @@ public class UserService {
     }
 
     public Map<String, Object> subscribe(String userId) {
+
         User currentUser = getCurrentUser();
         User subscribeToUser = getUserById(userId);
 
+        logger.info("The user: {} subscribing to user: {}", currentUser.getName(), subscribeToUser.getName());
+
         userLogic.subscribe(currentUser, subscribeToUser);
         userRepository.saveAll(Arrays.asList(currentUser, subscribeToUser));
+        logger.info("Subscribed information updated in database");
 
         UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
         Map<String, Object> returnMap = new LinkedHashMap<>();
+        logger.info("The updated subscribers count and current user user DTO information sent to frontend");
         returnMap.put("currentUser", currentUserDTO);
         returnMap.put("videoUploadedSubscribersCount", subscribeToUser.getSubscribersCount());
 
@@ -143,11 +159,14 @@ public class UserService {
         User currentUser = getCurrentUser();
         User unsubscribeToUser = getUserById(userId);
 
+        logger.info("The user: {} unsubscribing to user: {}", currentUser.getName(), unsubscribeToUser.getName());
+
         userLogic.unsubscribe(currentUser, unsubscribeToUser);
         userRepository.saveAll(Arrays.asList(currentUser, unsubscribeToUser));
-
+        logger.info("unsubscribed information updated in database");
         UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
         Map<String, Object> returnMap = new LinkedHashMap<>();
+        logger.info("The updated subscribers count and current user user DTO information sent to frontend");
         returnMap.put("currentUser", currentUserDTO);
         returnMap.put("videoUploadedSubscribersCount", unsubscribeToUser.getSubscribersCount());
         return returnMap;

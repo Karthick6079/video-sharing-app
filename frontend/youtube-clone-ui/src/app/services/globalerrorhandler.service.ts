@@ -1,6 +1,5 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { GenericException } from '../exceptions/generic.exception';
 
 @Injectable({
   providedIn: 'root',
@@ -8,12 +7,14 @@ import { GenericException } from '../exceptions/generic.exception';
 export class GlobalerrorhandlerService implements ErrorHandler {
   constructor(private messageService: MessageService) {}
 
-  handleError(error: GenericException): void {
-    console.log(error);
+  handleError(error: any): void {
+    console.log("error", error);
+   
     this.messageService.add({
-      severity: error.severity,
-      summary: error.message,
-      detail: error.messageContent,
+      severity: error.severity ? error.severity: 'error',
+      summary: error.message ? error.message: 'Error',
+      detail: error.messageContent ? error.messageContent: "Error occurred!!",
+      sticky: true,
     });
   }
 }

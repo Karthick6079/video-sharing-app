@@ -14,7 +14,7 @@ export class SubscriptionsComponent implements OnInit {
   unAuthUIInfoDesc = `Sign in to see updates from your favorite channels`;
 
   getSubscriptionVideos() {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
   }
   subscribedChannalVideos!: VideoDto[];
   isDataAvailable = false;

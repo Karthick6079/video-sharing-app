@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -77,6 +77,7 @@ import { UnauthUiComponent } from './components/unauth-ui/unauth-ui.component';
 import { ShortsScrollDirective } from './directives/shorts-scroll.directive';
 import { AppObserverDirective } from './directives/app-observer.directive';
 import { environment } from '../environments/environment';
+import { GlobalerrorhandlerService } from './services/globalerrorhandler.service';
 
 @NgModule({
   declarations: [
@@ -173,6 +174,7 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    [{ provide: ErrorHandler, useClass: GlobalerrorhandlerService }],
     MessageService,
     IndianFormatViewCount,
   ],

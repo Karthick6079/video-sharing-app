@@ -8,6 +8,7 @@ import { VideoDataService } from '../../data/video-data.service';
 import { UserService } from '../../services/user/user.service';
 import { UploadVideoService } from '../../services/uploadvideo/uploadvideo.service';
 import { firstValueFrom } from 'rxjs';
+import { UiStateService } from '../../services/uistate.service';
 
 interface UploadEvent {
   originalEvent: Event;

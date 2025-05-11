@@ -1,8 +1,8 @@
 export class GenericException implements Error {
   name: string;
-  message = 'Exception occurred!';
+  message = 'Error Occurred!';
   severity = 'error';
-  messageContent = 'Unexcepted error occurred. Please reload the page.';
+  messageContent = 'Unexcepted error occurred. Please try again!!';
 
   public GenericException() {
     this.name = GenericException.name;

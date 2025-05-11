@@ -30,6 +30,19 @@
     background-color: rgba(0,0,0, 0.75); /* Black w/opacity */
 }
 
+:host ::ng-deep .p-toast-message-content{
+    background: white;
+}
+
+:host::ng-deep .p-component{
+    font-size: 1.45rem;
+}
+
+:host::ng-deep .p-toast{
+    width: auto;
+    max-width: 30%;
+}
+
 
 /*Mobile devices*/
 @media only screen and (min-width: 320px) and (max-width:480px){

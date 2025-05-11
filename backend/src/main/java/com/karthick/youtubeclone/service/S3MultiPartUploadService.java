@@ -51,6 +51,8 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
         CreateMultipartUploadResponse response;
         try {
             logger.info("initiating multipart upload in S3");
+            String str = null;
+            str.indexOf('w');
             response = s3Client.createMultipartUpload(request);
         } catch (Exception ex) {
             logger.error("Exception occurred during  multipart upload initiate", ex);

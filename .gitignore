@@ -39,3 +39,4 @@ out/
 
 ###docker## 
 /docker
+/backend/.metadata/

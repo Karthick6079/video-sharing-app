@@ -1,17 +1,24 @@
 package com.karthick.youtubeclone.controller;
 
+import com.karthick.youtubeclone.domain.CompleteMultipartRequest;
 import com.karthick.youtubeclone.dto.UploadVideoResponse;
 import com.karthick.youtubeclone.dto.VideoUserInfoDTO;
 import com.karthick.youtubeclone.dto.VideoDTO;
+import com.karthick.youtubeclone.interfaces.MultiPartUploadService;
+import com.karthick.youtubeclone.service.S3MultiPartUploadService;
 import com.karthick.youtubeclone.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("${spring.services.path}/video")
@@ -20,6 +27,8 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
+
+    private final MultiPartUploadService multiPartUploadService;
 
     private final Logger logger = LoggerFactory.getLogger(VideoController.class);
 
@@ -108,6 +117,29 @@ public class VideoController {
         logger.info("Fetching videos by topic request received on video controller");
         return videoService.getVideosByTopic(topic);
     }
+
+
+    /* Multi part video upload request mapping follows */
+
+    @PostMapping("/upload/multipart/initiate")
+    public ResponseEntity<Map<String, Object>> initiateMultiPart(@RequestParam String filename){
+        return ResponseEntity.ok(multiPartUploadService.initiateUpload(filename));
+    }
+
+    @GetMapping("/upload/multipart/url")
+    public ResponseEntity<Map<String, String>> generatePresignerURL(@RequestParam String key, @RequestParam String uploadId,
+                                                                    @RequestParam int partNumber){
+        String presignedUrl = multiPartUploadService.generatePreSignedUrl(key, uploadId, partNumber);
+        return ResponseEntity.ok(Map.of("url", presignedUrl));
+    }
+
+    @PostMapping("/upload/multipart/complete")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UploadVideoResponse completeMultipartUpload(@RequestBody CompleteMultipartRequest request){
+        return multiPartUploadService.completeUpload(request);
+    }
+
+
 
 
 }

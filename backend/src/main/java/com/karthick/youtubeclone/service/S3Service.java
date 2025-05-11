@@ -1,11 +1,9 @@
 package com.karthick.youtubeclone.service;
 
-import com.karthick.youtubeclone.controller.VideoController;
 import com.karthick.youtubeclone.exceptions.AWSUploadException;
-import com.karthick.youtubeclone.exceptions.ServiceException;
+import com.karthick.youtubeclone.interfaces.FileService;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3AsyncClient;
-import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @Service
-public class S3Service implements FileService{
+public class S3Service implements FileService {
     @Autowired
     private  S3Template s3Template;
 

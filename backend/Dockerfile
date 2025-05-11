@@ -25,6 +25,7 @@ VOLUME /logs
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+ENV SPRING_PROFILES_ACTIVE=cloud
 CMD ["java", "-jar", "app.jar"]
 EXPOSE 8081
 

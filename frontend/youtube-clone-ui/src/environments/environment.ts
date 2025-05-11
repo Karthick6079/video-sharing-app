@@ -13,7 +13,7 @@ export const environment = {
     RESPONSE_TYPE: 'code',
     SILENT_RENEW: true,
     USE_REFRESH_TOKEN: true,
-    LOGLEVEL: 1,
+    LOGLEVEL: 0,
     SECURE_ROUTES: 'http://localhost:8080/',
     AUDIENCE: 'http://localhost:8080',
   },

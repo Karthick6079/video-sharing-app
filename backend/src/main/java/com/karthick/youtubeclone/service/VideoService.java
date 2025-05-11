@@ -78,7 +78,6 @@ public class VideoService {
         logger.info("The video cloud url sent back to frontend");
         logger.info(RESPONSE_TO_FRONTEND_LOG);
         return new UploadVideoResponse(url, savedVideo.getId());
-
     }
 
     public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {

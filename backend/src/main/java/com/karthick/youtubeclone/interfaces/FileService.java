@@ -1,4 +1,4 @@
-package com.karthick.youtubeclone.service;
+package com.karthick.youtubeclone.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
 

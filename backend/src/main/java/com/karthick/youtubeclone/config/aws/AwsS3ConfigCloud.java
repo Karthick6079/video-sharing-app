@@ -11,23 +11,11 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
+@Profile("cloud")
 public class AwsS3ConfigCloud {
 
     @Value("${spring.cloud.aws.region}")
     private String region;
-
-    @Value("${spring.cloud.aws.profile}")
-    private String profile;
-
-
-    @Bean
-    @Profile("local")
-    public S3Client createS3beanLocal(){
-        return S3Client.builder()
-                .region(Region.of(region))
-                .credentialsProvider(ProfileCredentialsProvider.create(profile))
-                .build();
-    }
 
     @Bean
     @Profile("cloud")

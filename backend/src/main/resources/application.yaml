@@ -22,7 +22,7 @@ spring:
       on-profile: local
   data:
     mongodb:
-      uri: mongodb+srv://karthickvasudevan07:Avkmongoviddb%409095@youtube-clone.hsmxjbm.mongodb.net/?retryWrites=true&w=majority&appName=youtube-clone
+      uri: ${MONGODB_URI}
       database: videoStreamingDB
   servlet:
     multipart:

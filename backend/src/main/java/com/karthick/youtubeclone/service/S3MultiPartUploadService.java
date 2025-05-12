@@ -47,7 +47,7 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
         logger.info("key {} generated for filename: {}", key, filename);
 
         CreateMultipartUploadRequest request = CreateMultipartUploadRequest.builder()
-                .bucket(BUCKET_NAME).key(key).build();
+                .bucket(BUCKET_NAME).key(key).acl(ObjectCannedACL.PUBLIC_READ).build();
         CreateMultipartUploadResponse response;
         try {
             logger.info("initiating multipart upload in S3");

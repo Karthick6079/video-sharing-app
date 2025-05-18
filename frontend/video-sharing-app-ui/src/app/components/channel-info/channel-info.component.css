@@ -1,0 +1,130 @@
+
+.uploaded-user-info{
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    justify-content: space-between;
+}
+
+.channal-container{
+    display: flex;
+    align-items: center;
+}
+
+
+.channal-name{
+    margin: 0 16px;
+}
+
+.channal-name .name{
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--app-font-color);
+}
+
+.channal-name .subscribers-count{
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--app-channal-font-color);
+}
+
+.channel-logo-nd-name{
+    display: flex;
+    align-items: center;
+}
+
+.share-button{
+    margin-left: 1.6em;
+}
+
+:host::ng-deep .like-button{
+    margin-right: 0.5em;
+    width: 9rem;
+}
+
+:host::ng-deep .dislike-button{
+    font-size: 3rem;
+    padding: 1.3em;
+}
+
+:host::ng-deep .like-count{
+    background-color: transparent;
+    font-size: 1.6rem;
+    /* height: 1.6rem; */
+    color: aliceblue;
+    text-align: center;
+}
+
+:host::ng-deep .p-component{
+    font-size: 1.4rem;
+}
+
+:host::ng-deep .p-toast .p-toast-message.p-toast-message-info{
+    background-color: white;
+    /* color: #8b5cf6; */
+}
+
+:host::ng-deep .p-toast {
+    width: 50rem;
+    /* color: #8b5cf6; */
+}
+
+/*Mobile devices*/
+@media only screen and (min-width: 320px) and (max-width:480px){
+
+    .uploaded-user-info{
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
+
+    .likes-nd-share-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 1.2em
+    }
+
+    .channal-container{
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .channal-name .subscribers-count{
+        font-size: 1rem;
+    }
+
+    .channal-name .name{
+        font-size: 1.35rem;
+    }
+
+    :host::ng-deep .p-component{
+        font-size: 1.05rem;
+    }
+
+    .app-dislike-button{
+        height: 3.1em;
+        width: 3.1em;
+    }
+
+}
+
+/*iPads, Tablets*/
+@media only screen and (min-width: 481px) and (max-width:768px){
+
+}
+
+/*Small screens, laptops*/
+@media only screen and (min-width: 769px) and (max-width:1024px){
+
+}
+
+/*Desktops, large screens*/
+@media only screen and (min-width: 1025px) and (max-width:1200px){
+
+}
+
+/*Extra large screens, TV*/
+@media only screen and (min-width: 1200px) {
+
+}
+

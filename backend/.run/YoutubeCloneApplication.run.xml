@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="YoutubeCloneApplication" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="com.karthick.youtubeclone.YoutubeCloneApplication" />
+    <option name="MAIN_CLASS_NAME" value="com.karthick.videosharingapp.VideoSharingApplication" />
     <module name="backend" />
     <option name="VM_PARAMETERS" value=" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.karthick.youtubeclone.*" />
+        <option name="PATTERN" value="com.karthick.videosharingapp.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

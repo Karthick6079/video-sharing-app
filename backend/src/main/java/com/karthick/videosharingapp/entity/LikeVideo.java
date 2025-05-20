@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -12,15 +13,11 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class LikeVideo{
+public class LikeVideo extends VideoUserInfo{
     @Id
     private String id;
 
-    private String userId;
-
-    private String videoId;
-
-    private LocalDateTime likedOn;
+    private Instant likedAt;
 
     private Set<String> likeTopics;
 }

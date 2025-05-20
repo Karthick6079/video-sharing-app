@@ -5,6 +5,7 @@ import com.karthick.videosharingapp.entity.*;
 import com.karthick.videosharingapp.exceptions.BusinessException;
 import com.karthick.videosharingapp.exceptions.FileSizeExceededException;
 import com.karthick.videosharingapp.repository.LikeVideoRepo;
+import com.karthick.videosharingapp.repository.SubscriptionRepo;
 import com.karthick.videosharingapp.repository.VideoRepository;
 import com.karthick.videosharingapp.repository.WatchRepository;
 import com.karthick.videosharingapp.servicelogic.VideoServiceLogic;
@@ -27,10 +28,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +50,8 @@ public class VideoService {
     private final UserService userService;
 
     private final WatchRepository watchRepository;
+
+    private final SubscriptionRepo subscriptionRepo;
 
     private final MongoClient mongoClient;
 
@@ -122,7 +127,7 @@ public class VideoService {
         savedVideo.setThumbnailUrl(videoDto.getThumbnailUrl());
         savedVideo.setDescription(videoDto.getDescription());
         savedVideo.setTitle(videoDto.getTitle());
-        savedVideo.setPublishedDateAndTime(LocalDateTime.now());
+        savedVideo.setCreatedAt(Instant.now());
         savedVideo.setUserId(currerntUser.getId());
 //        savedVideo.setUser(currerntUser);
 
@@ -156,21 +161,23 @@ public class VideoService {
         // 2. Get video and required user info from DB
         logger.info("Get video and required user info from DB");
         VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
+        VideoUserInfoDTO videoUserInfoDTO = mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
         User currentUser = userService.getCurrentUser();
 
 
         // 3. Update watch history table
         logger.info("Update watch history table");
         if (currentUser != null)
-            watchService.updateWatchHistory(videoUserInfo, database, currentUser);
+            watchService.updateWatchHistory(videoUserInfoDTO, database, currentUser);
 
         // 4.Update video uploaded user subscribers count
         logger.info("Update video uploaded user subscribers count");
-        User videoUploadUser = userService.getUserById(videoUserInfo.getUserId());
-        videoUserInfo.setUserSubscribersCount(videoUploadUser.getSubscribersCount());
+        User videoUploadUser = userService.getUserById(videoUserInfoDTO.getUserId());
+        Long channelSubscriberCount = subscriptionRepo.countByChannelId(videoUploadUser.getId());
+        videoUserInfoDTO.setChannelSubscribersCount(new AtomicLong(channelSubscriberCount));
 
         logger.info("Mapped information VideoUserInfoDTO and response sent to frontend");
-        return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
+        return mapperUtil.map(videoUserInfoDTO, VideoUserInfoDTO.class);
     }
 
     private void updateViewCount(String videoId, MongoDatabase database) {
@@ -198,7 +205,6 @@ public class VideoService {
         logger.info("Fetching Video and User information list of videos");
         return videos.stream().map(videoId -> {
             VideoUserInfo videoUserInfo = videoRepo.getVideoUserInfo(videoId);
-
             return mapperUtil.map(videoUserInfo, VideoUserInfoDTO.class);
         }).toList();
     }

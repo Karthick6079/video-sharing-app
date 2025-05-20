@@ -1,6 +1,7 @@
 package com.karthick.videosharingapp.repository;
 
 import com.karthick.videosharingapp.entity.Video;
+import com.karthick.videosharingapp.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.VideoUserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
-                    "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+                    "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     @ReadPreference("secondary")
     VideoUserInfo getVideoUserInfo(String videoId);
@@ -36,7 +37,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     Page<Video> findAllByUserId(List<String> userIds, Pageable pageable);
     @Aggregation(pipeline = {
             "{$match: { userId: { $in:?0}}}",
-            "{$sort: { publishedDateAndTime: -1 }}",
+            "{$sort: { publishedAt: -1 }}",
             "{$group: {_id: '$userId',videoId: {$firstN:{input:'$_id', n : 2}}}}",
             "{$unwind:'$videoId'}",
             "{$project:{_id:0}}"
@@ -54,7 +55,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
-                    "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+                    "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     List<VideoUserInfo> findVideosBySearchText(String searchText);
     @Aggregation(pipeline = {
@@ -72,7 +73,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
-                    "publishedDateAndTime: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+                    "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     List<VideoUserInfo> findVideosByTopics(String topic);
 

@@ -14,7 +14,7 @@
                 <span class="small-info-text" *ngIf="video.viewCount == 0">No views</span>
                 <span class="small-info-text" *ngIf="video.viewCount > 0">{{ video.viewCount == 1 ?  "1 view" : video.viewCount | indianFormatViewCount:' views'}}</span>
                 <span class="splitter"></span>
-                <span class="small-info-text">{{video.publishedDateAndTime | timeago}}</span>
+                <span class="small-info-text">{{video.publishedAt | timeago}}</span>
             </div>
         </div>
     </div>

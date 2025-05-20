@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Document( collection = "dislikeComments")
@@ -23,5 +24,5 @@ public class DislikeComment {
 
     private String userId;
 
-    private LocalDateTime dislikedOn;
+    private Instant dislikedAt;
 }

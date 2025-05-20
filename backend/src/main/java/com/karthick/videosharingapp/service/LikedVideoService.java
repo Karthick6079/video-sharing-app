@@ -5,6 +5,7 @@ import com.karthick.videosharingapp.repository.LikeVideoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class LikedVideoService {
         LikeVideo likeVideo = new LikeVideo();
         likeVideo.setVideoId(videoId);
         likeVideo.setUserId(userId);
-        likeVideo.setLikedOn(LocalDateTime.now());
+        likeVideo.setLikedAt(Instant.now());
         likeVideo.setLikeTopics(topics);
 
         likeVideoRepo.save(likeVideo);

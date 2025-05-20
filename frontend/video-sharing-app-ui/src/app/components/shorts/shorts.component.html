@@ -54,7 +54,7 @@
         <h3>{{video.title}}</h3>
         <hr>
         <div class="video-infos">
-            <span>{{video.publishedDateAndTime | timeago}}</span> |
+            <span>{{video.publishedAt | timeago}}</span> |
             <span>{{video.viewCount}}{{video.viewCount == 0 ||  video.viewCount == 1 ? ' view' :' views'}}</span> |
             <span>{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span>
         </div>

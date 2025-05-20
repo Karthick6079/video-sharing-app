@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -39,6 +40,7 @@ public class User {
     @JsonIgnore
     private Set<String> subscribers = ConcurrentHashMap.newKeySet();
     private AtomicLong subscribersCount = new AtomicLong(0);
+    private Instant createdAt;
 
     public void incrementSubscriberCount(){
         this.subscribersCount.incrementAndGet();

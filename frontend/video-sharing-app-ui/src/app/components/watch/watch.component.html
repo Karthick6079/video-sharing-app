@@ -14,7 +14,7 @@
             <div class="video-description">
                 <div class="description">
                     <div class="video-info">
-                        <span class="view-count">{{video.viewCount == 1 ? "1 View" : video.viewCount | indianFormatViewCount:" views"}}</span> &nbsp; <span class="view-count">{{video.publishedDateAndTime | timeago}}</span>
+                        <span class="view-count">{{video.viewCount == 1 ? "1 View" : video.viewCount | indianFormatViewCount:" views"}}</span> &nbsp; <span class="view-count">{{video.publishedAt | timeago}}</span>
                         &nbsp; <span class="video-tags" *ngFor="let tag of video.tags">#{{tag}} </span>
                     </div>
                     <div class="short-description-container">

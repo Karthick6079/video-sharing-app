@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -24,7 +25,7 @@ public class Comment {
     private AtomicLong likes =  new AtomicLong(0);
     private AtomicLong disLikes = new AtomicLong(0);
     private List<Comment> reply;
-    private Long commentCreatedTime;
+    private Instant createdAt;
 
     public void incrementLike(){
         this.getLikes().incrementAndGet();

@@ -86,7 +86,7 @@ export class HistoryComponent implements OnInit {
     lastSevenDays.setDate(today.getDate() - 7);
 
     const groupByDay = _.groupBy(videos, (item) => {
-      const itemDate = new Date(item.watchedOn);
+      const itemDate = new Date(item.watchedAt);
       if (itemDate.toDateString() === today.toDateString()) {
         return 'Today';
       } else if (itemDate.toDateString() === yesterday.toDateString()) {

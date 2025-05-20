@@ -40,10 +40,10 @@ public class CommentService {
 
     public CommentDTO addComment(CommentDTO commentDto) {
         User user = userService.getCurrentUser();
-        commentDto.setCommentCreatedTime(Instant.now().toEpochMilli());
         commentDto.setPicture(user.getPicture());
         commentDto.setUsername(user.getName());
         Comment comment = mapper.map(commentDto, Comment.class);
+        comment.setCreatedAt(Instant.now());
         Comment savedComment = commentRepository.save(comment);
         return mapper.map(savedComment, CommentDTO.class);
     }
@@ -161,7 +161,7 @@ public class CommentService {
         likeComment.setVideoId(videoId);
         likeComment.setUserId(userId);
         likeComment.setCommentId(commentId);
-        likeComment.setLikedOn(LocalDateTime.now());
+        likeComment.setLikedAt(Instant.now());
         return likeComment;
     }
 
@@ -170,7 +170,7 @@ public class CommentService {
         dislikeComment.setVideoId(videoId);
         dislikeComment.setUserId(userId);
         dislikeComment.setCommentId(commentId);
-        dislikeComment.setDislikedOn(LocalDateTime.now());
+        dislikeComment.setDislikedAt(Instant.now());
         return dislikeComment;
     }
 

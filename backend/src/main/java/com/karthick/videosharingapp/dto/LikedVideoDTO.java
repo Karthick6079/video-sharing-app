@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Getter
@@ -14,7 +15,7 @@ public class LikedVideoDTO extends  VideoUserInfoDTO{
 
     private String id;
 
-    private LocalDateTime likedOn;
+    private Instant likedAt;
 
     private Set<String> likeTopics;
 }

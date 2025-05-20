@@ -10,7 +10,7 @@
         <div class="view-and-posted-time">
             <span>{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
             <span class="splitter"></span>
-            <span>{{video.publishedDateAndTime | timeago}}</span>
+            <span>{{video.publishedAt | timeago}}</span>
         </div>
         <div class="video-desc channal-name" *ngIf="showDescription">
             {{video.description}}

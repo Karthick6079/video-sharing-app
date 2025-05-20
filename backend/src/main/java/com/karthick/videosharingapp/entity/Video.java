@@ -1,11 +1,13 @@
 package com.karthick.videosharingapp.entity;
 
+import com.karthick.videosharingapp.enums.VideoStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -29,7 +31,8 @@ public class Video {
     private String thumbnailUrl;
 //    private List<Comment> commentList = new CopyOnWriteArrayList<>();
     private AtomicLong viewCount = new AtomicLong(0);
-    private LocalDateTime publishedDateAndTime;
+    private Instant createdAt;
+    private Instant publishedAt;
 
     public void increaseViewCount(){
         this.getViewCount().incrementAndGet();

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class DislikeVideo{
 
     private String videoId;
 
-    private LocalDateTime dislikedOn;
+    private Instant dislikedAt;
 
     private Set<String> dislikeTopics;
 

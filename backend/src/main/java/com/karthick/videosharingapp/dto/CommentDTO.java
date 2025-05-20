@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
@@ -24,6 +25,6 @@ public class CommentDTO {
     private String picture;
     private AtomicLong likes = new AtomicLong(0);
     private AtomicLong disLikes = new AtomicLong(0);
-    private Long commentCreatedTime;
+    private Instant createdAt;
 
 }

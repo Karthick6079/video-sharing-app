@@ -2,7 +2,7 @@ package com.karthick.videosharingapp.service;
 
 
 import com.karthick.videosharingapp.entity.User;
-import com.karthick.videosharingapp.entity.VideoUserInfo;
+import com.karthick.videosharingapp.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.Watch;
 import com.karthick.videosharingapp.repository.WatchRepository;
 import com.mongodb.client.MongoCollection;
@@ -17,8 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +42,7 @@ public class WatchService {
      * @param videoUserInfo
      * @param database
      */
-    public void updateWatchHistory(VideoUserInfo videoUserInfo, MongoDatabase database, User currentUser) {
+    public void updateWatchHistory(VideoUserInfoDTO videoUserInfo, MongoDatabase database, User currentUser) {
 
 
 
@@ -48,21 +50,21 @@ public class WatchService {
         MongoCollection<Document> collection = database.getCollection("watchedVideos");
         // Query to filter
 
-        LocalDateTime now = LocalDateTime.now();
+        Instant now = Instant.now();
 
-        LocalDateTime yesterday = LocalDateTime.now().with(LocalTime.MIN);
+        Instant yesterday = now.minus(1, ChronoUnit.DAYS);
 
         Bson filter = and(
                 eq("videoId", videoUserInfo.getId()),
-                gt("watchedOn", yesterday),
-                lte("watchedOn", now));
+                gt("watchedAt", yesterday),
+                lte("watchedAt", now));
 
 
         //Update document
         Bson update  = Updates.combine(
                 Updates.set("userId", currentUser.getId()),
                 Updates.set("videoId", videoUserInfo.getId()),
-                Updates.set("watchedOn", LocalDateTime.now()),
+                Updates.set("watchedAt", LocalDateTime.now()),
                 Updates.set("watchTopics", videoUserInfo.getTags())
         );
         //Setting upset value as true,

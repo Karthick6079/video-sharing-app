@@ -88,7 +88,7 @@ export class UserProfileComponent {
     lastSevenDays.setDate(today.getDate() - 7);
 
     const groupByDay = _.groupBy(videos, (item) => {
-      const itemDate = new Date(item.likedOn);
+      const itemDate = new Date(item.likedAt);
       if (itemDate.toDateString() === today.toDateString()) {
         return 'Today';
       } else if (itemDate.toDateString() === yesterday.toDateString()) {

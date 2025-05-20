@@ -1,8 +1,11 @@
 package com.karthick.videosharingapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,10 +24,12 @@ public class VideoUserInfoDTO {
     private String videoStatus;
     private String videoUrl;
     private String thumbnailUrl;
-    private LocalDateTime publishedDateAndTime;
+    private Instant createdAt;
+    private Instant publishedAt;
     private String username; //uniquename
     private String userDisplayName;
     private String userPicture;
-    private AtomicLong userSubscribersCount;
+    private AtomicLong channelSubscribersCount;
+    private boolean isCurrentUserSubscribedToChannel;
 
 }

@@ -11,7 +11,7 @@ export interface VideoDto {
   videoStatus: string;
   videoUrl: string;
   thumbnailUrl: string;
-  publishedDateAndTime: string;
+  publishedAt: string;
   username: string;
   userDisplayName: string;
   userPicture: string;
@@ -19,11 +19,11 @@ export interface VideoDto {
 }
 
 export interface WatchedVideoDTO extends VideoDto {
-  watchedOn: string | number | Date;
+  watchedAt: string | number | Date;
 }
 
 export interface LikedVideoDTO extends VideoDto {
-  likedOn: string | number | Date;
+  likedAt: string | number | Date;
   likedTopics: string[];
 }
 
@@ -54,7 +54,7 @@ export interface CommentDTO {
   videoId: string;
   picture: string;
   username: string;
-  commentCreatedTime: number;
+  createdAt: number;
 }
 
 export interface VideoStatus {

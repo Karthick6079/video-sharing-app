@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
@@ -154,7 +155,7 @@ public class VideoServiceLogic {
         likeVideo.setVideoId(videoId);
         likeVideo.setUserId(userId);
         likeVideo.setLikeTopics(likeTopics);
-        likeVideo.setLikedOn(LocalDateTime.now());
+        likeVideo.setLikedAt(Instant.now());
 
         return likeVideo;
     }
@@ -165,7 +166,7 @@ public class VideoServiceLogic {
         dislikeVideo.setVideoId(videoId);
         dislikeVideo.setUserId(userId);
         dislikeVideo.setDislikeTopics(likeTopics);
-        dislikeVideo.setDislikedOn(LocalDateTime.now());
+        dislikeVideo.setDislikedAt(Instant.now());
 
         return dislikeVideo;
     }

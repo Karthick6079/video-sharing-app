@@ -41,6 +41,36 @@ spring:
 spring:
   config:
     activate:
+      on-profile: migrate-timestamps
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: videoStreamingDB
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  services:
+    path: /api/youtube
+  cloud:
+    aws:
+      profile: default
+      region: ap-south-1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://karthick-v.us.auth0.com/
+          audience: https://api.avkarthick.in
+  auth:
+    user-info-endpoint: https://karthick-v.us.auth0.com/userinfo
+  aws-s3:
+    bucket-name: amzn-s3-videostreaming-app-bucket
+
+---
+spring:
+  config:
+    activate:
       on-profile: cloud
   data:
     mongodb:

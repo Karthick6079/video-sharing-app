@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.time.Instant;
 import java.util.Set;
 
 ;
@@ -27,4 +28,5 @@ public class UserDTO {
     private Set<String> subscribers;
     private Long subscribedToCount;
     private Long subscribersCount;
+    private Instant createdAt;
 }

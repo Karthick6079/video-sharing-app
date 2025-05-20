@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -13,16 +14,12 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Watch {
+public class Watch extends  VideoUserInfo {
 
     @Id
     private String id;
 
-    private String userId;
-
-    private String videoId;
-
-    private LocalDateTime watchedOn = LocalDateTime.now();
+    private Instant watchedAt = Instant.now();
 
     private Set<String> watchTopics;
 

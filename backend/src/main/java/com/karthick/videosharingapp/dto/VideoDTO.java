@@ -1,10 +1,11 @@
 package com.karthick.videosharingapp.dto;
 
-import com.karthick.videosharingapp.entity.VideoStatus;
+import com.karthick.videosharingapp.enums.VideoStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Set;
 
 @Data
@@ -22,7 +23,8 @@ public class VideoDTO {
     private Long likes;
     private Long dislikes;
     private Long viewCount;
-    private Long publishedDateAndTime;
+    private Instant createdAt;
+    private Instant publishedAt;
     private UserDTO userDTO;
 
 

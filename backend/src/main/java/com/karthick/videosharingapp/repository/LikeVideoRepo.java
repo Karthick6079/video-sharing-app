@@ -23,7 +23,7 @@ public interface LikeVideoRepo extends MongoRepository<LikeVideo, String> {
              "{$sort: {likedOn: -1}}",
              "{$skip: ?1}",
              "{$limit: ?2}",
-             "{$project: {_id: 1,userId: 1,videoId: 1,likedOn: 1,description: '$video_info.description',title: '$video_info.title',likes: '$video_info.likes',disLikes: '$video_info.disLikes',viewCount: '$video_info.viewCount',username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture', tags: '$video_info.tags',videoStatus: '$video_info.videoStatus',videoUrl: '$video_info.videoUrl',thumbnailUrl: '$video_info.thumbnailUrl', publishedDateAndTime: '$video_info.publishedDateAndTime'}}"
+             "{$project: {_id: 1,userId: 1,videoId: 1,likedOn: 1,description: '$video_info.description',title: '$video_info.title',likes: '$video_info.likes',disLikes: '$video_info.disLikes',viewCount: '$video_info.viewCount',username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture', tags: '$video_info.tags',videoStatus: '$video_info.videoStatus',videoUrl: '$video_info.videoUrl',thumbnailUrl: '$video_info.thumbnailUrl', publishedAt: '$video_info.publishedAt'}}"
      })
      List<LikeVideo> getLikedVideos(String userId, int skip, int page);
 

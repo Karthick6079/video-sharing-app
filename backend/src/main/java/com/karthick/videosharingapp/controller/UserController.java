@@ -2,9 +2,10 @@ package com.karthick.videosharingapp.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.karthick.videosharingapp.dto.LikedVideoDTO;
-import com.karthick.videosharingapp.dto.UserDTO;
-import com.karthick.videosharingapp.dto.WatchedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.ChannelInfoDTO;
+import com.karthick.videosharingapp.domain.dto.LikedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.UserDTO;
+import com.karthick.videosharingapp.domain.dto.WatchedVideoDTO;
 import com.karthick.videosharingapp.service.CommonService;
 import com.karthick.videosharingapp.service.UserService;
 import com.karthick.videosharingapp.util.MapperUtil;
@@ -45,13 +46,16 @@ public class UserController {
     }
 
     @PutMapping("/subscribe")
+    @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Map<String, Object> subscribe(@RequestParam String userId){
+    public ChannelInfoDTO subscribe(@RequestParam String userId){
         return userService.subscribe(userId);
     }
+
     @PutMapping("/unsubscribe")
+    @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Map<String, Object>  unsubscribe(@RequestParam String userId){
+    public ChannelInfoDTO unsubscribe(@RequestParam String userId){
         ;
         return userService.unsubscribe(userId);
     }

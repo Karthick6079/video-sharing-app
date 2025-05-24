@@ -3,15 +3,11 @@ package com.karthick.videosharingapp.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.karthick.videosharingapp.domain.ZoneContext;
-import com.karthick.videosharingapp.dto.VideoDTO;
-import com.karthick.videosharingapp.entity.Video;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Instant;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Date;

@@ -1,7 +1,8 @@
 package com.karthick.videosharingapp.service;
 
 
-import com.karthick.videosharingapp.dto.UserDTO;
+import com.karthick.videosharingapp.domain.dto.ChannelInfoDTO;
+import com.karthick.videosharingapp.domain.dto.UserDTO;
 import com.karthick.videosharingapp.entity.Subscription;
 import com.karthick.videosharingapp.entity.User;
 import com.karthick.videosharingapp.repository.SubscriptionRepo;
@@ -19,7 +20,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -129,7 +129,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Map<String, Object> subscribe(String userId) {
+    public ChannelInfoDTO subscribe(String userId) {
 
         User currentUser = getCurrentUser();
         User channel = getUserById(userId);
@@ -143,18 +143,29 @@ public class UserService {
 
         Long channelSubscribersCount = subscriptionRepo.countByChannelId(channel.getId());
 
-        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
-        Map<String, Object> returnMap = new LinkedHashMap<>();
-        logger.info("The updated subscribers count: {} and current user user DTO information sent to frontend", channelSubscribersCount);
-        returnMap.put("currentUser", currentUserDTO);
-        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
+        logger.info("Preparing channel DTO to frontend after subscribe");
+        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
 
-        return returnMap;
+//        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
+//        Map<String, Object> returnMap = new LinkedHashMap<>();
+//        logger.info("The updated subscribers count: {} and current user {} user DTO information sent to frontend", channelSubscribersCount, currentUser.getName());
+//        returnMap.put("currentUser", currentUserDTO);
+//        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
+
+        return channelInfoDTO;
+    }
+
+    private static ChannelInfoDTO getChannelInfoDTO(User channel, Long channelSubscribersCount) {
+        ChannelInfoDTO channelInfoDTO = new ChannelInfoDTO();
+        channelInfoDTO.setName(channel.getName());
+        channelInfoDTO.setDisplayName(channel.getGivenName());
+        channelInfoDTO.setSubscriberCount(channelSubscribersCount);
+        channelInfoDTO.setUserSubscribed(true);
+        return channelInfoDTO;
     }
 
 
-
-    public Map<String, Object> unsubscribe(String userId) {
+    public ChannelInfoDTO unsubscribe(String userId) {
         User currentUser = getCurrentUser();
         User channel = getUserById(userId);
 
@@ -165,12 +176,15 @@ public class UserService {
 
         Long channelSubscribersCount = subscriptionRepo.countByChannelId(channel.getId());
 
-        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
-        Map<String, Object> returnMap = new LinkedHashMap<>();
-        logger.info("The updated subscribers count: {} and current user user DTO information sent to frontend", channelSubscribersCount);
-        returnMap.put("currentUser", currentUserDTO);
-        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
-        return returnMap;
+        logger.info("Preparing channel DTO to frontend after unsubscribe");
+        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
+
+//        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
+//        Map<String, Object> returnMap = new LinkedHashMap<>();
+//        logger.info("The updated subscribers count: {} and current user user DTO information sent to frontend", channelSubscribersCount);
+//        returnMap.put("currentUser", currentUserDTO);
+//        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
+        return channelInfoDTO;
     }
 
 }

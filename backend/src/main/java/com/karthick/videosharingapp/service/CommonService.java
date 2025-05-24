@@ -2,8 +2,8 @@ package com.karthick.videosharingapp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.karthick.videosharingapp.dto.LikedVideoDTO;
-import com.karthick.videosharingapp.dto.WatchedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.LikedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.WatchedVideoDTO;
 import com.karthick.videosharingapp.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

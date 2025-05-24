@@ -1,6 +1,6 @@
 package com.karthick.videosharingapp.servicelogic;
 
-import com.karthick.videosharingapp.dto.VideoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoDTO;
 import com.karthick.videosharingapp.entity.*;
 import com.karthick.videosharingapp.repository.DislikeVideoRepo;
 import com.karthick.videosharingapp.repository.LikeVideoRepo;
@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 

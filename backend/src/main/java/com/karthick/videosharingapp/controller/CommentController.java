@@ -1,6 +1,6 @@
 package com.karthick.videosharingapp.controller;
 
-import com.karthick.videosharingapp.dto.CommentDTO;
+import com.karthick.videosharingapp.domain.dto.CommentDTO;
 import com.karthick.videosharingapp.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

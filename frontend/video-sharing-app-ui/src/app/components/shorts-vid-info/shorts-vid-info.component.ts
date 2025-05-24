@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDto, VideoDto } from '../../dto/video-dto';
+import { ChannelInfoDTO, UserDto, VideoDto } from '../../dto/video-dto';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../../services/user/user.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from '../../services/login/login.service';
-import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
 
 @Component({
   selector: 'app-shorts-vid-info',
@@ -45,85 +44,64 @@ export class ShortsVidInfoComponent implements OnInit {
       }
     );
 
-    if (this.currentUser) {
-      this.getCurrentUserInfo();
-    }
+    // if (this.currentUser) {
+    //   this.getCurrentUserInfo();
+    // }
   }
 
-  getCurrentUserInfo() {
-    // Get user subscribers details for currentUser;
-    this.userService
-      .getUserInfoById(this.currentUser.id)
-      .subscribe((userDto) => {
-        this.currentUserFromApiCall = userDto;
-        this.subscribed = this.isCurrentUserSubscribed();
-      });
+  // getCurrentUserInfo() {
+  //   // Get user subscribers details for currentUser;
+  //   this.userService
+  //     .getUserInfoById(this.currentUser.id)
+  //     .subscribe((userDto) => {
+  //       this.currentUserFromApiCall = userDto;
+  //       this.subscribed = this.isCurrentUserSubscribed();
+  //     });
 
-    // Get video uploaded user information details;
-    if (this.video) {
+  //   // Get video uploaded user information details;
+  //   if (this.video) {
+  //     this.userService
+  //       .getUserInfoById(this.video.userId)
+  //       .subscribe((userDto) => {
+  //         this.videoUploadedUser = userDto;
+  //         this.subscribersCount = this.videoUploadedUser.subscribersCount;
+  //       });
+  //   }
+  // }
+
+  // isCurrentUserSubscribed() {
+  //   if (
+  //     this.currentUserFromApiCall &&
+  //     this.currentUserFromApiCall.subscribedToUsers.includes(this.video?.userId)
+  //   ) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+   subscribe() {
+      if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
+        this.userService
+          .subscribeUser(String(this.video?.userId))
+          .subscribe((channalInfo: ChannelInfoDTO) => {
+            this.subscribed = channalInfo.isUserSubscribed;
+            this.subscribersCount = channalInfo.subscribersCount;
+          });
+      }
+    }
+
+    unsubscribe() {
       this.userService
-        .getUserInfoById(this.video.userId)
-        .subscribe((userDto) => {
-          this.videoUploadedUser = userDto;
-          this.subscribersCount = this.videoUploadedUser.subscribersCount;
+        .unsubscribeUser(String(this.video?.userId))
+        .subscribe((channalInfo: ChannelInfoDTO) => {
+          this.subscribed = channalInfo.isUserSubscribed;
+          this.subscribersCount = channalInfo.subscribersCount;
         });
     }
-  }
-
-  isCurrentUserSubscribed() {
-    if (
-      this.currentUserFromApiCall &&
-      this.currentUserFromApiCall.subscribedToUsers.includes(this.video?.userId)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  subscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .subscribeUser(String(this.video.userId))
-        .subscribe((responseMap: Record<string, any>) => {
-          if (responseMap['currentUser']) {
-            this.currentUserFromApiCall = responseMap['currentUser'];
-          }
-
-          if (responseMap['videoUploadedSubscribersCount'] != undefined) {
-            this.subscribersCount =
-              responseMap['videoUploadedSubscribersCount'];
-          }
-
-          this.subscribed = this.isCurrentUserSubscribed();
-        });
-    }
-  }
-
-  unsubscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .unsubscribeUser(String(this.video.userId))
-        .subscribe((responseMap: Record<string, any>) => {
-          if (responseMap['currentUser']) {
-            this.currentUserFromApiCall = responseMap['currentUser'];
-          }
-
-          if (responseMap['videoUploadedSubscribersCount'] != undefined) {
-            this.subscribersCount =
-              responseMap['videoUploadedSubscribersCount'];
-          }
-
-          this.subscribed = this.isCurrentUserSubscribed();
-        });
-    }
-  }
 
   showLoginMessageIfNot(message?: string) {
     if (!this.isAuthenticated) {
-      // message = message ? message : 'Please login before share your feedback!';
-      // this.setLoginMessage(message);
-      // return false;
       this.loginService.login();
     }
     return true;

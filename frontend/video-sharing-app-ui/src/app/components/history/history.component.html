@@ -1,13 +1,13 @@
 <div  *ngIf="isAuthenticated">
     <div *ngIf="isDataAvailable" class="watched-video-container" infinite-scroll [infiniteScrollDistance]="1"
         (scrolled)="getWatchedVideos(false)">
-        <div *ngFor=" let item of videosGroupedByDay | keyvalue:reverseKeyOrder">
-            <h1> {{item.key}}</h1>
-            <app-suggestion *ngFor="let video of item.value" [video]="video" [showDescription]="true"></app-suggestion>
+        <div *ngFor="let group of groupedVideosList">
+            <h1> {{group.label}}</h1>
+            <app-suggestion *ngFor="let video of group.videos" [video]="video" [showDescription]="true"></app-suggestion>
             <hr>
         </div>
     </div>
-    <div *ngIf="!videosGroupedByDay">
+    <div *ngIf="!groupedVideosList">
         <div class="not-subscribed-info-box">
             <app-unauth-ui
             materialIconName="thumb_up_off_alt"

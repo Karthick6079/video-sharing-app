@@ -1,7 +1,7 @@
 package com.karthick.videosharingapp.service;
 
 import com.karthick.videosharingapp.domain.CompleteMultipartRequest;
-import com.karthick.videosharingapp.dto.UploadVideoResponse;
+import com.karthick.videosharingapp.domain.dto.UploadVideoResponse;
 import com.karthick.videosharingapp.entity.Video;
 import com.karthick.videosharingapp.exceptions.AWSUploadException;
 import com.karthick.videosharingapp.interfaces.MultiPartUploadService;
@@ -42,7 +42,7 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
     @Override
     public Map<String, Object> initiateUpload(String filename) throws AWSUploadException {
 
-        String key = UUID.randomUUID() + "-" + filename;
+        String key = String.valueOf(UUID.randomUUID());
 
         logger.info("key {} generated for filename: {}", key, filename);
 

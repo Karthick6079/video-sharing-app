@@ -1,7 +1,6 @@
 package com.karthick.videosharingapp.repository;
 
 import com.karthick.videosharingapp.entity.Video;
-import com.karthick.videosharingapp.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.VideoUserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,9 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
 
     Page<Video> findAllById(List<String> videoIds, Pageable pageable);
-    Page<Video> findAllByUserId(List<String> userIds, Pageable pageable);
+
+    List<Video> findAllByUserId(List<String> userIds);
+
     @Aggregation(pipeline = {
             "{$match: { userId: { $in:?0}}}",
             "{$sort: { publishedAt: -1 }}",
@@ -75,7 +76,11 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
-    List<VideoUserInfo> findVideosByTopics(String topic);
+    List<VideoUserInfo> findVideosByTopic(String topic);
+
+
+
+    List<Video> findVideosByTags(List<String> topics);
 
 
 

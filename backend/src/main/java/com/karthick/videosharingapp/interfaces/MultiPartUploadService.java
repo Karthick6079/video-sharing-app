@@ -1,7 +1,7 @@
 package com.karthick.videosharingapp.interfaces;
 
 import com.karthick.videosharingapp.domain.CompleteMultipartRequest;
-import com.karthick.videosharingapp.dto.UploadVideoResponse;
+import com.karthick.videosharingapp.domain.dto.UploadVideoResponse;
 import com.karthick.videosharingapp.exceptions.AWSUploadException;
 
 import java.util.Map;

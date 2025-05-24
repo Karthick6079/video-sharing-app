@@ -27,4 +27,6 @@ public interface LikeVideoRepo extends MongoRepository<LikeVideo, String> {
      })
      List<LikeVideo> getLikedVideos(String userId, int skip, int page);
 
+     List<String> findLikeTopicsByUserId(String userId);
+
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDto, VideoDto } from '../../dto/video-dto';
+import { ChannelInfoDTO, UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { LoginService } from '../../services/login/login.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -52,45 +52,37 @@ export class ChannelInfoComponent implements OnInit {
       }
     );
 
-    if (this.currentUser) {
-      this.getCurrentUserInfo();
-    }
+    // if (this.currentUser) {
+    //   this.getCurrentUserInfo();
+    // }
 
-    this.subscribersCount = this.video.userSubscribersCount;
+    this.subscribersCount = this.video.channelSubscribersCount;
+    this.subscribed = this.video.isCurrentUserSubscribedToChannel;
 
     console.log(this.video);
   }
 
-  getCurrentUserInfo() {
-    // Get user subscribers details for currentUser;
-    this.userService
-      .getUserInfoById(this.currentUser.id)
-      .subscribe((userDto) => {
-        this.currentUserFromApiCall = userDto;
-        this.subscribed = this.isCurrentUserSubscribed();
-      });
+  // getCurrentUserInfo() {
+  //   // Get user subscribers details for currentUser;
+  //   this.userService
+  //     .getUserInfoById(this.currentUser.id)
+  //     .subscribe((userDto) => {
+  //       this.currentUserFromApiCall = userDto;
+  //       this.subscribed = this.isCurrentUserSubscribed();
+  //     });
 
-    // Get video uploaded user information details;
-    if (this.video) {
-      this.userService
-        .getUserInfoById(this.video.userId)
-        .subscribe((userDto) => {
-          this.videoUploadedUser = userDto;
-          this.subscribersCount = this.videoUploadedUser.subscribersCount;
-        });
-    }
-  }
+  //   // Get video uploaded user information details;
+  //   if (this.video) {
+  //     this.userService
+  //       .getUserInfoById(this.video.userId)
+  //       .subscribe((userDto) => {
+  //         this.videoUploadedUser = userDto;
+  //         this.subscribersCount = this.videoUploadedUser.subscribersCount;
+  //       });
+  //   }
+  // }
 
-  isCurrentUserSubscribed() {
-    if (
-      this.currentUserFromApiCall &&
-      this.currentUserFromApiCall.subscribedToUsers.includes(this.video?.userId)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+ 
 
   likeVideo() {
     if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
@@ -117,17 +109,9 @@ export class ChannelInfoComponent implements OnInit {
     if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
       this.userService
         .subscribeUser(String(this.video?.userId))
-        .subscribe((responseMap: Record<string, any>) => {
-          if (responseMap['currentUser']) {
-            this.currentUserFromApiCall = responseMap['currentUser'];
-          }
-
-          if (responseMap['videoUploadedSubscribersCount'] != undefined) {
-            this.subscribersCount =
-              responseMap['videoUploadedSubscribersCount'];
-          }
-
-          this.subscribed = this.isCurrentUserSubscribed();
+        .subscribe((channalInfo: ChannelInfoDTO) => {
+          this.subscribed = channalInfo.isUserSubscribed;
+          this.subscribersCount = channalInfo.subscribersCount;
         });
     }
   }
@@ -135,16 +119,9 @@ export class ChannelInfoComponent implements OnInit {
   unsubscribe() {
     this.userService
       .unsubscribeUser(String(this.video?.userId))
-      .subscribe((responseMap: Record<string, any>) => {
-        if (responseMap['currentUser']) {
-          this.currentUserFromApiCall = responseMap['currentUser'];
-        }
-
-        if (responseMap['videoUploadedSubscribersCount'] != undefined) {
-          this.subscribersCount = responseMap['videoUploadedSubscribersCount'];
-        }
-
-        this.subscribed = this.isCurrentUserSubscribed();
+      .subscribe((channalInfo: ChannelInfoDTO) => {
+        this.subscribed = channalInfo.isUserSubscribed;
+        this.subscribersCount = channalInfo.subscribersCount;
       });
   }
 

@@ -78,6 +78,18 @@ export class FeaturedComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.checkIfNeedMoreVideos();
+    }, 100);
+  }
+  
+  checkIfNeedMoreVideos() {
+    if (document.body.scrollHeight <= window.innerHeight) {
+      // this.getSuggestionVideos();
+    }
+  }
+
   moveright() {
     //scroll to right horizontally
     this.showLeftAngleButton = true;

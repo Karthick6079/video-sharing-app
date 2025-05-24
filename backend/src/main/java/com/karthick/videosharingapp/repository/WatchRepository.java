@@ -25,5 +25,6 @@ public interface WatchRepository extends MongoRepository<Watch, String> {
     List<Watch> getUserVideoWatchHistory(String userId, int skip, int limit);
 
 
+    List<String> findWatchTopicsByUserId(String userId);
 
 }

@@ -2,7 +2,7 @@ package com.karthick.videosharingapp.service;
 
 
 import com.karthick.videosharingapp.entity.User;
-import com.karthick.videosharingapp.dto.VideoUserInfoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.Watch;
 import com.karthick.videosharingapp.repository.WatchRepository;
 import com.mongodb.client.MongoCollection;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;

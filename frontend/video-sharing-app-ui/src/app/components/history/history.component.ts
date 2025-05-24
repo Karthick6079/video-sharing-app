@@ -7,6 +7,7 @@ import { AuthResult } from 'angular-auth-oidc-client/lib/flows/callback-context'
 import { UserService } from '../../services/user/user.service';
 import * as _ from 'lodash';
 import { KeyValue } from '@angular/common';
+import { AdvancedDateGroupService } from '../../services/advanced-date-group.service';
 
 @Component({
   selector: 'app-history',
@@ -25,11 +26,14 @@ export class HistoryComponent implements OnInit {
   videos!: WatchedVideoDTO[];
   sortedDate!: string[];
   videosGroupedByDay!: Record<string, WatchedVideoDTO[]>;
+
+  groupedVideosMap = new Map<string, any[]>();
   // mediumDate: string|undefined;
 
   constructor(
     private userService: UserService,
-    private oidcSecurityService: OidcSecurityService
+    private oidcSecurityService: OidcSecurityService,
+    private groupingService: AdvancedDateGroupService
   ) {
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
@@ -67,15 +71,39 @@ export class HistoryComponent implements OnInit {
       this.userService
         .getWatchedVideos(this.page, this.size)
         .subscribe((videos) => {
-          videos = videos;
+          // videos = videos;
           if (videos && videos.length > 0) {
-            this.groupByDays(videos);
+            this.loadVideosOnScroll(videos, "watchedAt");
             this.isDataAvailable = true;
           } else {
             this.unAuthUIInfoDesc = 'You yet to watch videos!';
           }
         });
     }
+  }
+
+
+  loadVideosOnScroll(videos: WatchedVideoDTO[], dateField: string){
+
+    const newGroupeVideos = this.groupingService.groupByAdvancedDate(videos, dateField as keyof typeof videos[0]);
+    for (const [label, items] of newGroupeVideos) {
+      if (this.groupedVideosMap.has(label)) {
+        this.groupedVideosMap.set(label, [
+          ...this.groupedVideosMap.get(label)!,
+          ...items
+        ]);
+      } else {
+        this.groupedVideosMap.set(label, items);
+      }
+    }
+
+  }
+
+  get groupedVideosList(): { label: string, videos: any[] }[] {
+    return Array.from(this.groupedVideosMap.entries()).map(([label, videos]) => ({
+      label,
+      videos
+    }));
   }
 
   groupByDays(videos: WatchedVideoDTO[]) {

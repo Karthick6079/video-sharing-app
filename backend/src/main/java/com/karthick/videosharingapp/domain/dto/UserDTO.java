@@ -1,4 +1,4 @@
-package com.karthick.videosharingapp.dto;
+package com.karthick.videosharingapp.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

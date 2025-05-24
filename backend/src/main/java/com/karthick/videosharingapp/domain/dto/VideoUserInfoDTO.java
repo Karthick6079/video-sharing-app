@@ -1,4 +1,4 @@
-package com.karthick.videosharingapp.dto;
+package com.karthick.videosharingapp.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class VideoUserInfoDTO {
     private String username; //uniquename
     private String userDisplayName;
     private String userPicture;
-    private AtomicLong channelSubscribersCount;
-    private boolean isCurrentUserSubscribedToChannel;
+    private AtomicLong channelSubscribersCount = new AtomicLong(0);
+    private boolean isCurrentUserSubscribedToChannel = false;
 
 }

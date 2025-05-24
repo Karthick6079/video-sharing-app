@@ -1,10 +1,9 @@
-package com.karthick.videosharingapp.dto;
+package com.karthick.videosharingapp.domain.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.Instant;
 import java.util.Set;
 

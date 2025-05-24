@@ -1,6 +1,6 @@
 package com.karthick.videosharingapp.service;
 
-import com.karthick.videosharingapp.dto.*;
+import com.karthick.videosharingapp.domain.dto.*;
 import com.karthick.videosharingapp.entity.*;
 import com.karthick.videosharingapp.exceptions.BusinessException;
 import com.karthick.videosharingapp.exceptions.FileSizeExceededException;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
@@ -167,14 +166,18 @@ public class VideoService {
 
         // 3. Update watch history table
         logger.info("Update watch history table");
-        if (currentUser != null)
+        if (currentUser != null){
             watchService.updateWatchHistory(videoUserInfoDTO, database, currentUser);
 
-        // 4.Update video uploaded user subscribers count
-        logger.info("Update video uploaded user subscribers count");
-        User videoUploadUser = userService.getUserById(videoUserInfoDTO.getUserId());
-        Long channelSubscriberCount = subscriptionRepo.countByChannelId(videoUploadUser.getId());
-        videoUserInfoDTO.setChannelSubscribersCount(new AtomicLong(channelSubscriberCount));
+            // 4.Update video uploaded user subscribers count, is current user subscribed
+            logger.info("Update video uploaded user subscribers count");
+            User videoUploadUser = userService.getUserById(videoUserInfoDTO.getUserId());
+            Long channelSubscriberCount = subscriptionRepo.countByChannelId(videoUploadUser.getId());
+            videoUserInfoDTO.setChannelSubscribersCount(new AtomicLong(channelSubscriberCount));
+
+            boolean isCurrentUserSubscribed = subscriptionRepo.existsBySubscriberIdAndChannelId(currentUser.getId(), videoUploadUser.getId());
+            videoUserInfoDTO.setCurrentUserSubscribedToChannel(isCurrentUserSubscribed);
+        }
 
         logger.info("Mapped information VideoUserInfoDTO and response sent to frontend");
         return mapperUtil.map(videoUserInfoDTO, VideoUserInfoDTO.class);
@@ -302,7 +305,7 @@ public class VideoService {
 
     public List<VideoUserInfoDTO> getVideosByTopic(String topic) {
         logger.info("Retrieving video by given topic using database");
-        List<VideoUserInfo> videoUserInfoList = videoRepo.findVideosByTopics(topic);
+        List<VideoUserInfo> videoUserInfoList = videoRepo.findVideosByTopic(topic);
         Optional<List<VideoUserInfo>> videoUserInfoOptional = Optional.ofNullable(videoUserInfoList);
         logger.info("List of videos found: {} and it mapped to Video User Info DTO for frontend", videoUserInfoList == null? 0:videoUserInfoList.size());
         return mapperUtil.mapToList(videoUserInfoOptional.orElse(new ArrayList<>()), VideoUserInfoDTO.class);

@@ -15,7 +15,8 @@ export interface VideoDto {
   username: string;
   userDisplayName: string;
   userPicture: string;
-  userSubscribersCount: number;
+  channelSubscribersCount: number;
+  isCurrentUserSubscribedToChannel: boolean
 }
 
 export interface WatchedVideoDTO extends VideoDto {
@@ -43,6 +44,13 @@ export interface UserDto {
   dislikedVideos?: any[];
   subscribedToCount?: number;
   subscribersCount?: number;
+}
+
+export interface ChannelInfoDTO {
+  name: string;
+  displayName: string;
+  subscribersCount: number;
+  isUserSubscribed: boolean
 }
 
 export interface CommentDTO {

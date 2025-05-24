@@ -1,11 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
-import { AppSettings } from '../../constants/AppSettings';
 import { Observable, Subject } from 'rxjs';
 import {
+  ChannelInfoDTO,
   LikedVideoDTO,
   UserDto,
-  VideoDto,
   WatchedVideoDTO,
 } from '../../dto/video-dto';
 import { OidcSecurityService, UserDataResult } from 'angular-auth-oidc-client';
@@ -72,19 +71,19 @@ export class UserService implements OnInit {
     );
   }
 
-  subscribeUser(userId: string): Observable<Record<string, Object>> {
+  subscribeUser(userId: string): Observable<ChannelInfoDTO> {
     var formData = new FormData();
     formData.append('userId', userId);
-    return this.http.put<Record<string, Object>>(
+    return this.http.put<ChannelInfoDTO>(
       this.getUserBaseUrl() + this.SUBSCRIBE_URL,
       formData
     );
   }
 
-  unsubscribeUser(userId: string): Observable<Record<string, Object>> {
+  unsubscribeUser(userId: string): Observable<ChannelInfoDTO> {
     var formData = new FormData();
     formData.append('userId', userId);
-    return this.http.put<Record<string, Object>>(
+    return this.http.put<ChannelInfoDTO>(
       this.getUserBaseUrl() + this.UN_SUBSCRIBE_URL,
       formData
     );

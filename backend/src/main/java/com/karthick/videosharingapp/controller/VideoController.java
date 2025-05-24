@@ -1,9 +1,9 @@
 package com.karthick.videosharingapp.controller;
 
 import com.karthick.videosharingapp.domain.CompleteMultipartRequest;
-import com.karthick.videosharingapp.dto.UploadVideoResponse;
-import com.karthick.videosharingapp.dto.VideoUserInfoDTO;
-import com.karthick.videosharingapp.dto.VideoDTO;
+import com.karthick.videosharingapp.domain.dto.UploadVideoResponse;
+import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoDTO;
 import com.karthick.videosharingapp.interfaces.MultiPartUploadService;
 import com.karthick.videosharingapp.service.VideoService;
 import lombok.RequiredArgsConstructor;

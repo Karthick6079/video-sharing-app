@@ -4,10 +4,12 @@ import com.karthick.videosharingapp.domain.dto.*;
 import com.karthick.videosharingapp.entity.*;
 import com.karthick.videosharingapp.exceptions.BusinessException;
 import com.karthick.videosharingapp.exceptions.FileSizeExceededException;
-import com.karthick.videosharingapp.repository.LikeVideoRepo;
-import com.karthick.videosharingapp.repository.SubscriptionRepo;
+import com.karthick.videosharingapp.interfaces.RecommendationService;
+import com.karthick.videosharingapp.repository.VideoLikeRepository;
+import com.karthick.videosharingapp.repository.SubscriptionRepository;
 import com.karthick.videosharingapp.repository.VideoRepository;
-import com.karthick.videosharingapp.repository.WatchRepository;
+import com.karthick.videosharingapp.repository.VideoWatchRepository;
+import com.karthick.videosharingapp.servicelogic.RecommendationServiceFactory;
 import com.karthick.videosharingapp.servicelogic.VideoServiceLogic;
 import com.karthick.videosharingapp.util.MapperUtil;
 import com.mongodb.client.MongoClient;
@@ -23,8 +25,8 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +40,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 public class VideoService {
 
+    private final Logger logger = LoggerFactory.getLogger(VideoService.class);
+
     private final S3Service s3Service;
 
     private final VideoRepository videoRepo;
@@ -48,24 +52,26 @@ public class VideoService {
 
     private final UserService userService;
 
-    private final WatchRepository watchRepository;
+    private final VideoWatchRepository videoWatchRepository;
 
-    private final SubscriptionRepo subscriptionRepo;
+    private final SubscriptionRepository subscriptionRepository;
 
     private final MongoClient mongoClient;
 
-    private final WatchService watchService;
+    private final VideoWatchService videoWatchService;
 
-    private final LikeVideoRepo likeVideoRepo;
+    private final VideoLikeRepository videoLikeRepository;
+
+    private final RecommendationRefreshQueue recommendationRefreshQueue;
 
     private final double MB_MULTIPLIER = 0.00000095367432;
 
     private final String RESPONSE_TO_FRONTEND_LOG = "The response sent back to frontend";
 
+    private final RecommendationServiceFactory recommendationServiceFactory;
+
     @Value("${spring.servlet.multipart.max-file-size}")
     private String allowedVideoFileSize;
-
-    private final Logger logger = LoggerFactory.getLogger(VideoService.class);
 
 
     public UploadVideoResponse uploadFile(MultipartFile file) {
@@ -164,20 +170,21 @@ public class VideoService {
         User currentUser = userService.getCurrentUser();
 
 
+        User videoUploadUser = userService.getUserById(videoUserInfoDTO.getUserId());
+
         // 3. Update watch history table
         logger.info("Update watch history table");
         if (currentUser != null){
-            watchService.updateWatchHistory(videoUserInfoDTO, database, currentUser);
-
-            // 4.Update video uploaded user subscribers count, is current user subscribed
-            logger.info("Update video uploaded user subscribers count");
-            User videoUploadUser = userService.getUserById(videoUserInfoDTO.getUserId());
-            Long channelSubscriberCount = subscriptionRepo.countByChannelId(videoUploadUser.getId());
-            videoUserInfoDTO.setChannelSubscribersCount(new AtomicLong(channelSubscriberCount));
-
-            boolean isCurrentUserSubscribed = subscriptionRepo.existsBySubscriberIdAndChannelId(currentUser.getId(), videoUploadUser.getId());
+            videoWatchService.updateWatchHistory(videoUserInfoDTO, database, currentUser);
+            recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
+            boolean isCurrentUserSubscribed = subscriptionRepository.existsBySubscriberIdAndChannelId(currentUser.getId(), videoUploadUser.getId());
             videoUserInfoDTO.setCurrentUserSubscribedToChannel(isCurrentUserSubscribed);
         }
+
+        // 4.Update video uploaded user subscribers count, is current user subscribed
+        logger.info("Update video uploaded user subscribers count");
+        Long channelSubscriberCount = subscriptionRepository.countByChannelId(videoUploadUser.getId());
+        videoUserInfoDTO.setChannelSubscribersCount(new AtomicLong(channelSubscriberCount));
 
         logger.info("Mapped information VideoUserInfoDTO and response sent to frontend");
         return mapperUtil.map(videoUserInfoDTO, VideoUserInfoDTO.class);
@@ -196,13 +203,39 @@ public class VideoService {
 
 
     public VideoDTO likeVideo(String videoId, String userId) {
-        return videoServiceLogic.likeVideo(videoId, userId);
+
+        VideoDTO videoDTO  = videoServiceLogic.likeVideo(videoId, userId);
+        recommendationRefreshQueue.markUserForRefresh(userId);
+        return videoDTO;
     }
 
     public VideoDTO dislikeVideo(String videoId, String userId) {
-        return videoServiceLogic.dislikeVideo(videoId, userId);
+        VideoDTO videoDTO = videoServiceLogic.dislikeVideo(videoId, userId);
+        recommendationRefreshQueue.markUserForRefresh(userId);
+        return videoDTO;
     }
 
+
+
+
+    public List<VideoUserInfoDTO> getRecommendationVideos(int page, int size) {
+
+        return getVideos(page, size);
+    }
+
+    private List<VideoUserInfoDTO> getVideos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        boolean isUserLoggedIn = userService.isUserLoggedIn();
+        RecommendationService recommendationService = recommendationServiceFactory
+                .getRecommendationService(isUserLoggedIn);
+
+        if(isUserLoggedIn){
+            User currentUser = userService.getCurrentUser();
+            return recommendationService.getRecommendationVideos(currentUser.getId(), pageable);
+        } else{
+            return recommendationService.getRecommendationVideos(pageable);
+        }
+    }
 
     public List<VideoUserInfoDTO> getVideosAndUser(List<String> videos) {
         logger.info("Fetching Video and User information list of videos");
@@ -212,43 +245,21 @@ public class VideoService {
         }).toList();
     }
 
-    public List<VideoUserInfoDTO> getSuggestionVideos(int page, int size) {
-
-        logger.info("Getting suggestion videos by random");
-
-        // TO DO - Need to build real logic
-
-        Page<Video> videoPage = videoRepo.findAllIds(PageRequest.of(page, size));
-
-        if (videoPage.hasContent()) {
-            ArrayList<Video> videoArrayList = new ArrayList<>(videoPage.getContent());
-            Collections.shuffle(videoArrayList);
-            List<String> videoIds = videoArrayList.stream().map(Video::getId).toList();
-            return getVideosAndUser(videoIds);
-        } else {
-            return null;
-        }
-    }
-
-    public List<WatchedVideoDTO> fetchWatchedVideos(String userId, int page, int size) {
+    public List<VideoWatchDTO> fetchWatchedVideos(String userId, int page, int size) {
         // Skipping elements PageNumber * PageSize
         logger.info("Fetching user watched videos and filter and structured by database query");
         int skip = page * size;
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 
-        List<Watch> watchList = watchRepository.getUserVideoWatchHistory(userId, skip, size);
+        List<VideoWatch> videoWatchList = videoWatchRepository.getUserVideoWatchHistory(userId, skip, size);
 
-        return mapperUtil.mapToList(watchList, WatchedVideoDTO.class);
+        return mapperUtil.mapToList(videoWatchList, VideoWatchDTO.class);
     }
 
-    public List<VideoUserInfoDTO> getShortVideo() {
+    public List<VideoUserInfoDTO> getShortVideo(int page, int size) {
         logger.info("Fetching short video from database");
-        List<String> videosId = videoRepo.getShortsVideo();
-        if (videosId != null) {
-            return videosId.stream().map(this::getVideoUserInfo).toList();
-        }
-        return null;
+        return getVideos(page, size);
     }
 
     public List<VideoUserInfoDTO> getSubscriptionVideos(int page, int size) {
@@ -267,13 +278,13 @@ public class VideoService {
         return getVideosAndUser(videoIdList);
     }
 
-    public List<LikedVideoDTO> getLikedVideos(int page, int size) {
+    public List<VideoLikeDTO> getLikedVideos(int page, int size) {
 
         User user = userService.getCurrentUser();
 
-        List<LikeVideo> likeVideos = likeVideoRepo.getLikedVideos(user.getId(), page * size, size);
+        List<VideoLike> videoLikes = videoLikeRepository.getLikedVideos(user.getId(), page * size, size);
 
-        return mapperUtil.mapToList(likeVideos, LikedVideoDTO.class);
+        return mapperUtil.mapToList(videoLikes, VideoLikeDTO.class);
     }
 
     public List<VideoUserInfoDTO> getSearchedVideos(String searchText) {

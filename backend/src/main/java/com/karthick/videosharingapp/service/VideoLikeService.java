@@ -1,20 +1,19 @@
 package com.karthick.videosharingapp.service;
 
-import com.karthick.videosharingapp.entity.LikeVideo;
-import com.karthick.videosharingapp.repository.LikeVideoRepo;
+import com.karthick.videosharingapp.entity.VideoLike;
+import com.karthick.videosharingapp.repository.VideoLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class LikedVideoService {
+public class VideoLikeService {
 
 
-    private final LikeVideoRepo likeVideoRepo;
+    private final VideoLikeRepository videoLikeRepository;
 
 
 
@@ -28,13 +27,13 @@ public class LikedVideoService {
     public void addLikedVideoInDB(String userId, String videoId, Set<String> topics) {
 
 
-        LikeVideo likeVideo = new LikeVideo();
-        likeVideo.setVideoId(videoId);
-        likeVideo.setUserId(userId);
-        likeVideo.setLikedAt(Instant.now());
-        likeVideo.setLikeTopics(topics);
+        VideoLike videoLike = new VideoLike();
+        videoLike.setVideoId(videoId);
+        videoLike.setUserId(userId);
+        videoLike.setLikedAt(Instant.now());
+        videoLike.setLikeTopics(topics);
 
-        likeVideoRepo.save(likeVideo);
+        videoLikeRepository.save(videoLike);
 
 
     }
@@ -42,7 +41,7 @@ public class LikedVideoService {
 
     public void removeLikedVideoFromDB(String userId, String videoId){
 
-        likeVideoRepo.deleteByUserIdAndVideoId(userId, videoId);
+        videoLikeRepository.deleteByUserIdAndVideoId(userId, videoId);
 
     }
 

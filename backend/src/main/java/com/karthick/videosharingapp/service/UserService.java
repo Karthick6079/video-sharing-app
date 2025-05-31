@@ -5,9 +5,8 @@ import com.karthick.videosharingapp.domain.dto.ChannelInfoDTO;
 import com.karthick.videosharingapp.domain.dto.UserDTO;
 import com.karthick.videosharingapp.entity.Subscription;
 import com.karthick.videosharingapp.entity.User;
-import com.karthick.videosharingapp.repository.SubscriptionRepo;
+import com.karthick.videosharingapp.repository.SubscriptionRepository;
 import com.karthick.videosharingapp.repository.UserRepository;
-import com.karthick.videosharingapp.servicelogic.UserLogic;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -20,13 +19,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Value("${spring.auth.user-info-endpoint}")
     private String userInfoEndpoint;
@@ -35,13 +34,11 @@ public class UserService {
 
     private final ModelMapper mapper;
 
-    private final UserLogic userLogic;
-
-    private final SubscriptionRepo subscriptionRepo;
+    private final SubscriptionRepository subscriptionRepository;
 
     private final String ANONYMOUS_USER = "anonymousUser";
 
-    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private final RecommendationRefreshQueue recommendationRefreshQueue;
 
 
     public UserDTO registerUser(Jwt jwt) {
@@ -113,6 +110,11 @@ public class UserService {
         return getUserFromDB(jwt.getSubject());
     }
 
+    public boolean isUserLoggedIn(){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return securityContext == null || !ANONYMOUS_USER.equals(securityContext.getAuthentication().getPrincipal());
+    }
+
     public User getUserFromDB(String sub) {
         logger.info("Getting user from database using jwt sub");
         Optional<User> userOp = userRepository.findBySub(sub);
@@ -138,20 +140,14 @@ public class UserService {
         subscription.setSubscriberId(currentUser.getId());
         subscription.setChannelId(channel.getId());
 
-        subscriptionRepo.save(subscription);
+        subscriptionRepository.save(subscription);
         logger.info("Subscribed information updated in database");
 
-        Long channelSubscribersCount = subscriptionRepo.countByChannelId(channel.getId());
+        Long channelSubscribersCount = subscriptionRepository.countByChannelId(channel.getId());
 
         logger.info("Preparing channel DTO to frontend after subscribe");
         ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
-
-//        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
-//        Map<String, Object> returnMap = new LinkedHashMap<>();
-//        logger.info("The updated subscribers count: {} and current user {} user DTO information sent to frontend", channelSubscribersCount, currentUser.getName());
-//        returnMap.put("currentUser", currentUserDTO);
-//        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
-
+        recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
         return channelInfoDTO;
     }
 
@@ -171,19 +167,14 @@ public class UserService {
 
         logger.info("The user: {} unsubscribing to user: {}", currentUser.getName(), channel.getName());
 
-        subscriptionRepo.deleteBySubscriberIdAndChannelId(currentUser.getId(), channel.getId());
+        subscriptionRepository.deleteBySubscriberIdAndChannelId(currentUser.getId(), channel.getId());
         logger.info("unsubscribed information updated in database");
 
-        Long channelSubscribersCount = subscriptionRepo.countByChannelId(channel.getId());
+        Long channelSubscribersCount = subscriptionRepository.countByChannelId(channel.getId());
 
         logger.info("Preparing channel DTO to frontend after unsubscribe");
         ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
-
-//        UserDTO currentUserDTO = mapper.map(currentUser, UserDTO.class);
-//        Map<String, Object> returnMap = new LinkedHashMap<>();
-//        logger.info("The updated subscribers count: {} and current user user DTO information sent to frontend", channelSubscribersCount);
-//        returnMap.put("currentUser", currentUserDTO);
-//        returnMap.put("videoUploadedSubscribersCount", channelSubscribersCount);
+        recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
         return channelInfoDTO;
     }
 

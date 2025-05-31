@@ -1,26 +1,25 @@
 package com.karthick.videosharingapp.entity;
 
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Set;
 
-
-@Document(collection = "watchedVideos")
+@Document( collection = "dislikedVideos")
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Watch extends  VideoUserInfo {
-
+public class VideoDislike extends VideoUserInfo{
     @Id
     private String id;
 
-    private Instant watchedAt = Instant.now();
+    private Instant dislikedAt;
 
-    private Set<String> watchTopics;
+    private Set<String> dislikeTopics;
 
 }

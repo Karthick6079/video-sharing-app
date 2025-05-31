@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LikedVideoDTO extends  VideoUserInfoDTO{
+public class VideoLikeDTO extends  VideoUserInfoDTO{
 
     private String id;
 

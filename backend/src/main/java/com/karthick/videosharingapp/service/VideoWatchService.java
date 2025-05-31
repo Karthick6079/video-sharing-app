@@ -3,8 +3,8 @@ package com.karthick.videosharingapp.service;
 
 import com.karthick.videosharingapp.entity.User;
 import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
-import com.karthick.videosharingapp.entity.Watch;
-import com.karthick.videosharingapp.repository.WatchRepository;
+import com.karthick.videosharingapp.entity.VideoWatch;
+import com.karthick.videosharingapp.repository.VideoWatchRepository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
@@ -26,12 +26,12 @@ import java.util.Set;
 import static com.mongodb.client.model.Filters.*;
 
 @Service
-public class WatchService {
+public class VideoWatchService {
 
-    private final Logger logger = LoggerFactory.getLogger(WatchService.class);
+    private final Logger logger = LoggerFactory.getLogger(VideoWatchService.class);
 
     @Autowired
-    private WatchRepository watchRepository;
+    private VideoWatchRepository videoWatchRepository;
 
 
     /**
@@ -74,12 +74,12 @@ public class WatchService {
         if(updateResult.getModifiedCount() > 0){
             logger.info("The watched video table updated for today already watched video!");
         } else {
-            Watch watch = new Watch();
-            watch.setVideoId(videoUserInfo.getVideoId());
-            watch.setUserId(videoUserInfo.getUserId());
+            VideoWatch videoWatch = new VideoWatch();
+            videoWatch.setVideoId(videoUserInfo.getVideoId());
+            videoWatch.setUserId(videoUserInfo.getUserId());
             Set<String> watchTopics = new HashSet<>(videoUserInfo.getTags());
-            watch.setWatchTopics(watchTopics);
-            watchRepository.save(watch);
+            videoWatch.setWatchTopics(watchTopics);
+            videoWatchRepository.save(videoWatch);
             logger.info("The watched video table updated");
         }
     }

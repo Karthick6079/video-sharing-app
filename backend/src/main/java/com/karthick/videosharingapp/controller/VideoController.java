@@ -80,13 +80,14 @@ public class VideoController {
                                                      @RequestParam(value = "size", defaultValue = "6") int size) {
         logger.info("Get new suggestion videos request received in video controller");
         logger.debug("The suggestion videos for page: {} and size: {}", page, size);
-        return videoService.getSuggestionVideos(page, size);
+        return videoService.getRecommendationVideos(page, size);
     }
 
     @GetMapping("/short-video")
-    public List<VideoUserInfoDTO> getShortsVideo() {
+    public List<VideoUserInfoDTO> getShortsVideo(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                 @RequestParam(value = "size", defaultValue = "2") int size) {
         logger.info("Get shorts videos request received on video controller");
-        return videoService.getShortVideo();
+        return videoService.getShortVideo(page, size);
     }
 
     @PostMapping("/subscription-videos")

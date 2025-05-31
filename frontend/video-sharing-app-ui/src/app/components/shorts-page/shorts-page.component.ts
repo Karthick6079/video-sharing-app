@@ -36,6 +36,9 @@ export class ShortsPageComponent
 
   observer: any;
 
+  page: number = 0;
+  private SIZE: number = 3;
+
   constructor(
     private videoService: VideoService,
     @Inject(DOCUMENT) private document: Document,
@@ -80,14 +83,15 @@ export class ShortsPageComponent
 
   videos!: VideoDto[];
   ngOnInit(): void {
-    this.videoService.getShortsVideo().subscribe((videos) => {
+    this.videoService.getShortsVideo(this.page, this.SIZE).subscribe((videos) => {
       this.videos = videos;
       // this.registerObserver();
     });
   }
 
   getShortVideo() {
-    this.videoService.getShortsVideo().subscribe((videos) => {
+    this.page = this.page + 1;
+    this.videoService.getShortsVideo(this.page, this.SIZE).subscribe((videos) => {
       this.videos.push(...videos);
       // this.callIntersectionObserver();
     });

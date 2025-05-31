@@ -3,9 +3,9 @@ package com.karthick.videosharingapp.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karthick.videosharingapp.domain.dto.ChannelInfoDTO;
-import com.karthick.videosharingapp.domain.dto.LikedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoLikeDTO;
 import com.karthick.videosharingapp.domain.dto.UserDTO;
-import com.karthick.videosharingapp.domain.dto.WatchedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoWatchDTO;
 import com.karthick.videosharingapp.service.CommonService;
 import com.karthick.videosharingapp.service.UserService;
 import com.karthick.videosharingapp.util.MapperUtil;
@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("${spring.services.path}/user")
@@ -62,15 +61,15 @@ public class UserController {
 
     @GetMapping("/videos-history")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<WatchedVideoDTO> videosHistory(@RequestParam( value = "page", defaultValue = "0" ) int page,
-                                               @RequestParam( value = "size", defaultValue = "6") int size) throws JsonProcessingException {
+    public List<VideoWatchDTO> videosHistory(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                             @RequestParam( value = "size", defaultValue = "6") int size) throws JsonProcessingException {
         return commonService.getWatchedVideos(page, size);
     }
 
     @GetMapping("/liked-videos")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<LikedVideoDTO> getLikedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
-                                              @RequestParam( value = "size", defaultValue = "6") int size){
+    public List<VideoLikeDTO> getLikedVideos(@RequestParam( value = "page", defaultValue = "0" ) int page,
+                                             @RequestParam( value = "size", defaultValue = "6") int size){
         return commonService.getLikedVideos(page, size);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WatchedVideoDTO extends VideoUserInfoDTO {
+public class VideoWatchDTO extends VideoUserInfoDTO {
 
     private String id;
 

@@ -6,18 +6,20 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Set;
 
-@Document( collection = "likeVideos")
+
+@Document(collection = "watchedVideos")
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class LikeVideo extends VideoUserInfo{
+public class VideoWatch extends  VideoUserInfo {
+
     @Id
     private String id;
 
-    private Instant likedAt;
+    private Instant watchedAt = Instant.now();
 
-    private Set<String> likeTopics;
+    private Set<String> watchTopics;
+
 }

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReadPreference;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 
@@ -28,13 +29,23 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     @ReadPreference("secondary")
     VideoUserInfo getVideoUserInfo(String videoId);
 
+    @Aggregation(pipeline = {
+            "{$match: { _id: {$in:?0}}}",
+            "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
+            "{$unwind: '$user_info'}",
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+                    "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
+    })
+    @ReadPreference("secondary")
+    List<VideoUserInfo> getVideoUserInfoByVideoIds(List<String> videoIds);
+
     @Query( value="{}", fields = "{_id:1}")
     Page<Video> findAllIds(Pageable pageable);
 
 
     Page<Video> findAllById(List<String> videoIds, Pageable pageable);
 
-    List<Video> findAllByUserId(List<String> userIds);
+    List<Video> findByUserIdIn(List<String> userIds);
 
     @Aggregation(pipeline = {
             "{$match: { userId: { $in:?0}}}",
@@ -80,7 +91,13 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
 
 
-    List<Video> findVideosByTags(List<String> topics);
+    List<Video> findByTagsIn(List<String> topics);
+
+    List<Video> findByIdIn(List<String> videoIds);
+
+    @Query("{ 'publishedAt': { $gte: ?0 } }")
+    List<Video> findByPublishedAtAfter(Instant date);
+
 
 
 

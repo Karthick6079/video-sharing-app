@@ -2,10 +2,10 @@ package com.karthick.videosharingapp.servicelogic;
 
 import com.karthick.videosharingapp.domain.dto.VideoDTO;
 import com.karthick.videosharingapp.entity.*;
-import com.karthick.videosharingapp.repository.DislikeVideoRepo;
-import com.karthick.videosharingapp.repository.LikeVideoRepo;
+import com.karthick.videosharingapp.repository.VideoDislikeRepository;
+import com.karthick.videosharingapp.repository.VideoLikeRepository;
 import com.karthick.videosharingapp.repository.VideoRepository;
-import com.karthick.videosharingapp.service.LikedVideoService;
+import com.karthick.videosharingapp.service.VideoLikeService;
 import com.karthick.videosharingapp.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,13 +20,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class VideoServiceLogic {
 
-    private final LikedVideoService likedVideoService;
+    private final VideoLikeService videoLikeService;
 
     private final VideoRepository videoRepo;
 
-    private final LikeVideoRepo likeVideoRepo;
+    private final VideoLikeRepository videoLikeRepository;
 
-    private final DislikeVideoRepo dislikeVideoRepo;
+    private final VideoDislikeRepository videoDislikeRepository;
 
     private final MapperUtil mapperUtil;
 
@@ -53,9 +53,9 @@ public class VideoServiceLogic {
 
         logger.info("Like count before increment is: {} ", videoOp.get().getLikes());
 
-        Optional<LikeVideo> likeVideoOp = likeVideoRepo.findByUserIdAndVideoId(userId, videoId);
+        Optional<VideoLike> likeVideoOp = videoLikeRepository.findByUserIdAndVideoId(userId, videoId);
 
-        Optional<DislikeVideo> dislikeVideoOp = dislikeVideoRepo.findByUserIdAndVideoId(userId, videoId);
+        Optional<VideoDislike> dislikeVideoOp = videoDislikeRepository.findByUserIdAndVideoId(userId, videoId);
 
         if (likeVideoOp.isPresent()) {
 
@@ -65,7 +65,7 @@ public class VideoServiceLogic {
                         video.decrementLikeCount();
                         logger.info("Saving the video in db and deleting liked video info in db ");
                         videoRepo.save(video);
-                        likeVideoRepo.deleteById(likeVideoOp.get().getId());
+                        videoLikeRepository.deleteById(likeVideoOp.get().getId());
                     }
             );
         } else if (dislikeVideoOp.isPresent()) { //If user already disliked comments means decrement the dislike count and inc like count
@@ -76,7 +76,7 @@ public class VideoServiceLogic {
                         video.decrementDisLikeCount();
                         logger.info("Saving the video in db and deleting disliked video info in db ");
                         videoRepo.save(video);
-                        dislikeVideoRepo.deleteById(dislikeVideoOp.get().getId());
+                        videoDislikeRepository.deleteById(dislikeVideoOp.get().getId());
                     }
             );
         } else {
@@ -84,10 +84,10 @@ public class VideoServiceLogic {
                     video -> {
                         logger.info("Increasing video likes count");
                         video.incrementLikeCount();
-                        LikeVideo likeVideo = createLikeVideo(videoId, userId, video.getTags());
+                        VideoLike videoLike = createLikeVideo(videoId, userId, video.getTags());
                         logger.info("Saving the video in db and liked video info in db ");
                         videoRepo.save(video);
-                        likeVideoRepo.save(likeVideo);
+                        videoLikeRepository.save(videoLike);
                     }
             );
         }
@@ -106,9 +106,9 @@ public class VideoServiceLogic {
 
         logger.info("dislike count before increment is: {} ", videoOp.get().getDisLikes());
 
-        Optional<LikeVideo> likeVideoOp = likeVideoRepo.findByUserIdAndVideoId(userId, videoId);
+        Optional<VideoLike> likeVideoOp = videoLikeRepository.findByUserIdAndVideoId(userId, videoId);
 
-        Optional<DislikeVideo> dislikeVideoOp = dislikeVideoRepo.findByUserIdAndVideoId(userId, videoId);
+        Optional<VideoDislike> dislikeVideoOp = videoDislikeRepository.findByUserIdAndVideoId(userId, videoId);
 
         if (dislikeVideoOp.isPresent()) {
             videoOp.ifPresent(
@@ -117,7 +117,7 @@ public class VideoServiceLogic {
                         video.decrementDisLikeCount();
                         logger.info("Saving the video in db and deleting disliked video info in db");
                         videoRepo.save(video);
-                        dislikeVideoRepo.deleteById(dislikeVideoOp.get().getId());
+                        videoDislikeRepository.deleteById(dislikeVideoOp.get().getId());
                     }
             );
         } else if (likeVideoOp.isPresent()) { //If user already disliked comments means decrement the dislike count and inc like count
@@ -127,7 +127,7 @@ public class VideoServiceLogic {
                         video.incrementDisLikeCount();
                         video.decrementLikeCount();
                         videoRepo.save(video);
-                        likeVideoRepo.deleteById(likeVideoOp.get().getId());
+                        videoLikeRepository.deleteById(likeVideoOp.get().getId());
                     }
             );
         } else {
@@ -135,10 +135,10 @@ public class VideoServiceLogic {
                     video -> {
                         logger.info("Increasing video dislikes count");
                         video.incrementDisLikeCount();
-                        DislikeVideo dislikeVideo = createDislikeVideo(videoId, userId, video.getTags());
+                        VideoDislike videoDislike = createDislikeVideo(videoId, userId, video.getTags());
                         logger.info("Saving the video in db and disliked video info in db ");
                         videoRepo.save(video);
-                        dislikeVideoRepo.save(dislikeVideo);
+                        videoDislikeRepository.save(videoDislike);
                     }
             );
         }
@@ -148,26 +148,26 @@ public class VideoServiceLogic {
         return mapperUtil.map(videoOp.orElse(new Video()), VideoDTO.class);
     }
 
-    public LikeVideo createLikeVideo(String videoId, String userId, Set<String> likeTopics) {
+    public VideoLike createLikeVideo(String videoId, String userId, Set<String> likeTopics) {
 
-        LikeVideo likeVideo = new LikeVideo();
-        likeVideo.setVideoId(videoId);
-        likeVideo.setUserId(userId);
-        likeVideo.setLikeTopics(likeTopics);
-        likeVideo.setLikedAt(Instant.now());
+        VideoLike videoLike = new VideoLike();
+        videoLike.setVideoId(videoId);
+        videoLike.setUserId(userId);
+        videoLike.setLikeTopics(likeTopics);
+        videoLike.setLikedAt(Instant.now());
 
-        return likeVideo;
+        return videoLike;
     }
 
-    public DislikeVideo createDislikeVideo(String videoId, String userId, Set<String> likeTopics) {
+    public VideoDislike createDislikeVideo(String videoId, String userId, Set<String> likeTopics) {
 
-        DislikeVideo dislikeVideo = new DislikeVideo();
-        dislikeVideo.setVideoId(videoId);
-        dislikeVideo.setUserId(userId);
-        dislikeVideo.setDislikeTopics(likeTopics);
-        dislikeVideo.setDislikedAt(Instant.now());
+        VideoDislike videoDislike = new VideoDislike();
+        videoDislike.setVideoId(videoId);
+        videoDislike.setUserId(userId);
+        videoDislike.setDislikeTopics(likeTopics);
+        videoDislike.setDislikedAt(Instant.now());
 
-        return dislikeVideo;
+        return videoDislike;
     }
 
 }

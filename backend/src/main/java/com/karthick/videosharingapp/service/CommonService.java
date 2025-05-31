@@ -2,8 +2,8 @@ package com.karthick.videosharingapp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.karthick.videosharingapp.domain.dto.LikedVideoDTO;
-import com.karthick.videosharingapp.domain.dto.WatchedVideoDTO;
+import com.karthick.videosharingapp.domain.dto.VideoLikeDTO;
+import com.karthick.videosharingapp.domain.dto.VideoWatchDTO;
 import com.karthick.videosharingapp.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ public class CommonService {
 
     private final ObjectMapper objectMapper;
 
-    public List<WatchedVideoDTO> getWatchedVideos(int page, int size) throws JsonProcessingException {
+    public List<VideoWatchDTO> getWatchedVideos(int page, int size) throws JsonProcessingException {
         User user = userService.getCurrentUser();
-//        Map<LocalDate, List<WatchedVideoDTO>> groupedObject = videoService.fetchWatchedVideos(user.getId(), page, size);
+//        Map<LocalDate, List<VideoWatchDTO>> groupedObject = videoService.fetchWatchedVideos(user.getId(), page, size);
         return videoService.fetchWatchedVideos(user.getId(), page, size);
     }
 
 
-    public List<LikedVideoDTO> getLikedVideos(int page, int size){
+    public List<VideoLikeDTO> getLikedVideos(int page, int size){
         return videoService.getLikedVideos(page, size);
     }
 

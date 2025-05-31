@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SubscriptionRepo extends MongoRepository<Subscription, String> {
+public interface SubscriptionRepository extends MongoRepository<Subscription, String> {
 
     List<Subscription> findByChannelId(String userId); // Who subscribed to me or Fetch list of subscribers for given user
 

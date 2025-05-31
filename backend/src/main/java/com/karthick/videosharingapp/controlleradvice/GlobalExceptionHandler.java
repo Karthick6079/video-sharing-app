@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,6 +34,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StatusResponse> handleException(Exception exception, HttpServletResponse response) throws IOException {
+
+
         logger.error("An unhandled exception occurred:", exception);
         return ResponseEntity.internalServerError().body(new StatusResponse("JAVA_ERR_UNHANDLED", exception.getMessage()));
     }

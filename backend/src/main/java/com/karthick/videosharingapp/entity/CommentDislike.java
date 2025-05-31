@@ -8,12 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-
-@Document( collection = "likeComments")
+@Document( collection = "dislikedComments")
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class LikeComment {
+public class CommentDislike {
 
     @Id
     private String id;
@@ -24,7 +23,5 @@ public class LikeComment {
 
     private String userId;
 
-    private Instant likedAt;
-
-
+    private Instant dislikedAt;
 }

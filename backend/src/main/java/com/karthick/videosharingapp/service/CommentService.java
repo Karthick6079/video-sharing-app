@@ -1,12 +1,12 @@
 package com.karthick.videosharingapp.service;
 
 import com.karthick.videosharingapp.entity.Comment;
-import com.karthick.videosharingapp.entity.DislikeComment;
-import com.karthick.videosharingapp.entity.LikeComment;
+import com.karthick.videosharingapp.entity.CommentDislike;
+import com.karthick.videosharingapp.entity.CommentLike;
 import com.karthick.videosharingapp.entity.User;
 import com.karthick.videosharingapp.repository.CommentRepository;
-import com.karthick.videosharingapp.repository.DisLikeCommentRepo;
-import com.karthick.videosharingapp.repository.LikeCommentRepo;
+import com.karthick.videosharingapp.repository.CommentDislikeRepository;
+import com.karthick.videosharingapp.repository.CommentLikeRepository;
 import com.karthick.videosharingapp.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,9 +31,9 @@ public class CommentService {
 
     private final UserService userService;
 
-    private final LikeCommentRepo likeCommentRepo;
+    private final CommentLikeRepository commentLikeRepository;
 
-    private final DisLikeCommentRepo disLikeCommentRepo;
+    private final CommentDislikeRepository commentDislikeRepository;
 
     private final int RECORDS_PER_PAGE = 10;
 
@@ -73,9 +73,9 @@ public class CommentService {
 
         Optional<Comment> commentOp = commentRepository.findById(commentId);
 
-        Optional<LikeComment> likeCommentOp = likeCommentRepo.findLikedComment( videoId, userId, commentId);
+        Optional<CommentLike> likeCommentOp = commentLikeRepository.findLikedComment( videoId, userId, commentId);
 
-        Optional<DislikeComment> disLikedCommentOp = disLikeCommentRepo.findDisLikedComment( videoId, userId, commentId);
+        Optional<CommentDislike> disLikedCommentOp = commentDislikeRepository.findDisLikedComment( videoId, userId, commentId);
 
         //If user already liked comments means decrement the like count
         if(likeCommentOp.isPresent()){
@@ -83,7 +83,7 @@ public class CommentService {
                     comment -> {
                         comment.decrementLike();
                         commentRepository.save(comment);
-                        likeCommentRepo.deleteById(likeCommentOp.get().getId());
+                        commentLikeRepository.deleteById(likeCommentOp.get().getId());
                     }
             );
         } else if(disLikedCommentOp.isPresent()) { //If user already disliked comments means decrement the dislike count and inc like count
@@ -92,18 +92,18 @@ public class CommentService {
                         comment.incrementLike();
                         comment.decrementDislike();
                         commentRepository.save(comment);
-                        disLikeCommentRepo.deleteById(disLikedCommentOp.get().getId());
+                        commentDislikeRepository.deleteById(disLikedCommentOp.get().getId());
                     }
             );
         } else {
             commentOp.ifPresent(
                     comment -> {
                         comment.incrementLike();
-                        LikeComment likeComment = createLikeComment(videoId, userId, commentId);
+                        CommentLike commentLike = createLikeComment(videoId, userId, commentId);
                         commentRepository.save(comment);
                         System.out.println("Comment entity saved in MongoDB");
-                        likeCommentRepo.save(likeComment);
-                        System.out.println("LikeComment entity saved in MongoDB");
+                        commentLikeRepository.save(commentLike);
+                        System.out.println("CommentLike entity saved in MongoDB");
                     }
             );
         }
@@ -117,9 +117,9 @@ public class CommentService {
 
         Optional<Comment> commentOp = commentRepository.findById(commentId);
 
-        Optional<LikeComment> likeCommentOp = likeCommentRepo.findLikedComment( videoId, userId, commentId);
+        Optional<CommentLike> likeCommentOp = commentLikeRepository.findLikedComment( videoId, userId, commentId);
 
-        Optional<DislikeComment> disLikedCommentOp = disLikeCommentRepo.findDisLikedComment( videoId, userId, commentId);
+        Optional<CommentDislike> disLikedCommentOp = commentDislikeRepository.findDisLikedComment( videoId, userId, commentId);
 
         //If user already liked comments means decrement the like count
         if(disLikedCommentOp.isPresent()){
@@ -127,7 +127,7 @@ public class CommentService {
                     comment -> {
                         comment.decrementDislike();
                         commentRepository.save(comment);
-                        disLikeCommentRepo.deleteById(disLikedCommentOp.get().getId());
+                        commentDislikeRepository.deleteById(disLikedCommentOp.get().getId());
                     }
             );
         } else if(likeCommentOp.isPresent()) { //If user already disliked comments means decrement the dislike count and inc like count
@@ -135,7 +135,7 @@ public class CommentService {
                     comment -> {
                         comment.incrementDislike();
                         comment.decrementLike();
-                        likeCommentRepo.deleteById(likeCommentOp.get().getId());
+                        commentLikeRepository.deleteById(likeCommentOp.get().getId());
                         commentRepository.save(comment);
                     }
             );
@@ -143,11 +143,11 @@ public class CommentService {
             commentOp.ifPresent(
                     comment -> {
                         comment.incrementDislike();
-                        DislikeComment dislikeComment = createDislikeComment(videoId, userId, commentId);
+                        CommentDislike commentDislike = createDislikeComment(videoId, userId, commentId);
                         commentRepository.save(comment);
                         System.out.println("Comment entity saved in MongoDB");
-                        disLikeCommentRepo.save(dislikeComment);
-                        System.out.println("DislikeComment entity saved in MongoDB");
+                        commentDislikeRepository.save(commentDislike);
+                        System.out.println("CommentDislike entity saved in MongoDB");
                     }
             );
         }
@@ -155,22 +155,22 @@ public class CommentService {
         return mapper.map(commentOp.orElse(new Comment()), CommentDTO.class);
     }
 
-    public LikeComment createLikeComment(String videoId, String userId, String commentId){
-        LikeComment likeComment = new LikeComment();
-        likeComment.setVideoId(videoId);
-        likeComment.setUserId(userId);
-        likeComment.setCommentId(commentId);
-        likeComment.setLikedAt(Instant.now());
-        return likeComment;
+    public CommentLike createLikeComment(String videoId, String userId, String commentId){
+        CommentLike commentLike = new CommentLike();
+        commentLike.setVideoId(videoId);
+        commentLike.setUserId(userId);
+        commentLike.setCommentId(commentId);
+        commentLike.setLikedAt(Instant.now());
+        return commentLike;
     }
 
-    public DislikeComment createDislikeComment(String videoId, String userId, String commentId){
-        DislikeComment dislikeComment = new DislikeComment();
-        dislikeComment.setVideoId(videoId);
-        dislikeComment.setUserId(userId);
-        dislikeComment.setCommentId(commentId);
-        dislikeComment.setDislikedAt(Instant.now());
-        return dislikeComment;
+    public CommentDislike createDislikeComment(String videoId, String userId, String commentId){
+        CommentDislike commentDislike = new CommentDislike();
+        commentDislike.setVideoId(videoId);
+        commentDislike.setUserId(userId);
+        commentDislike.setCommentId(commentId);
+        commentDislike.setDislikedAt(Instant.now());
+        return commentDislike;
     }
 
     public <S, T> List<T> mapToList(List<S> source, Class<T> targetClassType){

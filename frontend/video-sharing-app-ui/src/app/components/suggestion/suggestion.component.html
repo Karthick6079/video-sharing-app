@@ -1,5 +1,5 @@
 <div class="suggestion-section">
-    <div class="suggestion-thumbnail" (click)="watchVideo()" (mouseover)="displayVideoOrThumbnail(true)" (mouseleave)="displayVideoOrThumbnail(false)">
+    <div class="suggestion-thumbnail" (click)="watchVideo()">
         @if(video){
             <app-thumbnail-video-player [url]="video.videoUrl" [thumbnailImageUrl]="video.thumbnailUrl"></app-thumbnail-video-player>
         }

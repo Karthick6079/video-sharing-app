@@ -4,6 +4,7 @@ import com.karthick.videosharingapp.domain.dto.*;
 import com.karthick.videosharingapp.entity.*;
 import com.karthick.videosharingapp.exceptions.BusinessException;
 import com.karthick.videosharingapp.exceptions.FileSizeExceededException;
+import com.karthick.videosharingapp.interfaces.MultiPartUploadService;
 import com.karthick.videosharingapp.interfaces.RecommendationService;
 import com.karthick.videosharingapp.repository.VideoLikeRepository;
 import com.karthick.videosharingapp.repository.SubscriptionRepository;
@@ -70,6 +71,8 @@ public class VideoService {
 
     private final RecommendationServiceFactory recommendationServiceFactory;
 
+    private final MultiPartUploadService multiPartUploadService;
+
     @Value("${spring.servlet.multipart.max-file-size}")
     private String allowedVideoFileSize;
 
@@ -134,6 +137,9 @@ public class VideoService {
         savedVideo.setTitle(videoDto.getTitle());
         savedVideo.setCreatedAt(Instant.now());
         savedVideo.setUserId(currerntUser.getId());
+
+        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty())
+            multiPartUploadService.generateThumbnail(savedVideo);
 //        savedVideo.setUser(currerntUser);
 
         //update video url to video dto

@@ -1,4 +1,4 @@
-.shorts-container{
+/* .shorts-container{
     display: flex;
     flex-direction: column;
     height: 80vh;
@@ -13,7 +13,30 @@
     min-height: 75vh;
     min-width: 23vw;
     scroll-snap-align: start;
+} */
+
+.shorts-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    /* Use full screen height for clean snapping */
+    width: 23vw;
+    /* Adjust width to your layout */
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
 }
+
+.vid-shorts {
+    scroll-snap-align: start;
+    flex: 0 0 100vh;
+    /* Occupies full viewport height */
+    width: 100%;
+    position: relative;
+}
+  
 
 .shorts-container::-webkit-scrollbar{
     display: none;

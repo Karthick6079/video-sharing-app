@@ -22,6 +22,8 @@ import java.util.*;
 @Service
 public class S3MultiPartUploadService implements MultiPartUploadService {
 
+    private final String BUCKET_VIDEO_FOLDER = "videos/";
+
     private final Logger logger = LoggerFactory.getLogger(S3MultiPartUploadService.class);
 
     @Value("${spring.aws-s3.bucket-name}")
@@ -39,10 +41,12 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
     @Autowired
     VideoRepository videoRepository;
 
+
     @Override
     public Map<String, Object> initiateUpload(String filename) throws AWSUploadException {
 
-        String key = String.valueOf(UUID.randomUUID());
+        String uniqueId = String.valueOf(UUID.randomUUID());
+        String key = BUCKET_VIDEO_FOLDER + uniqueId;
 
         logger.info("key {} generated for filename: {}", key, filename);
 

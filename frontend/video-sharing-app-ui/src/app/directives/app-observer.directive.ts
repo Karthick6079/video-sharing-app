@@ -5,108 +5,54 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
 } from '@angular/core';
-import { Subject, debounceTime, filter } from 'rxjs';
-
+import { debounceTime, Subject } from 'rxjs';
 @Directive({
   selector: '[appAppObserver]',
 })
-export class AppObserverDirective implements OnDestroy, OnInit, AfterViewInit {
-  @Input() debounceTime = 0;
-  @Input() threshold = 0.75;
+export class AppObserverDirective implements AfterViewInit, OnDestroy {
+  @Input() threshold = 1.0;
+  @Output() entered = new EventEmitter<HTMLElement>();
+  @Output() exited = new EventEmitter<HTMLElement>();
 
-  @Output() visible = new EventEmitter<HTMLElement>();
 
-  private observer: IntersectionObserver | undefined;
-  private subject$ = new Subject<{
-    entry: IntersectionObserverEntry;
-    observer: IntersectionObserver;
-  }>();
+  private entered$ = new Subject<HTMLElement>();
+  private exited$ = new Subject<HTMLElement>();
 
-  constructor(private element: ElementRef) {}
+  private observer!: IntersectionObserver;
 
-  videoPlayedElement = undefined;
-
-  ngOnInit() {
-    this.createObserver();
-  }
+  constructor(private el: ElementRef) {}
 
   ngAfterViewInit() {
-    this.startObservingElements();
-    // setTimeout(this.startObservingElements, 100);
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.75) {
+          this.entered$.next(this.el.nativeElement);
+        } else {
+          this.exited$.next(this.el.nativeElement);
+        }
+      },
+      {
+        threshold: this.threshold,
+        root: document.querySelector('.shorts-container'),
+      }
+    );
+
+    this.entered$
+    .pipe(debounceTime(100))
+    .subscribe((el) => this.entered.emit(el));
+
+  this.exited$
+    .pipe(debounceTime(100))
+    .subscribe((el) => this.exited.emit(el));
+
+    this.observer.observe(this.el.nativeElement);
   }
 
   ngOnDestroy() {
     if (this.observer) {
       this.observer.disconnect();
-      this.observer = undefined;
     }
-
-    // this.subject$.next();
-    this.subject$.complete();
-  }
-
-  private isVisible(element: HTMLElement) {
-    return new Promise((resolve) => {
-      const observer = new IntersectionObserver(([entry]) => {
-        resolve(entry.intersectionRatio === 1);
-        // observer.disconnect();
-      });
-
-      observer.observe(element);
-    });
-  }
-
-  private createObserver() {
-    const options = {
-      root: document.querySelector('.shorts-container'),
-      rootMargin: '0px',
-      threshold: this.threshold,
-    };
-
-    const isIntersecting = (entry: IntersectionObserverEntry) =>
-      entry.isIntersecting || entry.intersectionRatio > 0;
-
-    const notIntersecting = (entry: IntersectionObserverEntry) =>
-      entry.intersectionRatio < 1.0;
-
-    this.observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (isIntersecting(entry)) {
-          this.subject$.next({ entry, observer });
-        }
-      });
-    }, options);
-  }
-
-  private startObservingElements() {
-    if (!this.observer) {
-      return;
-    }
-
-    this.observer.observe(this.element.nativeElement);
-
-    this.subject$
-      .pipe(debounceTime(300), filter(Boolean))
-      .subscribe(async ({ entry, observer }) => {
-        const target = entry.target as HTMLElement;
-        const isStillVisible = await this.isVisible(target);
-
-        if (isStillVisible) {
-          this.visible.emit(target);
-
-          let videoElement: HTMLVideoElement =
-            this.element.nativeElement.querySelector('#singleVideo');
-          videoElement.currentTime = 0;
-          videoElement.play();
-          this.videoPlayedElement = videoElement;
-        } else {
-          if (this.videoPlayedElement) {
-            this.videoPlayedElement.pause();
-          }
-        }
-      });
   }
 }

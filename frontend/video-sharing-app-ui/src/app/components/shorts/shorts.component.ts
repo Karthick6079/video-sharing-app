@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { UserDto, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
@@ -17,8 +17,23 @@ export class ShortsComponent implements OnInit {
   @Input()
   video!: VideoDto;
 
+  
+  private _playShorts: boolean = false;
+
+
   @Input()
-  playShorts: boolean = false;
+set playShorts(value: boolean) {
+  console.log('playShorts changed to:', value)
+  console.log('video name', this.video.title);
+  this._playShorts = value;
+  this.handlePlayback();
+}
+
+get playShorts(): boolean {
+  return this._playShorts;
+}
+
+  @ViewChild('media') videoPlayerRef!: ElementRef<HTMLVideoElement>;
 
   user: UserDto | undefined;
 
@@ -42,6 +57,43 @@ export class ShortsComponent implements OnInit {
     private shortsService: ShortsServiceService
   ) {
     this.currentUser = this.userService.getCurrentUser();
+  }
+
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   const videoEl = this.videoPlayerRef?.nativeElement;
+  //   // alert("playShorts : "+ this.activeIndex);
+  //   if (!videoEl) return;
+
+  //   console.log(this.playShorts)
+
+  //   console.log("playshort latest value", changes['playShorts']);
+
+  //   if (changes['playShorts'] && changes['playShorts'].currentValue === true) {
+  //     videoEl.currentTime = 0;
+  //     videoEl.play();
+  //   } else {
+  //     videoEl.pause();
+  //   }
+  // }
+
+  handlePlayback(): void {
+    const videoEl = this.videoPlayerRef?.nativeElement;
+    // alert("playShorts : "+ this.activeIndex);
+    if (!videoEl) return;
+
+    console.log(this._playShorts)
+
+    // console.log("playshort latest value", changes['playShorts']);
+
+    if (this._playShorts) {
+      videoEl.currentTime = 0;
+      videoEl.play().catch(()=>{
+        console.warn("Error occured while video play")
+      });
+    } else {
+      videoEl.pause();
+    }
   }
 
   ngOnInit(): void {
@@ -98,3 +150,4 @@ export class ShortsComponent implements OnInit {
     });
   }
 }
+

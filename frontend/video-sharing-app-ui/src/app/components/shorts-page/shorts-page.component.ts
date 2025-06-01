@@ -2,10 +2,12 @@ import {
   AfterContentChecked,
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
   Inject,
+  NgZone,
   OnInit,
   QueryList,
   ViewChild,
@@ -23,9 +25,8 @@ import { UserService } from '../../services/user/user.service';
   templateUrl: './shorts-page.component.html',
   styleUrl: './shorts-page.component.css',
 })
-export class ShortsPageComponent
-  implements OnInit, AfterViewInit, AfterViewChecked
-{
+export class ShortsPageComponent {
+
   @ViewChild('shortsContainer')
   shortsContainerElement: ElementRef | undefined;
 
@@ -34,58 +35,28 @@ export class ShortsPageComponent
 
   playShorts: boolean = false;
 
+  playVideo: boolean = false;
+
   observer: any;
 
   page: number = 0;
-  private SIZE: number = 3;
+  private SIZE: number = 1;
+
+  activeIndex: number = -1;
+ currentlyPlayingVideo?: HTMLVideoElement;
 
   constructor(
     private videoService: VideoService,
     @Inject(DOCUMENT) private document: Document,
-    private shortsService: ShortsServiceService,
-    public userService: UserService
+    private cdr: ChangeDetectorRef,
+    public userService: UserService,
+    private zone: NgZone
   ) {}
-
-  ngAfterViewInit(): void {
-    // this.callIntersectionObserver();
-  }
-
-  callIntersectionObserver() {
-    setTimeout(this.registerObserver, 2000);
-  }
-
-  registerObserver() {
-    const options = {
-      root: null,
-      threshold: 0.5,
-    };
-
-    this.observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-      }
-    }, options);
-
-    this.document.querySelectorAll('.vid-shorts').forEach((element) => {
-      this.observer.observe(element);
-    });
-  }
-
-  ngAfterViewChecked(): void {
-    // const options = {
-    //   root: this.shortsContainerElement,
-    //   threshold: 0.5,
-    // };
-    // let observer = new IntersectionObserver(this.playShortsVideo);
-    // this.document.querySelectorAll('.vid-shorts').forEach((element) => {
-    //   observer.observe(element);
-    // });
-  }
 
   videos!: VideoDto[];
   ngOnInit(): void {
-    this.videoService.getShortsVideo(this.page, this.SIZE).subscribe((videos) => {
+    this.videoService.getShortsVideo(this.page, 2).subscribe((videos) => {
       this.videos = videos;
-      // this.registerObserver();
     });
   }
 
@@ -93,9 +64,78 @@ export class ShortsPageComponent
     this.page = this.page + 1;
     this.videoService.getShortsVideo(this.page, this.SIZE).subscribe((videos) => {
       this.videos.push(...videos);
-      // this.callIntersectionObserver();
     });
   }
 
-  onVisible() {}
+  // onEnter(element: HTMLElement, index: number) {
+  //   this.zone.run(() => {
+  //     console.log('Entered index:', index);
+  //     this.activeIndex = index;
+  //   });
+  // }
+
+  onEnter(el: HTMLElement, index: number) {
+    setTimeout(() => {
+
+      this.activeIndex = index;
+    
+  
+      const video = el.querySelector('video') as HTMLVideoElement;
+      if (video) {
+        // Pause any previously playing video
+        if (this.currentlyPlayingVideo && this.currentlyPlayingVideo !== video) {
+          this.currentlyPlayingVideo.pause();
+          this.currentlyPlayingVideo.currentTime = 0;
+        }
+    
+        // Wait until video is ready before playing
+        const tryPlay = () => {
+          video.play().catch((err) => console.warn('Play failed:', err));
+        };
+    
+        if (video.readyState >= 2) {
+          tryPlay();
+        } else {
+          video.onloadeddata = () => tryPlay();
+        }
+    
+        this.currentlyPlayingVideo = video;
+        this.preloadNextVideo(index + 1);
+      }
+    });
+    
+  }
+  
+
+  // onExit(index: number) {
+  //   this.zone.run(() => {
+  //     if (this.activeIndex === index) {
+  //       this.activeIndex = null;
+  //     }
+  //   });
+  // }
+
+  onExit(el: HTMLElement, index: number) {
+    const video = el.querySelector('video') as HTMLVideoElement;
+    if (video && video !== this.currentlyPlayingVideo) return;
+  
+    video?.pause();
+  }
+
+  preloadNextVideo(index: number) {
+    const shortsContainers = document.querySelectorAll('.vid-shorts');
+    const nextEl = shortsContainers[index] as HTMLElement;
+  
+    if (!nextEl) return;
+  
+    const video = nextEl.querySelector('video') as HTMLVideoElement;
+    if (video) {
+      video.preload = 'auto';
+      // Try loading the video silently
+      if (video.readyState < 2) {
+        video.load(); // Triggers preload
+      }
+    }
+  }
+  
 }

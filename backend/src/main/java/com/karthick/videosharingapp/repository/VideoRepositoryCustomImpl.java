@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.data.mongodb.core.aggregation.ConvertOperators;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class VideoRepositoryCustomImpl implements VideoRepositoryCustom {
         long THIRTY_DAYS_MS = 30L * 24 * 60 * 60 * 1000; // 30 days in ms
 
         Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("videoStatus").is("PUBLIC")),
                 Aggregation.project("title", "viewCount", "likes", "publishedAt", "videoUrl", "tags")
                         .and(
                                 ArithmeticOperators.Add.valueOf(

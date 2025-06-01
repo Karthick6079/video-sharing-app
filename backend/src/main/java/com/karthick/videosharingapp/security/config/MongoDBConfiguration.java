@@ -37,7 +37,7 @@ public class MongoDBConfiguration {
     }
 
     @Bean
-    public MongoOperations mongoTemplate(MongoClient mongoClient){
+    public MongoTemplate mongoTemplate(MongoClient mongoClient){
         return new MongoTemplate(mongoClient, databaseName);
     }
 

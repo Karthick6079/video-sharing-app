@@ -20,7 +20,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
 
     @Aggregation(pipeline = {
-            "{$match: { _id: ?0 }}",
+            "{$match: { _id: ?0 , videoStatus:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
@@ -30,7 +30,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     VideoUserInfo getVideoUserInfo(String videoId);
 
     @Aggregation(pipeline = {
-            "{$match: { _id: {$in:?0}}}",
+            "{$match: { _id: {$in:?0}, videoStatus:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
@@ -63,7 +63,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     List<String> getShortsVideo();
 
     @Aggregation(pipeline = {
-            "{$match: {title:{ $regex:?0, $options:'i'}}}",
+            "{$match: {title:{ $regex:?0, $options:'i'}, videoStatus:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
@@ -95,7 +95,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
     List<Video> findByIdIn(List<String> videoIds);
 
-    @Query("{ 'publishedAt': { $gte: ?0 } }")
+    @Query("{videoStatus:'PUBLIC','publishedAt': { $gte: ?0 } }")
     List<Video> findByPublishedAtAfter(Instant date);
 
 

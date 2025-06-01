@@ -130,8 +130,13 @@ export class VideoService {
   }
 
   getShortsVideo(page: number, size: number): Observable<VideoDto[]> {
+    let params = new HttpParams().set('page', page).set('size', size);
+
+    const httpOptions = {
+      params: params,
+    };
     return this.http.get<VideoDto[]>(
-      this.getVideoBaseUrl() + this.GET_SHORT_VIDEDO_URL
+      this.getVideoBaseUrl() + this.GET_SHORT_VIDEDO_URL,httpOptions
     );
   }
 

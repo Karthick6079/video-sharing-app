@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { VideoDto } from '../../dto/video-dto';
-import { UserService } from '../../services/user/user.service';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { VideoService } from '../../services/video/video.service';
 
@@ -31,6 +30,9 @@ export class SubscriptionsComponent implements OnInit {
     );
   }
   ngOnInit(): void {
+
+    if(!this.isAuthenticated) return;
+
     this.videoService.getSubscriptionVideos().subscribe((videos) => {
       if (videos) {
         this.subscribedChannalVideos = videos;

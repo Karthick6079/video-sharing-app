@@ -24,7 +24,7 @@ public class CommentDTO {
     private String username;
     private String picture;
     private AtomicLong likes = new AtomicLong(0);
-    private AtomicLong disLikes = new AtomicLong(0);
+    private AtomicLong dislikes = new AtomicLong(0);
     private Instant createdAt;
 
 }

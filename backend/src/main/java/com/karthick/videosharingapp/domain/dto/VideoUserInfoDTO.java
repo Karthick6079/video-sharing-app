@@ -1,10 +1,7 @@
 package com.karthick.videosharingapp.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,9 +16,9 @@ public class VideoUserInfoDTO {
     private String description;
     private AtomicLong likes;
     private AtomicLong dislikes;
-    private AtomicLong viewCount;
+    private AtomicLong views;
     private List<String> tags;
-    private String videoStatus;
+    private String status;
     private String videoUrl;
     private String thumbnailUrl;
     private Instant createdAt;

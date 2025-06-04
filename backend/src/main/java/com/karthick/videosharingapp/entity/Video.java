@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -24,18 +23,18 @@ public class Video {
     private String description;
     private String userId;
     private AtomicLong likes = new AtomicLong(0);
-    private AtomicLong disLikes = new AtomicLong(0);
+    private AtomicLong dislikes = new AtomicLong(0);
     private Set<String> tags;
-    private VideoStatus videoStatus;
+    private VideoStatus status;
     private String videoUrl;
     private String thumbnailUrl;
 //    private List<Comment> commentList = new CopyOnWriteArrayList<>();
-    private AtomicLong viewCount = new AtomicLong(0);
+    private AtomicLong views = new AtomicLong(0);
     private Instant createdAt;
     private Instant publishedAt;
 
-    public void increaseViewCount(){
-        this.getViewCount().incrementAndGet();
+    public void increaseviews(){
+        this.getViews().incrementAndGet();
     }
 
     public void incrementLikeCount(){
@@ -47,11 +46,11 @@ public class Video {
     }
 
     public void incrementDisLikeCount(){
-        this.getDisLikes().incrementAndGet();
+        this.getDislikes().incrementAndGet();
     }
 
     public void decrementDisLikeCount(){
-        this.getDisLikes().decrementAndGet();
+        this.getDislikes().decrementAndGet();
     }
 
 //    public void addComment(Comment comment) {

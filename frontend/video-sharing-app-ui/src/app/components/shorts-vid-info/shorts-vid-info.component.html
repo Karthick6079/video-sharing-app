@@ -1,8 +1,16 @@
 <!-- <p>shorts-vid-info works!</p> -->
 <p-confirmDialog key="unsubscriberConfirmation"></p-confirmDialog>
 <div class="container">
-    <p-avatar [image]="video.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+    <!-- <p-avatar [image]="video.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar> -->
+    <div class="user-avatar-wrapper">
+        <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+            *ngIf="!avatarError" />
+        <div class="user-avatar-fallback" *ngIf="avatarError">
+            {{ getUserInitials(video.userDisplayName) }}
+        </div>
+    </div>
     <span class="channal-name">{{video.userDisplayName}}</span>
+    <span class="channal-name">{{video.channelSubscribersCount}}</span>
     <div class="subscribe-button">
         
         @if (!subscribed) {

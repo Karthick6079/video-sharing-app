@@ -17,12 +17,12 @@ public class VideoDTO {
     private String title;
     private String description;
     private Set<String> tags;
-    private VideoStatus videoStatus;
+    private VideoStatus status;
     private String videoUrl;
     private String thumbnailUrl;
     private Long likes;
     private Long dislikes;
-    private Long viewCount;
+    private Long views;
     private Instant createdAt;
     private Instant publishedAt;
     private UserDTO userDTO;

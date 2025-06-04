@@ -22,6 +22,8 @@ export class VideoCardComponent implements OnInit {
 
   displayVideo = false;
 
+  avatarError = false;
+
   ngOnInit(): void {
     if (this.video) {
       this.displayVideo = this.isThumbnailAvailable() ? false : true;
@@ -45,4 +47,19 @@ export class VideoCardComponent implements OnInit {
     this.router.navigateByUrl(url);
     // this.router.navigate(['../../watch', this.video.id], {relativeTo:this.route});
   }
+
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  }
+
 }

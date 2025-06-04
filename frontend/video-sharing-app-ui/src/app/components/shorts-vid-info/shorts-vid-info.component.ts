@@ -26,6 +26,7 @@ export class ShortsVidInfoComponent implements OnInit {
   currentUserFromApiCall!: UserDto;
   videoUploadedUser!: UserDto;
   subscribersCount = 0;
+  avatarError = false;
 
   constructor(
     private messageService: MessageService,
@@ -79,6 +80,20 @@ export class ShortsVidInfoComponent implements OnInit {
   //     return false;
   //   }
   // }
+
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  }
 
    subscribe() {
       if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {

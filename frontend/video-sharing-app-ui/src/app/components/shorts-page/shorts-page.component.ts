@@ -30,8 +30,6 @@ export class ShortsPageComponent {
   @ViewChild('shortsContainer')
   shortsContainerElement: ElementRef | undefined;
 
-  @ViewChildren('shortsContainer')
-  shortsElements: QueryList<ElementRef>;
 
   playShorts: boolean = false;
 
@@ -67,17 +65,11 @@ export class ShortsPageComponent {
     });
   }
 
-  // onEnter(element: HTMLElement, index: number) {
-  //   this.zone.run(() => {
-  //     console.log('Entered index:', index);
-  //     this.activeIndex = index;
-  //   });
-  // }
-
   onEnter(el: HTMLElement, index: number) {
-    setTimeout(() => {
 
-      this.activeIndex = index;
+    console.log("OnEnter Method called:", this.videos[index].title)
+
+    this.activeIndex = index;
     
   
       const video = el.querySelector('video') as HTMLVideoElement;
@@ -102,18 +94,9 @@ export class ShortsPageComponent {
         this.currentlyPlayingVideo = video;
         this.preloadNextVideo(index + 1);
       }
-    });
     
   }
   
-
-  // onExit(index: number) {
-  //   this.zone.run(() => {
-  //     if (this.activeIndex === index) {
-  //       this.activeIndex = null;
-  //     }
-  //   });
-  // }
 
   onExit(el: HTMLElement, index: number) {
     const video = el.querySelector('video') as HTMLVideoElement;

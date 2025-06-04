@@ -6,7 +6,7 @@ export interface VideoDto {
   description: string;
   likes: number;
   dislikes: number;
-  viewCount: number;
+  views: number;
   tags: string[];
   videoStatus: string;
   videoUrl: string;

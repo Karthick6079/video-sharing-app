@@ -130,7 +130,7 @@ public class VideoService {
         Video savedVideo = getVideoFromDB(videoDto.getId());
 
         User currerntUser = userService.getCurrentUser();
-        savedVideo.setVideoStatus(videoDto.getVideoStatus());
+        savedVideo.setStatus(videoDto.getStatus());
         savedVideo.setTags(videoDto.getTags());
         savedVideo.setThumbnailUrl(videoDto.getThumbnailUrl());
         savedVideo.setDescription(videoDto.getDescription());
@@ -164,10 +164,10 @@ public class VideoService {
     }
 
     public VideoUserInfoDTO getVideoUserInfo(String videoId) {
-        // 1. Get requested video and update it viewCount by 1
-        logger.info("Get requested video and update it viewCount by 1");
+        // 1. Get requested video and update it views by 1
+        logger.info("Get requested video and update it views by 1");
         MongoDatabase database = mongoClient.getDatabase("videoStreamingDB");
-        updateViewCount(videoId, database);
+        updateviews(videoId, database);
 
         // 2. Get video and required user info from DB
         logger.info("Get video and required user info from DB");
@@ -196,11 +196,11 @@ public class VideoService {
         return mapperUtil.map(videoUserInfoDTO, VideoUserInfoDTO.class);
     }
 
-    private void updateViewCount(String videoId, MongoDatabase database) {
+    private void updateviews(String videoId, MongoDatabase database) {
         logger.info("Video view count updating");
         MongoCollection<Document> collection = database.getCollection("videos");
         Bson filter = Filters.eq("_id", new ObjectId(videoId));
-        Bson update = Updates.inc("viewCount", 1);
+        Bson update = Updates.inc("views", 1);
         UpdateResult updateResult = collection.updateOne(filter, update);
 
         if (updateResult.getModifiedCount() == 1)
@@ -235,12 +235,17 @@ public class VideoService {
         RecommendationService recommendationService = recommendationServiceFactory
                 .getRecommendationService(isUserLoggedIn);
 
+        List<VideoUserInfoDTO> result = null;
+
         if(isUserLoggedIn){
             User currentUser = userService.getCurrentUser();
-            return recommendationService.getRecommendationVideos(currentUser.getId(), pageable);
+            result =  recommendationService.getRecommendationVideos(currentUser.getId(), pageable);
         } else{
-            return recommendationService.getRecommendationVideos(pageable);
+            result =  recommendationService.getRecommendationVideos(pageable);
         }
+
+
+        return  result;
     }
 
     public List<VideoUserInfoDTO> getVideosAndUser(List<String> videos) {

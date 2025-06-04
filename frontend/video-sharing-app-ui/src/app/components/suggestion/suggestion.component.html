@@ -8,7 +8,8 @@
         <div class="video-title" [title]="video.title">{{video.title}}</div>
         <div class="channal-name">{{video.userDisplayName}}</div>
         <div class="view-and-posted-time">
-            <span>{{video.viewCount}}{{video.viewCount == 0 ? ' view' :' views'}}</span>
+            <span *ngIf="video.views == 0">No views</span>
+            <span *ngIf="video.views > 0">{{ video.views == 1 ?  "1 view" : video.views | indianFormatViewCount:' views'}}</span>
             <span class="splitter"></span>
             <span>{{video.publishedAt | timeago}}</span>
         </div>

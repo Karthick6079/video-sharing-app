@@ -25,7 +25,7 @@ public interface VideoLikeRepository extends MongoRepository<VideoLike, String> 
              "{$sort: {likedAt: -1}}",
              "{$skip: ?1}",
              "{$limit: ?2}",
-             "{$project: {_id: 1,userId: 1,videoId: 1,likedAt: 1,description: '$video_info.description',title: '$video_info.title',likes: '$video_info.likes',disLikes: '$video_info.disLikes',viewCount: '$video_info.viewCount',username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture', tags: '$video_info.tags',videoStatus: '$video_info.videoStatus',videoUrl: '$video_info.videoUrl',thumbnailUrl: '$video_info.thumbnailUrl', publishedAt: '$video_info.publishedAt'}}"
+             "{$project: {_id: 1,userId: 1,videoId: 1,likedAt: 1,description: '$video_info.description',title: '$video_info.title',likes: '$video_info.likes',dislikes: '$video_info.dislikes',views: '$video_info.views',username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture', tags: '$video_info.tags',status: '$video_info.status',videoUrl: '$video_info.videoUrl',thumbnailUrl: '$video_info.thumbnailUrl', publishedAt: '$video_info.publishedAt'}}"
      })
      List<VideoLike> getLikedVideos(String userId, int skip, int page);
 

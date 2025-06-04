@@ -29,46 +29,19 @@ public class VideoRepositoryCustomImpl implements VideoRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
 
+    private final VideoRepository videoRepository;
+
     @Override
     public List<Video> findTrendingVideos(int limit) {
         logger.info("Fetching the trending videos for guest user from DB");
         long now = System.currentTimeMillis();
         long THIRTY_DAYS_MS = 30L * 24 * 60 * 60 * 1000; // 30 days in ms
 
-        Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("videoStatus").is("PUBLIC")),
-                Aggregation.project("title", "viewCount", "likes", "publishedAt", "videoUrl", "tags")
-                        .and(
-                                ArithmeticOperators.Add.valueOf(
-                                        ArithmeticOperators.Add.valueOf(
-                                                ArithmeticOperators.Multiply.valueOf("viewCount").multiplyBy(0.5)
-                                        ).add(
-                                                ArithmeticOperators.Multiply.valueOf("likes").multiplyBy(0.3)
-                                        )
-                                )
+        logger.debug("Fetching trending videos from database process initiated");
+        List<Video> trendingVideos = videoRepository.findTrendingVideos(THIRTY_DAYS_MS, now, limit);
+        logger.debug("Fetching trending videos from database process completed");
 
-//                                        .add(
-//                                        ArithmeticOperators.Multiply.valueOf(
-//                                                ArithmeticOperators.Subtract.valueOf(THIRTY_DAYS_MS)
-//                                                        .subtract(
-//                                                                ArithmeticOperators.Subtract.valueOf(now)
-//                                                                        .subtract(ConvertOperators.ToLong.toLong("publishedAt"))
-//                                                        )
-//                                        ).multiplyBy(0.0000002) // = * 0.2 / 1,000,000
-//                                )
-                        ).as("trendingScore"),
-                Aggregation.sort(Sort.by(Sort.Direction.DESC, "trendingScore")),
-                Aggregation.limit(limit)
-        );
-
-
-        AggregationResults<Document> results = mongoTemplate.aggregate(
-                aggregation, "videos", Document.class
-        );
-
-        return results.getMappedResults().stream()
-                .map(doc -> mongoTemplate.getConverter().read(Video.class, doc))
-                .collect(Collectors.toList());
+        return trendingVideos;
     }
 
 //    @Override
@@ -113,4 +86,25 @@ public class VideoRepositoryCustomImpl implements VideoRepositoryCustom {
 //                .collect(Collectors.toList());
 //    }
 //}
+
+//    Aggregation aggregation = Aggregation.newAggregation(
+//            Aggregation.match(Criteria.where("status").is("PUBLIC")),
+//            Aggregation.project("title", "views", "likes", "publishedAt", "videoUrl", "tags")
+//                    .andExpression(
+//                            "((views * 0.5) + (likes * 0.3) + " +
+//                                    "((?0 - (?1 - publishedAt)) * 0.0000002))", // formula as string
+//                            THIRTY_DAYS_MS, now // ?0 and ?1 will be replaced with these values
+//                    ).as("trendingScore"),
+//            Aggregation.sort(Sort.by(Sort.Direction.DESC, "trendingScore")),
+//            Aggregation.limit(limit)
+//    );
+//
+//
+//    AggregationResults<Document> results = mongoTemplate.aggregate(
+//            aggregation, "videos", Document.class
+//    );
+//
+//        return results.getMappedResults().stream()
+//                .map(doc -> mongoTemplate.getConverter().read(Video.class, doc))
+//            .collect(Collectors.toList());
 }

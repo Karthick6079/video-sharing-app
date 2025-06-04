@@ -23,6 +23,10 @@ RUN mvn clean package -DskipTests
 VOLUME /logs
 # Stage 2: Minimal runtime image
 FROM eclipse-temurin:17-jdk-alpine
+
+# Install ffmpeg and other dependencies
+RUN apk add --no-cache ffmpeg bash curl
+
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=cloud

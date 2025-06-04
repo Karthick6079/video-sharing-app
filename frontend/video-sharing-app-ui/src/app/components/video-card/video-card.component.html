@@ -3,18 +3,32 @@
         <app-thumbnail-video-player [url]="video.videoUrl" [thumbnailImageUrl]="video.thumbnailUrl"></app-thumbnail-video-player>
     </div>
     
-    <div>
+    <div class="video-meta-container">
         <div class="logo-container">
-            <p-avatar [image]="video.userPicture" styleClass="mr-2" shape="circle" size="large"></p-avatar>
-            <span class="video-title">{{video.title}}</span>
-        </div>
-        <div class="channal-name-container">
-            <div class="small-info-text channal-name">{{video.userDisplayName}}</div>
-            <div>
-                <span class="small-info-text" *ngIf="video.viewCount == 0">No views</span>
-                <span class="small-info-text" *ngIf="video.viewCount > 0">{{ video.viewCount == 1 ?  "1 view" : video.viewCount | indianFormatViewCount:' views'}}</span>
-                <span class="splitter"></span>
-                <span class="small-info-text">{{video.publishedAt | timeago}}</span>
+            <div class="user-avatar-wrapper">
+                <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+                    *ngIf="!avatarError" />
+                <div class="user-avatar-fallback" *ngIf="avatarError">
+                    {{ getUserInitials(video.userDisplayName) }}
+                </div>
+            </div>
+    
+            <div class="text-content">
+                <span class="video-title">{{ video.title }}</span>
+    
+                <div class="channal-name-container">
+                    <div class="small-info-text channal-name">
+                        {{ video.userDisplayName }}
+                    </div>
+                    <div>
+                        <span class="small-info-text" *ngIf="video.views == 0">No views</span>
+                        <span class="small-info-text" *ngIf="video.views > 0">
+                            {{ video.views == 1 ? '1 view' : (video.views | indianFormatViewCount : ' views') }}
+                        </span>
+                        <span class="splitter"></span>
+                        <span class="small-info-text">{{ video.publishedAt | timeago }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@ import { debounceTime, Subject } from 'rxjs';
   selector: '[appAppObserver]',
 })
 export class AppObserverDirective implements AfterViewInit, OnDestroy {
-  @Input() threshold = 1.0;
+  @Input() threshold = 0.75;
   @Output() entered = new EventEmitter<HTMLElement>();
   @Output() exited = new EventEmitter<HTMLElement>();
 

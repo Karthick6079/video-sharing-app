@@ -20,20 +20,20 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
 
     @Aggregation(pipeline = {
-            "{$match: { _id: ?0 , videoStatus:'PUBLIC'}}",
+            "{$match: { _id: ?0 , status:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
-            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     @ReadPreference("secondary")
     VideoUserInfo getVideoUserInfo(String videoId);
 
     @Aggregation(pipeline = {
-            "{$match: { _id: {$in:?0}, videoStatus:'PUBLIC'}}",
+            "{$match: { _id: {$in:?0}, status:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
-            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     @ReadPreference("secondary")
@@ -63,18 +63,18 @@ public interface VideoRepository extends MongoRepository<Video, String> {
     List<String> getShortsVideo();
 
     @Aggregation(pipeline = {
-            "{$match: {title:{ $regex:?0, $options:'i'}, videoStatus:'PUBLIC'}}",
+            "{$match: {title:{ $regex:?0, $options:'i'}, status:'PUBLIC'}}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
-            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     List<VideoUserInfo> findVideosBySearchText(String searchText);
     @Aggregation(pipeline = {
             "{$unwind:'$tags'}",
-            "{$sort:{viewCount:-1,likes:-1}}",
-            "{$group:{_id:{'tags':'$tags','viewCount':'$viewCount','likes':'$likes'}}}",
-            "{$sort:{'_id.viewCount':-1,'_id.likes':-1}}",
+            "{$sort:{views:-1,likes:-1}}",
+            "{$group:{_id:{'tags':'$tags','views':'$views','likes':'$likes'}}}",
+            "{$sort:{'_id.views':-1,'_id.likes':-1}}",
             "{$project:{_id:0,topics:'$_id.tags'}}"
     })
     List<String> getTrendingTopics();
@@ -84,7 +84,7 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$match: {tags: {$eq:?0} }}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
-            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,disLikes: 1,tags: 1,videoStatus: 1,videoUrl: 1,thumbnailUrl: 1,viewCount: 1," +
+            "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.nickname',userPicture: '$user_info.picture'}}"
     })
     List<VideoUserInfo> findVideosByTopic(String topic);
@@ -95,8 +95,19 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
     List<Video> findByIdIn(List<String> videoIds);
 
-    @Query("{videoStatus:'PUBLIC','publishedAt': { $gte: ?0 } }")
+    @Query("{status:'PUBLIC','publishedAt': { $gte: ?0 } }")
     List<Video> findByPublishedAtAfter(Instant date);
+
+
+    @Aggregation(pipeline = {
+            "{$match: { status: 'PUBLIC' }}",
+            "{$addFields: {trendingScore: { $add: [{ $multiply: ['$views', 0.5] },{ $multiply: ['$likes', 0.3] },{" +
+                    "$multiply: [{$subtract: [?0,{ $subtract: [?1, { $toLong: '$publishedAt' }] }]},0.0000002]}]}}}",
+            "{$sort: { trendingScore: -1 } }",
+            "{$limit:?2}",
+            "{$project:{_id:1, likes:1, views:1, tags:1, title:1, publishedAt:1}}"
+    })
+    List<Video> findTrendingVideos(Long THIRTY_DAYS_ML, Long now, int limit);
 
 
 

@@ -13,12 +13,14 @@ export class ThumbnailVideoPlayerComponent implements OnInit, AfterViewInit {
   @Input()
   thumbnailImageUrl = '';
 
+  isImageLoadError = false;
+
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
   // @ViewChild('captureCanvas') captureCanvas!: ElementRef<HTMLCanvasElement>;
 
   dynamicThumbnailUrl: string | null = null;
   isHovering = false;
-  hasError = false;
+  isVideoLoadError = false;
 
   ngOnInit() {
     if (!this.thumbnailImageUrl) {
@@ -36,13 +38,13 @@ export class ThumbnailVideoPlayerComponent implements OnInit, AfterViewInit {
   playPreview() {
     console.log('Hover triggered');
     this.isHovering = true;
-    this.hasError = false;
+    this.isVideoLoadError = false;
     setTimeout(() => {
       const videoEl = this.videoPlayer?.nativeElement;
       if (videoEl?.readyState >= 2) {
         videoEl.currentTime = 0.1
         videoEl.play().catch(() => {
-          this.hasError = true;
+          this.isVideoLoadError = true;
         });
       }
     }, 50);
@@ -58,7 +60,12 @@ export class ThumbnailVideoPlayerComponent implements OnInit, AfterViewInit {
   }
 
   onVideoError() {
-    this.hasError = true;
+    this.isVideoLoadError = true;
+  }
+
+  onImageError(){
+    console.log("error method called on image load issue")
+    this.isImageLoadError = true;
   }
 
 }

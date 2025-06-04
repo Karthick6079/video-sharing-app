@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import {
   ConfigUserDataResult,
   OidcSecurityService,
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { LoginService } from '../../services/login/login.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +26,10 @@ export class HeaderComponent implements OnInit {
 
   isMobileScreen = false;
 
+  searchControl = new FormControl('');
+
   userData!: Observable<UserDataResult>;
+
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
@@ -52,6 +56,8 @@ export class HeaderComponent implements OnInit {
     if (window.matchMedia('(max-width: 770px)').matches) {
       this.isMobileScreen = true;
     }
+
+    
   }
 
   hideButtons() {
@@ -79,7 +85,12 @@ export class HeaderComponent implements OnInit {
     window.location.assign(window.location.origin);
   }
 
-  searchVideos(searchText: string) {
+  searchVideos() {
+    const searchText = this.searchControl.value;
+    console.log("Search method called");
+    if(!searchText) return;
+    this.searchControl.setValue(''); //empty after 
+    console.log("Navigating to search compoent");
     this.router
       .navigateByUrl(`/home/search-results?searchText=${searchText}`)
       .then((e) => {
@@ -102,4 +113,11 @@ export class HeaderComponent implements OnInit {
       this.userService.toggleSideBarOnOverlay();
     }
   }
+
+  // @HostListener('document:keydown.enter', ['$event'])
+  // handleEnter(event: KeyboardEvent) {
+  //   // Your logic here
+  //   console.log('Enter key pressed!');
+  //   event.preventDefault(); // Prevents default form submission if needed
+  // }
 }

@@ -23,7 +23,7 @@ public class Comment {
     private String username;
     private String picture;
     private AtomicLong likes =  new AtomicLong(0);
-    private AtomicLong disLikes = new AtomicLong(0);
+    private AtomicLong dislikes = new AtomicLong(0);
     private List<Comment> reply;
     private Instant createdAt;
 
@@ -36,10 +36,10 @@ public class Comment {
     }
 
     public void incrementDislike(){
-        this.getDisLikes().incrementAndGet();
+        this.getDislikes().incrementAndGet();
     }
 
     public void decrementDislike(){
-        this.getDisLikes().decrementAndGet();
+        this.getDislikes().decrementAndGet();
     }
 }

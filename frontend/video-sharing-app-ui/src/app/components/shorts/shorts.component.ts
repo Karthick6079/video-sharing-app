@@ -26,7 +26,7 @@ set playShorts(value: boolean) {
   console.log('playShorts changed to:', value)
   console.log('video name', this.video.title);
   this._playShorts = value;
-  this.handlePlayback();
+  // this.handlePlayback();
 }
 
 get playShorts(): boolean {

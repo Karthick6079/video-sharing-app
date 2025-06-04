@@ -1,12 +1,12 @@
 
 
 <div class="video-container" (mouseenter)="playPreview()" (mouseleave)="stopPreview()" >
-    <div class="video-player" [class.hidden] = "!isHovering">
-        <video #videoPlayer [muted]="true" preload="auto" [poster]="thumbnailImageUrl"
+    <div class="video-player fit-media" [class.hidden] = "!isHovering && !isImageLoadError">
+        <video #videoPlayer [muted]="true" preload="auto"
             (error)="onVideoError()">
             <source [src]="url" type="video/mp4">
         </video>
     </div>
-    <img [class.hidden]="isHovering || hasError" [src]="thumbnailImageUrl" class="thumbnail-img"
-        alt="Video thumbnail" />
+    <img [class.hidden]="isHovering || isImageLoadError" [src]="thumbnailImageUrl" class="thumbnail-img fit-media"
+        alt="Video thumbnail" (error)="onImageError()" />
 </div>

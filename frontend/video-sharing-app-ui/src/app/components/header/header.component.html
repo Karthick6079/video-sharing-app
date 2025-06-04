@@ -13,8 +13,8 @@
 
             <!--Not show the search bar inside studio i.e video upload page-->
             <div class="search-container" *ngIf="!hideSearchBar">
-              <input type="text" #searchField placeholder="Search..." name="search" class="search-input">
-              <button class = "search-button" type="button" (click)="searchVideos(searchField.value)" (keydown.enter)="searchVideos(searchField.value)"><i class="pi pi-search"></i></button>
+              <input type="text" [formControl]="searchControl" placeholder="Search..." name="search" class="search-input" (keydown.enter)="searchVideos()">
+              <button class = "search-button" type="button" (click)="searchVideos()"><i class="pi pi-search"></i></button>
             </div>
 
             

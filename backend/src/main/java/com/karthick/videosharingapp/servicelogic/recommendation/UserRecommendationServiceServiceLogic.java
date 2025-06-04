@@ -137,7 +137,7 @@ public class UserRecommendationServiceServiceLogic implements RecommendationServ
         double score = 0;
         long matchCount = video.getTags().stream().filter(userTags::contains).count();
         score += matchCount * 0.5;
-        score += (video.getLikes().doubleValue() * 0.002) + (video.getViewCount().doubleValue() * 0.0001);
+        score += (video.getLikes().doubleValue() * 0.002) + (video.getViews().doubleValue() * 0.0001);
         long daysOld = ChronoUnit.DAYS.between(video.getPublishedAt(), Instant.now());
         score += Math.max(0, 30 - daysOld) * 0.1;
         if (fromSubscribed) score += 0.3;

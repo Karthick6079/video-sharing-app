@@ -3,7 +3,6 @@ package com.karthick.videosharingapp.entity;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -17,9 +16,9 @@ public class VideoUserInfo {
     private String description;
     private AtomicLong likes;
     private AtomicLong dislikes;
-    private AtomicLong viewCount;
+    private AtomicLong views;
     private List<String> tags;
-    private String videoStatus;
+    private String status;
     private String videoUrl;
     private String thumbnailUrl;
     private Instant createdAt;

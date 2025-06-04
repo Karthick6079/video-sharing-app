@@ -24,7 +24,7 @@ export class WatchComponent implements OnInit {
   descPanalOpen = false;
 
   currentUser!: UserDto;
-  suggestionVideos!: VideoDto[];
+  suggestionVideos: VideoDto[] = [];
 
   page: number = 0;
   private SIZE: number = 3;
@@ -53,7 +53,7 @@ export class WatchComponent implements OnInit {
         6 // By default video size 6
       )
       .subscribe((videos) => {
-        this.suggestionVideos = videos;
+        this.suggestionVideos.push(...videos.filter(item => item.id !== this.video.id));
         this.isVideoAvailable = true;
       });
 
@@ -71,9 +71,9 @@ export class WatchComponent implements OnInit {
 
   getSuggestionVideos() {
     //Fetching only 12 suggestion videos
-    if (this.suggestionVideos.length >= 12) {
-      return;
-    }
+    // if (this.suggestionVideos.length >= 12) {
+    //   return;
+    // }
 
     this.page = this.page + 1;
     this.videoService

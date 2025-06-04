@@ -104,7 +104,7 @@ public class VideoServiceLogic {
 
         Optional<Video> videoOp = videoRepo.findById(videoId);
 
-        logger.info("dislike count before increment is: {} ", videoOp.get().getDisLikes());
+        logger.info("dislike count before increment is: {} ", videoOp.get().getDislikes());
 
         Optional<VideoLike> likeVideoOp = videoLikeRepository.findByUserIdAndVideoId(userId, videoId);
 
@@ -143,7 +143,7 @@ public class VideoServiceLogic {
             );
         }
 
-        logger.info("dislike count after increment is: {} ", videoOp.get().getDisLikes());
+        logger.info("dislike count after increment is: {} ", videoOp.get().getDislikes());
 
         return mapperUtil.map(videoOp.orElse(new Video()), VideoDTO.class);
     }

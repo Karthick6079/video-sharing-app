@@ -92,7 +92,8 @@ public class GuestRecommendationServiceServiceLogic implements RecommendationSer
         // Find Most Popular topics
 
         logger.info("Finding most popular topics and finding the respective videos");
-        List<String> videoTopics = videoWatchRepository.getMostPopularWatchedTopics(10);
+        Instant from = Instant.now().minus(Duration.ofDays(30)); // Most popular topics in last 30 days
+        List<String> videoTopics = videoWatchRepository.getMostPopularWatchedTopics(from,10);
 
         // 2. Find Popular videos
         List<Video> popularTopicVideos = videoRepository.findByTagsIn(videoTopics);
@@ -133,7 +134,7 @@ public class GuestRecommendationServiceServiceLogic implements RecommendationSer
 
     private double computeGuestScore(Video video) {
         double score = 0;
-        score += (video.getLikes() .doubleValue()* 0.002) + (video.getViewCount().doubleValue() * 0.0002);
+        score += (video.getLikes() .doubleValue()* 0.002) + (video.getViews().doubleValue() * 0.0002);
         long daysOld = ChronoUnit.DAYS.between(video.getPublishedAt(), Instant.now());
         score += Math.max(0, 30 - daysOld) * 0.1;
         return score;

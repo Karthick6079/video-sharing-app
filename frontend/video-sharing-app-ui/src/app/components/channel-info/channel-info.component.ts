@@ -31,6 +31,7 @@ export class ChannelInfoComponent implements OnInit {
 
   isLikedVideo: boolean = false;
   isDisLikedVideo: boolean = false;
+  avatarError = false;
 
   constructor(
     private loginService: LoginService,
@@ -52,75 +53,60 @@ export class ChannelInfoComponent implements OnInit {
       }
     );
 
-    // if (this.currentUser) {
-    //   this.getCurrentUserInfo();
-    // }
-
     this.subscribersCount = this.video.channelSubscribersCount;
     this.subscribed = this.video.isCurrentUserSubscribedToChannel;
 
-    console.log(this.video);
+    // console.log(this.video);
   }
 
-  // getCurrentUserInfo() {
-  //   // Get user subscribers details for currentUser;
-  //   this.userService
-  //     .getUserInfoById(this.currentUser.id)
-  //     .subscribe((userDto) => {
-  //       this.currentUserFromApiCall = userDto;
-  //       this.subscribed = this.isCurrentUserSubscribed();
-  //     });
 
-  //   // Get video uploaded user information details;
-  //   if (this.video) {
-  //     this.userService
-  //       .getUserInfoById(this.video.userId)
-  //       .subscribe((userDto) => {
-  //         this.videoUploadedUser = userDto;
-  //         this.subscribersCount = this.videoUploadedUser.subscribersCount;
-  //       });
-  //   }
-  // }
-
- 
 
   likeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .likeVideo(String(this.video?.id), this.currentUser.id)
-        .subscribe((video: VideoDto) => {
-          // this.isLikedVideo = !this.isLikedVideo;
-          this.video.likes = video.likes;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.videoService
+      .likeVideo(String(this.video?.id), this.currentUser.id)
+      .subscribe((video: VideoDto) => {
+        this.video.likes = video.likes;
+        this.video.dislikes = video.dislikes;
+      });
   }
+
+
   dislikeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .dislikeVideo(String(this.video?.id), this.currentUser.id)
-        .subscribe((video: VideoDto) => {
-          this.video.dislikes = video.dislikes;
-          // this.isDisLikedVideo = !this.isDisLikedVideo;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.videoService
+      .dislikeVideo(String(this.video?.id), this.currentUser.id)
+      .subscribe((video: VideoDto) => {
+        this.video.dislikes = video.dislikes;
+        this.video.likes = video.likes
+      });
   }
 
   subscribe() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.userService
-        .subscribeUser(String(this.video?.userId))
-        .subscribe((channalInfo: ChannelInfoDTO) => {
-          this.subscribed = channalInfo.isUserSubscribed;
-          this.subscribersCount = channalInfo.subscribersCount;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.userService
+      .subscribeUser(String(this.video?.userId))
+      .subscribe((channalInfo: ChannelInfoDTO) => {
+        this.subscribed = channalInfo.userSubscribed;
+        this.subscribersCount = channalInfo.subscribersCount;
+      });
   }
 
   unsubscribe() {
+
+    if (!this.isUserLoggedIn())
+      return;
+
     this.userService
       .unsubscribeUser(String(this.video?.userId))
       .subscribe((channalInfo: ChannelInfoDTO) => {
-        this.subscribed = channalInfo.isUserSubscribed;
+        this.subscribed = channalInfo.userSubscribed;
         this.subscribersCount = channalInfo.subscribersCount;
       });
   }
@@ -128,6 +114,14 @@ export class ChannelInfoComponent implements OnInit {
   showLoginMessageIfNot(message?: string) {
     if (!this.isAuthenticated) {
       this.loginService.login();
+    }
+    return true;
+  }
+
+  isUserLoggedIn() {
+    if (!this.isAuthenticated) {
+      this.loginService.login();
+      return false
     }
     return true;
   }
@@ -144,21 +138,19 @@ export class ChannelInfoComponent implements OnInit {
   }
 
   unsubscribeConfirmationPopup() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.confirmationService.confirm({
-        // target: event.target as EventTarget,
-        key: 'unsubscriberConfirmation',
-        message: 'Are you sure that you want to proceed?',
-        header: 'Unsubscribe',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.unsubscribe();
-        },
-        acceptIcon: 'none',
-        rejectIcon: 'none',
-        rejectButtonStyleClass: 'p-button-text',
-      });
-    }
+    this.confirmationService.confirm({
+      // target: event.target as EventTarget,
+      key: 'unsubscriberConfirmation',
+      message: 'Are you sure that you want to proceed?',
+      header: 'Unsubscribe',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.unsubscribe();
+      },
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: 'p-button-text',
+    });
   }
 
   copyURL() {
@@ -182,5 +174,19 @@ export class ChannelInfoComponent implements OnInit {
       acceptLabel: 'Ok',
       rejectVisible: false,
     });
+  }
+
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
   }
 }

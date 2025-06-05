@@ -1,7 +1,9 @@
 package com.karthick.videosharingapp.repository;
 
+import com.karthick.videosharingapp.domain.dto.ChannelIdDTO;
 import com.karthick.videosharingapp.entity.Subscription;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,5 +21,6 @@ public interface SubscriptionRepository extends MongoRepository<Subscription, St
 
     Long countByChannelId(String channelId);
 
-    List<String> findChannelIdBySubscriberId(String userId);
+    @Query( value = "{'subscriberId':?0}", fields = "{'channelId':1, '_id':0}")
+    List<ChannelIdDTO> findChannelIdBySubscriberId(String userId);
 }

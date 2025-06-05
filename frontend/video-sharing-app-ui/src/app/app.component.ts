@@ -13,6 +13,8 @@ export class AppComponent implements OnInit {
 
   showSidebarOnOverlay = false;
 
+  LOGIN_BEFORE_URL = 'loginBeforeUrl';
+
   constructor(
     private oidcSecurityService: OidcSecurityService,
     private userService: UserService,
@@ -37,9 +39,10 @@ export class AppComponent implements OnInit {
     this.userService.registerUser().subscribe((userDto) => {
       if (userDto) {
         this.userService.setCurrentUser(userDto);
-        let loginBeforeUrl = localStorage.getItem('loginBeforeUrl');
+        let loginBeforeUrl = localStorage.getItem(this.LOGIN_BEFORE_URL);
 
         if (loginBeforeUrl) {
+          localStorage.removeItem(this.LOGIN_BEFORE_URL); // removing login before url after sign navigate
           this.router.navigateByUrl(loginBeforeUrl);
         }
         // window.location.assign(loginBeforeUrl);

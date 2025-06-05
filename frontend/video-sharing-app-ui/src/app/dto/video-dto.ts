@@ -50,7 +50,7 @@ export interface ChannelInfoDTO {
   name: string;
   displayName: string;
   subscribersCount: number;
-  isUserSubscribed: boolean
+  userSubscribed: boolean
 }
 
 export interface CommentDTO {

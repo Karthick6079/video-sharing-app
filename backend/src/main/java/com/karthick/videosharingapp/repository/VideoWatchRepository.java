@@ -52,10 +52,10 @@ public interface VideoWatchRepository extends MongoRepository<VideoWatch, String
     List<String> findSimilarUsersIds(List<String> userWatchedVideoIds, String userId);
 
     @Aggregation(pipeline = {
-            "{$match: {userId: {$in: ?0}, videoId: {$ne: ?1}}",
+            "{$match: {userId: {$in: ?0}, videoId: {$nin: ?1}}}",
             "{$group:{_id:'$userId', recentlyWatched: {$topN: { output:['$videoId'], sortBy:{'watchedAt':-1},n:?2 }}}}",
             "{$unwind: '$recentlyWatched' }",
-            "{$project:{_id:0,videoId:1}}"
+            "{$project:{_id:0,videoId:'$recentlyWatched'}}"
     })
     List<String> findVideoWatchedByUsers(List<String> similarUserIds, List<String> userWatchedVideoIds, Integer maxVideosPerUser);
 

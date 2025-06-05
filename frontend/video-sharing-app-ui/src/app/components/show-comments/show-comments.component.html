@@ -1,6 +1,13 @@
 <div class="show-comment-section">
     <div class="comment-conatiner">
-        <p-avatar [image]="comment.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+        <div class="user-avatar-wrapper">
+            <img [src]="comment.picture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+                *ngIf="!avatarError" />
+            <div class="user-avatar-fallback" *ngIf="avatarError">
+                {{ getUserInitials(comment.username) }}
+            </div>
+        </div>
+        <!-- <p-avatar [image]="comment.picture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar> -->
         <div class="user-and-comment">
             <div class="user-and-posted-time-container">
                 <div class="name">{{comment.username}}</div>

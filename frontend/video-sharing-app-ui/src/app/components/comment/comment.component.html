@@ -1,7 +1,14 @@
 <div class="comment-section">
     <div class="comment-conatiner">
       
-        <p-avatar [image]="currentUser?.picture" styleClass="mr-2 items" shape="circle" size="xlarge" *ngIf="isAuthenticated"></p-avatar>
+        <!-- <p-avatar [image]="currentUser?.picture" styleClass="mr-2 items" shape="circle" size="xlarge" *ngIf="isAuthenticated"></p-avatar> -->
+        <div class="user-avatar-wrapper" *ngIf="isAuthenticated">
+            <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+                *ngIf="!avatarError" />
+            <div class="user-avatar-fallback" *ngIf="avatarError">
+                {{ getUserInitials(video.userDisplayName) }}
+            </div>
+        </div>
         <span class="user-circle" *ngIf="!isAuthenticated" >
             <i class="pi pi-user" style="font-size: 2rem; color:#333333"></i>
         </span>

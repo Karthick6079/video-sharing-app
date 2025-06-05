@@ -16,10 +16,6 @@
         @if (!subscribed) {
         <p-button [rounded]="true"  size="small" label="Subscribe" (click)="subscribe()" styleClass="subscribe-button"></p-button>
         }
-        @else{
-        <p-button [rounded]="true"  [outlined]="true" size="small" label="Subscribed" styleClass="unsubscribe-button"
-            (click)="unsubscribeConfirmationPopup()"></p-button>
-        }
     </div>
 </div>
 <div class="video-desc">

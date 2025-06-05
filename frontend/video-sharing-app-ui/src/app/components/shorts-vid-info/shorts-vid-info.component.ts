@@ -44,42 +44,7 @@ export class ShortsVidInfoComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
-
-    // if (this.currentUser) {
-    //   this.getCurrentUserInfo();
-    // }
   }
-
-  // getCurrentUserInfo() {
-  //   // Get user subscribers details for currentUser;
-  //   this.userService
-  //     .getUserInfoById(this.currentUser.id)
-  //     .subscribe((userDto) => {
-  //       this.currentUserFromApiCall = userDto;
-  //       this.subscribed = this.isCurrentUserSubscribed();
-  //     });
-
-  //   // Get video uploaded user information details;
-  //   if (this.video) {
-  //     this.userService
-  //       .getUserInfoById(this.video.userId)
-  //       .subscribe((userDto) => {
-  //         this.videoUploadedUser = userDto;
-  //         this.subscribersCount = this.videoUploadedUser.subscribersCount;
-  //       });
-  //   }
-  // }
-
-  // isCurrentUserSubscribed() {
-  //   if (
-  //     this.currentUserFromApiCall &&
-  //     this.currentUserFromApiCall.subscribedToUsers.includes(this.video?.userId)
-  //   ) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   onAvatarError(): void {
     this.avatarError = true;
@@ -95,29 +60,29 @@ export class ShortsVidInfoComponent implements OnInit {
       .toUpperCase();
   }
 
-   subscribe() {
-      if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-        this.userService
-          .subscribeUser(String(this.video?.userId))
-          .subscribe((channalInfo: ChannelInfoDTO) => {
-            this.subscribed = channalInfo.isUserSubscribed;
-            this.subscribersCount = channalInfo.subscribersCount;
-          });
-      }
-    }
+  subscribe() {
+    if (!this.isUserLoggedIn())
+      return;
 
-    unsubscribe() {
-      this.userService
-        .unsubscribeUser(String(this.video?.userId))
-        .subscribe((channalInfo: ChannelInfoDTO) => {
-          this.subscribed = channalInfo.isUserSubscribed;
-          this.subscribersCount = channalInfo.subscribersCount;
-        });
-    }
+    this.userService
+      .subscribeUser(String(this.video?.userId))
+      .subscribe((channalInfo: ChannelInfoDTO) => {
+        this.subscribed = channalInfo.userSubscribed;
+        this.subscribersCount = channalInfo.subscribersCount;
+      });
+  }
 
   showLoginMessageIfNot(message?: string) {
     if (!this.isAuthenticated) {
       this.loginService.login();
+    }
+    return true;
+  }
+
+  isUserLoggedIn() {
+    if (!this.isAuthenticated) {
+      this.loginService.login();
+      return false
     }
     return true;
   }
@@ -131,23 +96,5 @@ export class ShortsVidInfoComponent implements OnInit {
       life: 5000,
       key: 'tc',
     });
-  }
-
-  unsubscribeConfirmationPopup() {
-    if (this.showLoginMessageIfNot('Please login to subscribe this channal!')) {
-      this.confirmationService.confirm({
-        // target: event.target as EventTarget,
-        key: 'unsubscriberConfirmation',
-        message: 'Are you sure that you want to proceed?',
-        header: 'Unsubscribe',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.unsubscribe();
-        },
-        acceptIcon: 'none',
-        rejectIcon: 'none',
-        rejectButtonStyleClass: 'p-button-text',
-      });
-    }
   }
 }

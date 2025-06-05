@@ -26,7 +26,14 @@
                 </button>
   
                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Account Info">
-                  <img [src]="userPictureUrl" alt="Photo of a User">
+                  <!-- <img [src]="userPictureUrl" alt="Photo of a User"> -->
+                  <div class="user-avatar-wrapper">
+                    <img [src]="userPictureUrl" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+                        *ngIf="!avatarError" />
+                    <div class="user-avatar-fallback" *ngIf="avatarError">
+                        {{ getUserInitials(name) }}
+                    </div>
+                </div>
                 </button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item>

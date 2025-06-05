@@ -146,17 +146,17 @@ public class UserService {
         Long channelSubscribersCount = subscriptionRepository.countByChannelId(channel.getId());
 
         logger.info("Preparing channel DTO to frontend after subscribe");
-        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
+        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount, true);
         recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
         return channelInfoDTO;
     }
 
-    private static ChannelInfoDTO getChannelInfoDTO(User channel, Long channelSubscribersCount) {
+    private static ChannelInfoDTO getChannelInfoDTO(User channel, Long channelSubscribersCount, boolean isSubscribed) {
         ChannelInfoDTO channelInfoDTO = new ChannelInfoDTO();
         channelInfoDTO.setName(channel.getName());
         channelInfoDTO.setDisplayName(channel.getGivenName());
-        channelInfoDTO.setSubscriberCount(channelSubscribersCount);
-        channelInfoDTO.setUserSubscribed(true);
+        channelInfoDTO.setSubscribersCount(channelSubscribersCount);
+        channelInfoDTO.setUserSubscribed(isSubscribed);
         return channelInfoDTO;
     }
 
@@ -173,7 +173,7 @@ public class UserService {
         Long channelSubscribersCount = subscriptionRepository.countByChannelId(channel.getId());
 
         logger.info("Preparing channel DTO to frontend after unsubscribe");
-        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount);
+        ChannelInfoDTO channelInfoDTO = getChannelInfoDTO(channel, channelSubscribersCount, false);
         recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
         return channelInfoDTO;
     }

@@ -27,7 +27,7 @@ export class WatchComponent implements OnInit {
   suggestionVideos: VideoDto[] = [];
 
   page: number = 0;
-  private SIZE: number = 3;
+  private SIZE: number = 6;
 
   constructor(
     private router: Router,
@@ -70,16 +70,11 @@ export class WatchComponent implements OnInit {
   onDeactivate(event: Event) {}
 
   getSuggestionVideos() {
-    //Fetching only 12 suggestion videos
-    // if (this.suggestionVideos.length >= 12) {
-    //   return;
-    // }
-
     this.page = this.page + 1;
     this.videoService
       .getSuggestedVideos(this.page, this.SIZE)
       .subscribe((videos) => {
-        this.suggestionVideos.push(...videos);
+        this.suggestionVideos.push(...videos.filter(item => item.id !== this.video.id));
       });
   }
 

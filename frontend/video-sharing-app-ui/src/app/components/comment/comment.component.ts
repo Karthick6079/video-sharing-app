@@ -50,6 +50,8 @@ export class CommentComponent implements OnInit {
 
   commentsLoadingfromApi = false;
 
+  avatarError = false;
+
   constructor(
     private loginService: LoginService,
     private messageService: MessageService,
@@ -165,5 +167,19 @@ export class CommentComponent implements OnInit {
       life: 5000,
       key: 'tc',
     });
+  }
+
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
   }
 }

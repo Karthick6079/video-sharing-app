@@ -17,6 +17,8 @@ export class ShowCommentsComponent {
 
   public isAuthenticated: boolean = false;
 
+  avatarError = false;
+
   constructor(
     private commentService: CommentService,
     private messageService: MessageService,
@@ -34,33 +36,50 @@ export class ShowCommentsComponent {
   }
 
   likeComment() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.commentService
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.commentService
         .likeComment(this.comment.videoId, this.comment.userId, this.comment.id)
         .subscribe((comment) => {
           this.comment = comment;
         });
-    }
   }
 
   disLikeComment() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.commentService
-        .dislikeComment(
-          this.comment.videoId,
-          this.comment.userId,
-          this.comment.id
-        )
-        .subscribe((comment) => {
-          this.comment = comment;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.commentService
+      .dislikeComment(
+        this.comment.videoId,
+        this.comment.userId,
+        this.comment.id
+      )
+      .subscribe((comment) => {
+        this.comment = comment;
+      });
   }
 
-  showLoginMessageIfNot(message?: string) {
+  isUserLoggedIn() {
     if (!this.isAuthenticated) {
       this.loginService.login();
+      return false;
     }
     return true;
+  }
+
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
   }
 }

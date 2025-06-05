@@ -1,10 +1,7 @@
 package com.karthick.videosharingapp.domain.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 @Data
 @RequiredArgsConstructor
@@ -14,7 +11,7 @@ public class ChannelInfoDTO {
 
     private String displayName;
 
-    private Long subscriberCount;
+    private Long subscribersCount;
 
     private boolean isUserSubscribed = false;
 

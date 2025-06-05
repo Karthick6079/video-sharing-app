@@ -1,6 +1,7 @@
 package com.karthick.videosharingapp.servicelogic.recommendation;
 
 import com.karthick.videosharingapp.domain.ScoredVideo;
+import com.karthick.videosharingapp.domain.dto.ChannelIdDTO;
 import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.Video;
 import com.karthick.videosharingapp.entity.VideoUserInfo;
@@ -34,6 +35,8 @@ public class UserRecommendationServiceServiceLogic implements RecommendationServ
     private final VideoWatchRepository videoWatchRepository;
 
     private final SubscriptionRepository subscriptionRepository;
+
+    private final VideoRepositoryCustomImpl videoRepositoryCustom;
 
     private final VideoWatchRepositoryCustomImpl videoWatchRepositoryCustom;
 
@@ -89,15 +92,18 @@ public class UserRecommendationServiceServiceLogic implements RecommendationServ
 
         // The channels user subscribed
         logger.info("Fetching the user subscribed channel Ids");
-        List<String> subscribedChannelIds = subscriptionRepository.findChannelIdBySubscriberId(userId);
+        List<ChannelIdDTO> subscribedChannelIdDTOs = subscriptionRepository.findChannelIdBySubscriberId(userId);
 
-        List<String> userInterestedTopicList = new ArrayList<>();
-        userInterestedTopicList.addAll(watchedTopics);
-        userInterestedTopicList.addAll(likedTopics);
+        List<String> subscribedChannelIds = subscribedChannelIdDTOs.stream().map(ChannelIdDTO::getChannelId).toList();
+
+        List<String> uniqueInterestList = Stream.of(watchedTopics, likedTopics)
+                .flatMap(List::stream)
+                .distinct()
+                .toList();
 
 
         // 2. Find videos based on user interest
-        List<Video> contentBasedVideos = videoRepository.findByTagsIn(userInterestedTopicList);
+        List<Video> contentBasedVideos = videoRepository.findByTagsIn(uniqueInterestList);
         List<Video> subscribedUsersVideos = videoRepository.findByUserIdIn(subscribedChannelIds);
 
         logger.info("Fetching videos of user who has similar interest to current user");
@@ -111,18 +117,29 @@ public class UserRecommendationServiceServiceLogic implements RecommendationServ
                 .flatMap(Collection::stream)
                 .forEach( video -> mergeMap.putIfAbsent(video.getId(), video));
 
+        int videosSize = mergeMap.size();
+
+        // If user specific videos  size below 20 means, find some trending videos
+        if(videosSize <= 20){
+            List<Video> trendingVideos = videoRepositoryCustom.findTrendingVideos(25);
+            Stream.of(trendingVideos)
+                    .flatMap(Collection::stream)
+                    .forEach( video -> mergeMap.putIfAbsent(video.getId(), video));
+        }
+
         logger.info("Ranking the videos based computed score");
         // 4. Calculate the score for the videos based user interest and factors
         List<ScoredVideo> scoredVideos =  mergeMap.values().stream()
                  .map( video -> {
                      boolean isFromSubscribed = subscribedChannelIds.contains(userId);
-                     double score = computeScore(video, userInterestedTopicList, isFromSubscribed);
+                     double score = computeScore(video, uniqueInterestList, isFromSubscribed);
                      return new ScoredVideo(video, score);
                  })
                  .sorted(Comparator.comparingDouble(ScoredVideo::getScore).reversed())
                  .toList();
 
         logger.info("Store the ranked video ids in cache with 10mins TTL");
+
         // Cache first 50 videos
         List<String> rankedIds = scoredVideos.stream().map(v -> v.getVideo().getId()).limit(50).toList();
         String CACHE_KEY = CACHE_KEY_PREFIX + userId;
@@ -154,6 +171,9 @@ public class UserRecommendationServiceServiceLogic implements RecommendationServ
         List<String> similarUserIds = videoWatchRepository.findSimilarUsersIds(userWatchedVideoIds, userId);
 
         List<String> candidateVideoIds = videoWatchRepository.findVideoWatchedByUsers(similarUserIds, userWatchedVideoIds, 10);
+
+        if(candidateVideoIds.isEmpty()) // If similar no videos found return empty list
+            return Collections.emptyList();
 
         // Step 4: Count and sort by popularity among those users
         Map<String, Long> frequency = candidateVideoIds.stream()

@@ -19,7 +19,14 @@
     <div class="channal-container">
 
         <div class="channel-logo-nd-name">
-            <p-avatar [image]="video?.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar>
+            <!-- <p-avatar [image]="video?.userPicture" styleClass="mr-2 items" shape="circle" size="xlarge"></p-avatar> -->
+            <div class="user-avatar-wrapper">
+                <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+                    *ngIf="!avatarError" />
+                <div class="user-avatar-fallback" *ngIf="avatarError">
+                    {{ getUserInitials(video.userDisplayName) }}
+                </div>
+            </div>
             <div class="channal-name items">
                  <!--Name and Subs count--> 
                <div class="name">{{video?.userDisplayName}}</div>

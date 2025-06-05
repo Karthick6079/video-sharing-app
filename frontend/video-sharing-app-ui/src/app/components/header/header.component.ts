@@ -30,6 +30,8 @@ export class HeaderComponent implements OnInit {
 
   userData!: Observable<UserDataResult>;
 
+  avatarError = false;
+
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
@@ -114,10 +116,17 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  // @HostListener('document:keydown.enter', ['$event'])
-  // handleEnter(event: KeyboardEvent) {
-  //   // Your logic here
-  //   console.log('Enter key pressed!');
-  //   event.preventDefault(); // Prevents default form submission if needed
-  // }
+  onAvatarError(): void {
+    this.avatarError = true;
+  }
+
+  getUserInitials(name: string): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  }
 }

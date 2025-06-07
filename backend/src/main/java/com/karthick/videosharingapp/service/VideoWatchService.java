@@ -63,7 +63,7 @@ public class VideoWatchService {
         Bson update  = Updates.combine(
                 Updates.set("userId", currentUser.getId()),
                 Updates.set("videoId", videoUserInfo.getId()),
-                Updates.set("watchedAt", LocalDateTime.now()),
+                Updates.set("watchedAt", now),
                 Updates.set("watchTopics", videoUserInfo.getTags())
         );
         //Setting upset value as true,

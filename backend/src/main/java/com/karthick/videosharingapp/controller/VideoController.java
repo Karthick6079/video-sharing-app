@@ -56,7 +56,7 @@ public class VideoController {
     @ResponseStatus(HttpStatus.OK)
     public VideoUserInfoDTO getVideoForWatch(@PathVariable String videoId) {
         logger.info("Get video information from database request received in video controller");
-        return videoService.getVideoUserInfo(videoId);
+        return videoService.updateVideoWatchAndGetVideoDetails(videoId);
     }
 
     @PutMapping("/watch/{videoId}/like")
@@ -114,6 +114,12 @@ public class VideoController {
     public List<VideoUserInfoDTO> getVideosByTopic(@RequestParam String topic) {
         logger.info("Fetching videos by topic request received on video controller");
         return videoService.getVideosByTopic(topic);
+    }
+
+    @PutMapping("/update-video-watch/{videoId}")
+    public void updateVideoWatch(@PathVariable String videoId){
+        videoService.updateVideoWatchAndGetVideoDetails(videoId);
+        logger.info("updated video watch in data models and get video user information");
     }
 
 

@@ -17,21 +17,21 @@ export class ShortsComponent implements OnInit {
   @Input()
   video!: VideoDto;
 
-  
+
   private _playShorts: boolean = false;
 
 
   @Input()
-set playShorts(value: boolean) {
-  console.log('playShorts changed to:', value)
-  console.log('video name', this.video.title);
-  this._playShorts = value;
-  // this.handlePlayback();
-}
+  set playShorts(value: boolean) {
+    console.log('playShorts changed to:', value)
+    console.log('video name', this.video.title);
+    this._playShorts = value;
+    // this.handlePlayback();
+  }
 
-get playShorts(): boolean {
-  return this._playShorts;
-}
+  get playShorts(): boolean {
+    return this._playShorts;
+  }
 
   @ViewChild('media') videoPlayerRef!: ElementRef<HTMLVideoElement>;
 
@@ -88,7 +88,7 @@ get playShorts(): boolean {
 
     if (this._playShorts) {
       videoEl.currentTime = 0;
-      videoEl.play().catch(()=>{
+      videoEl.play().catch(() => {
         console.warn("Error occured while video play")
       });
     } else {
@@ -109,45 +109,33 @@ get playShorts(): boolean {
   }
 
   likeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .likeVideo(String(this.video?.id), this.currentUser.id)
-        .subscribe((video: VideoDto) => {
-          this.isLikedVideo = true;
-          this.video.likes = video.likes;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.videoService
+      .likeVideo(String(this.video?.id), this.currentUser.id)
+      .subscribe((video: VideoDto) => {
+        this.isLikedVideo = true;
+        this.video.likes = video.likes;
+      });
   }
   dislikeVideo() {
-    if (this.showLoginMessageIfNot('Please login to share your feedback!')) {
-      this.videoService
-        .dislikeVideo(String(this.video?.id), this.currentUser.id)
-        .subscribe((video: VideoDto) => {
-          this.isDisLikedVideo = true;
-          this.video.dislikes = video.dislikes;
-        });
-    }
+    if (!this.isUserLoggedIn())
+      return;
+    this.videoService
+      .dislikeVideo(String(this.video?.id), this.currentUser.id)
+      .subscribe((video: VideoDto) => {
+        this.isDisLikedVideo = true;
+        this.video.dislikes = video.dislikes;
+      });
   }
 
-  showLoginMessageIfNot(message?: string) {
+  isUserLoggedIn() {
     if (!this.isAuthenticated) {
-      // message = message ? message : 'Please login before share your feedback!';
-      // this.setLoginMessage(message);
-      // return false;
       this.loginService.login();
+      return false;
     }
     return true;
-  }
-
-  setLoginMessage(message: string) {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
-      detail: message,
-      sticky: false,
-      life: 5000,
-      key: 'tc',
-    });
   }
 }
 

@@ -11,7 +11,7 @@ export const videoDataResolverResolver: ResolveFn<VideoDto> = (
 ) => {
   const videoId: string = String(route.paramMap.get('videoId'));
 
-  return videoService.getVideo(videoId).pipe(
+  return videoService.updateWatchAndGetVideoDetails(videoId).pipe(
     filter<VideoDto>((video: VideoDto) => !!video),
     take(1)
   );

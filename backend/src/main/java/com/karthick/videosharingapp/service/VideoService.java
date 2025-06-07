@@ -163,11 +163,11 @@ public class VideoService {
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find video by Id" + id));
     }
 
-    public VideoUserInfoDTO getVideoUserInfo(String videoId) {
+    public VideoUserInfoDTO updateVideoWatchAndGetVideoDetails(String videoId) {
         // 1. Get requested video and update it views by 1
         logger.info("Get requested video and update it views by 1");
         MongoDatabase database = mongoClient.getDatabase("videoStreamingDB");
-        updateviews(videoId, database);
+        updateViews(videoId, database);
 
         // 2. Get video and required user info from DB
         logger.info("Get video and required user info from DB");
@@ -196,7 +196,7 @@ public class VideoService {
         return mapperUtil.map(videoUserInfoDTO, VideoUserInfoDTO.class);
     }
 
-    private void updateviews(String videoId, MongoDatabase database) {
+    private void updateViews(String videoId, MongoDatabase database) {
         logger.info("Video view count updating");
         MongoCollection<Document> collection = database.getCollection("videos");
         Bson filter = Filters.eq("_id", new ObjectId(videoId));

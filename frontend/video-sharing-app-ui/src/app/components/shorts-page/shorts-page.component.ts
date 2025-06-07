@@ -67,33 +67,40 @@ export class ShortsPageComponent {
 
   onEnter(el: HTMLElement, index: number) {
 
-    console.log("OnEnter Method called:", this.videos[index].title)
+    // console.log("OnEnter Method called:", this.videos[index].title)
 
     this.activeIndex = index;
-    
-  
-      const video = el.querySelector('video') as HTMLVideoElement;
-      if (video) {
-        // Pause any previously playing video
-        if (this.currentlyPlayingVideo && this.currentlyPlayingVideo !== video) {
-          this.currentlyPlayingVideo.pause();
-          this.currentlyPlayingVideo.currentTime = 0;
-        }
-    
-        // Wait until video is ready before playing
-        const tryPlay = () => {
-          video.play().catch((err) => console.warn('Play failed:', err));
-        };
-    
-        if (video.readyState >= 2) {
-          tryPlay();
-        } else {
-          video.onloadeddata = () => tryPlay();
-        }
-    
-        this.currentlyPlayingVideo = video;
-        this.preloadNextVideo(index + 1);
+
+    const currentVideoId = this.videos[index].id;
+
+    const video = el.querySelector('video') as HTMLVideoElement;
+    if (video) {
+      // Pause any previously playing video
+      if (this.currentlyPlayingVideo && this.currentlyPlayingVideo !== video) {
+        this.currentlyPlayingVideo.pause();
+        this.currentlyPlayingVideo.currentTime = 0;
       }
+
+      // Wait until video is ready before playing
+      const tryPlay = () => {
+        video.play().then(() => {
+          this.videoService.updateWatchAndGetVideoDetails(currentVideoId).subscribe((videoDto: VideoDto) => {
+            this.videos[index].views = videoDto.views;
+            this.videos[index].likes = videoDto.likes;
+          });
+        }).
+          catch((err) => console.warn('Play failed:', err));
+      };
+
+      if (video.readyState >= 2) {
+        tryPlay();
+      } else {
+        video.onloadeddata = () => tryPlay();
+      }
+
+      this.currentlyPlayingVideo = video;
+      this.preloadNextVideo(index + 1);
+    }
     
   }
   

@@ -110,6 +110,12 @@ export class VideoService {
     );
   }
 
+  updateWatchAndGetVideoDetails(videoId: string): Observable<VideoDto> {
+    return this.http.get<VideoDto>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId
+    );
+  }
+
   likeVideo(videoId: string, userId: string): Observable<VideoDto> {
     let formData = new FormData();
     formData.append('userId', userId);

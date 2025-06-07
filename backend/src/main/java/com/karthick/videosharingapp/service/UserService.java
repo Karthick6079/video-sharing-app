@@ -13,6 +13,9 @@ import org.modelmapper.TypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -40,29 +43,29 @@ public class UserService {
 
     private final RecommendationRefreshQueue recommendationRefreshQueue;
 
+    private final MongoTemplate mongoTemplate;
+
 
     public UserDTO registerUser(Jwt jwt) {
         User user;
         logger.info("Fetching logged in user from database");
         user = getUserFromDB(jwt.getSubject());
-        if (user != null) {
-            removeSubscriberDetailsFromUser(user);
-            return convertUsertoUserDto(user, mapper);
-        }
+//        if (user != null) {
+//            return convertUsertoUserDto(user, mapper);
+//        }
         // Get User information from auth provider using jwt token
         user = getUserInfoFromAuthProvider(jwt);
         logger.info("Store newly signed up user information into database ");
         User savedUser = userRepository.save(user);
-        removeSubscriberDetailsFromUser(savedUser);
         return convertUsertoUserDto(savedUser, mapper);
     }
 
+    
+//    public boolean isUsernameAlreadyExist(String name){
+//
+//        Query query = new Query(Criteria.where())
+//    }
 
-    private void removeSubscriberDetailsFromUser(User user){
-
-        user.setSubscribedToUsers(null);
-        user.setSubscribers(null);
-    }
 
     private User getUserInfoFromAuthProvider(Jwt jwt) {
         User user;
@@ -92,8 +95,8 @@ public class UserService {
         logger.info("Mapping the user entity values to User DTO");
         if (mapper.getTypeMap(User.class, UserDTO.class) == null) {
             TypeMap<User, UserDTO> typeMapper = mapper.createTypeMap(User.class, UserDTO.class);
-            typeMapper.addMapping(User::getGivenName, UserDTO::setFirstName);
-            typeMapper.addMapping(User::getFamilyName, UserDTO::setLastName);
+            typeMapper.addMapping(User::getFirstname, UserDTO::setFirstname);
+            typeMapper.addMapping(User::getLastname, UserDTO::setLastname);
         }
         return mapper.map(user, UserDTO.class);
     }
@@ -154,7 +157,7 @@ public class UserService {
     private static ChannelInfoDTO getChannelInfoDTO(User channel, Long channelSubscribersCount, boolean isSubscribed) {
         ChannelInfoDTO channelInfoDTO = new ChannelInfoDTO();
         channelInfoDTO.setName(channel.getName());
-        channelInfoDTO.setDisplayName(channel.getGivenName());
+        channelInfoDTO.setDisplayName(channel.getFirstname());
         channelInfoDTO.setSubscribersCount(channelSubscribersCount);
         channelInfoDTO.setUserSubscribed(isSubscribed);
         return channelInfoDTO;

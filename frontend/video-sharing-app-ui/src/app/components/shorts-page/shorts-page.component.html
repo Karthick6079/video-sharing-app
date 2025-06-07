@@ -1,4 +1,3 @@
-<p-toast position="top-center" key="tc"></p-toast>
 <div class="shorts-page" style=" display: flex; justify-content: center;">
     <div class="shorts-container" #shortsContainer infinite-scroll [infiniteScrollDistance]="1" (scrolled)="getShortVideo()" [scrollWindow]="false">
         <div #shorts appAppObserver  class="vid-shorts" *ngFor="let video of videos; let i = index" (entered)="onEnter($event, i)" (exited) ="onExit($event, i)" >

@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +45,8 @@ public class VideoWatchService {
      */
     public void updateWatchHistory(VideoUserInfoDTO videoUserInfo, MongoDatabase database, User currentUser) {
 
-
+        LocalDate today = LocalDate.now(ZoneOffset.UTC);
+        String watchDate = today.toString();
 
 
         MongoCollection<Document> collection = database.getCollection("watchedVideos");
@@ -51,12 +54,10 @@ public class VideoWatchService {
 
         Instant now = Instant.now();
 
-        Instant yesterday = now.minus(1, ChronoUnit.DAYS);
-
         Bson filter = and(
                 eq("videoId", videoUserInfo.getId()),
-                gt("watchedAt", yesterday),
-                lte("watchedAt", now));
+                eq("userId", currentUser.getId()),
+                eq("watchDate", watchDate));
 
 
         //Update document
@@ -64,6 +65,7 @@ public class VideoWatchService {
                 Updates.set("userId", currentUser.getId()),
                 Updates.set("videoId", videoUserInfo.getId()),
                 Updates.set("watchedAt", now),
+                Updates.set("watchDate", watchDate),
                 Updates.set("watchTopics", videoUserInfo.getTags())
         );
         //Setting upset value as true,
@@ -72,15 +74,7 @@ public class VideoWatchService {
         UpdateResult updateResult = collection.updateOne(filter, update, updateOptions);
 
         if(updateResult.getModifiedCount() > 0){
-            logger.info("The watched video table updated for today already watched video!");
-        } else {
-            VideoWatch videoWatch = new VideoWatch();
-            videoWatch.setVideoId(videoUserInfo.getVideoId());
-            videoWatch.setUserId(videoUserInfo.getUserId());
-            Set<String> watchTopics = new HashSet<>(videoUserInfo.getTags());
-            videoWatch.setWatchTopics(watchTopics);
-            videoWatchRepository.save(videoWatch);
-            logger.info("The watched video table updated");
+            logger.info("The user watch history updated");
         }
     }
 }

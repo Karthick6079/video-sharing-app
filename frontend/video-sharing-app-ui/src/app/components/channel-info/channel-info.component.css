@@ -37,7 +37,7 @@
     margin-left: 1.6em;
 }
 
-:host::ng-deep .like-button{
+/* :host::ng-deep .like-button{
     margin-right: 0.5em;
     width: 9rem;
 }
@@ -50,10 +50,69 @@
 :host::ng-deep .like-count{
     background-color: transparent;
     font-size: 1.6rem;
-    /* height: 1.6rem; */
     color: aliceblue;
     text-align: center;
+} */
+
+.likes-nd-share-container{
+    display: flex;
 }
+
+
+
+
+
+  .engagement-button-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .btn {
+    flex: 1 1 45%;
+    min-width: 84px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--app-primary-color);
+    border-radius: 2rem;
+    background-color: white;
+    color: var(--app-primary-color);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn i {
+    font-size: 1.25rem; /* Increased icon size */
+  }
+  
+  .btn:hover {
+    background-color: var(--app-primary-color);
+    color: white;
+  }
+
+  .like-button span {
+    font-weight: bold;
+  }
+
+  /* Active (liked) state */
+.like-button.active {
+    background-color: var(--app-primary-color);
+    color: white;
+    border-color: var(--app-primary-color);
+  }
+  
+  /* Active (disliked) state */
+  .dislike-button.active {
+    background-color: var(--app-primary-color);
+    color: white;
+    border-color: var(--app-primary-color);
+  }
+  
 
 :host::ng-deep .p-component{
     font-size: 1.4rem;
@@ -71,6 +130,10 @@
 
 /*Mobile devices*/
 @media only screen and (min-width: 320px) and (max-width:480px){
+
+    .btn {
+        flex: 1 1 100%;
+      }
 
     .uploaded-user-info{
         flex-direction: column-reverse;

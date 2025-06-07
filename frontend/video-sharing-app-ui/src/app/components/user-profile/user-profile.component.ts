@@ -5,6 +5,7 @@ import { UserService } from '../../services/user/user.service';
 import { Observable } from 'rxjs';
 import _ from 'lodash';
 import { KeyValue } from '@angular/common';
+import { AdvancedDateGroupService } from '../../services/advanced-date-group.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,11 +21,16 @@ export class UserProfileComponent {
   isAuthenticated!: boolean;
   page: number = 0;
   size: number = 6;
-  videosGroupedByDay!: _.Dictionary<LikedVideoDTO[]>;
+
+  groupedVideosRecord: Record<string, LikedVideoDTO[]> = {};
+  
+  groupedVideosList: { label: string; videos: LikedVideoDTO[] }[] = [];
+  
 
   constructor(
     private userService: UserService,
-    private oidcSecurityService: OidcSecurityService
+    private oidcSecurityService: OidcSecurityService,
+    private groupingService: AdvancedDateGroupService
   ) {
     this.oidcSecurityService.isAuthenticated$.subscribe(
       ({ isAuthenticated }) => {
@@ -32,28 +38,6 @@ export class UserProfileComponent {
       }
     );
   }
-
-  reverseKeyOrder = (
-    a: KeyValue<string, LikedVideoDTO[]>,
-    b: KeyValue<string, LikedVideoDTO[]>
-  ): number => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const lastSevenDays = new Date(today);
-    lastSevenDays.setDate(today.getDate() - 7);
-    if (
-      a.key === 'Today' ||
-      a.key === 'Yesterday' ||
-      a.key === 'Last seven days'
-    ) {
-      return 1;
-    } else {
-      return Date.parse(b.key) - Date.parse(a.key);
-    }
-  };
-
-  watchedVideos$!: Observable<VideoDto[]>;
 
   ngOnInit(): void {
     this.getLikedVideos(true);
@@ -70,7 +54,7 @@ export class UserProfileComponent {
           this.likedVideos = videos;
 
           if (videos && videos.length > 0) {
-            this.groupByDays(videos);
+            this.loadVideosOnScroll(videos, "likedAt");
             this.isDataAvailable = true;
           } else {
             this.unAuthUIInfoDesc =
@@ -80,51 +64,28 @@ export class UserProfileComponent {
     }
   }
 
-  groupByDays(videos: LikedVideoDTO[]) {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const lastSevenDays = new Date(today);
-    lastSevenDays.setDate(today.getDate() - 7);
-
-    const groupByDay = _.groupBy(videos, (item) => {
-      const itemDate = new Date(item.likedAt);
-      if (itemDate.toDateString() === today.toDateString()) {
-        return 'Today';
-      } else if (itemDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday';
-      } else if (itemDate > lastSevenDays) {
-        return 'Last seven days';
-      } else {
-        return `${itemDate.toLocaleString('default', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        })}`;
+  loadVideosOnScroll(videos: LikedVideoDTO[], dateField: string){
+  
+      const newGroupeVideos = this.groupingService.groupByAdvancedDate(videos, dateField as keyof typeof videos[0]);
+      for (const [label, items] of newGroupeVideos) {
+        if (this.groupedVideosRecord[label]) {
+          this.groupedVideosRecord[label] = [
+            ...this.groupedVideosRecord[label],
+            ...items
+          ];
+        } else {
+          this.groupedVideosRecord[label] = items;
+        }
       }
-    });
-
-    this.videosGroupedByDay = this.mergeDictionary(
-      this.videosGroupedByDay,
-      groupByDay
-    );
-  }
-
-  mergeDictionary(existing: any, newDict: any) {
-    var returnDict: any = {};
-    if (existing) {
-      for (var key in existing) {
-        returnDict[key] = existing[key];
-      }
+  
+      this.updateGroupedVideosList();
+  
     }
 
-    for (var key in newDict) {
-      if (existing && existing[key]) {
-        returnDict[key].push(...newDict[key]);
-      } else {
-        returnDict[key] = newDict[key];
-      }
+    updateGroupedVideosList() {
+      this.groupedVideosList = Object.entries(this.groupedVideosRecord).map(
+        ([label, videos]) => ({ label, videos })
+      );
     }
-    return returnDict;
-  }
+
 }

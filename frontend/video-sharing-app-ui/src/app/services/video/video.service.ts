@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 import { CommentDTO, VideoDto } from '../../dto/video-dto';
 import { environment } from '../../../environments/environment';
 import { FileSizeExceededException } from '../../exceptions/file-size-exceeded.exception';
+import { ReactionResponse } from '../../dto/reaction-response';
 @Injectable({
   providedIn: 'root',
 })
@@ -116,22 +117,15 @@ export class VideoService {
     );
   }
 
-  likeVideo(videoId: string, userId: string): Observable<VideoDto> {
-    let formData = new FormData();
-    formData.append('userId', userId);
-    return this.http.put<VideoDto>(
-      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/like',
-      formData
+  likeVideo(videoId: string, userId: string): Observable<ReactionResponse> {
+    return this.http.put<ReactionResponse>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/like/'+ userId, null
     );
   }
 
-  dislikeVideo(videoId: string, userId: string): Observable<VideoDto> {
-    let formData = new FormData();
-    formData.append('userId', userId);
-
-    return this.http.put<VideoDto>(
-      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike',
-      formData
+  dislikeVideo(videoId: string, userId: string): Observable<ReactionResponse> {
+    return this.http.put<ReactionResponse>(
+      this.getVideoBaseUrl() + this.GET_VIDEDO_URL + videoId + '/dislike/'+ userId, null
     );
   }
 

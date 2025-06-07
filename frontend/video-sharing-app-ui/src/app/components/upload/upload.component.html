@@ -1,6 +1,4 @@
-<div class="file-upload-ui">
-    <p-toast styleClass="add-color" sticky=true></p-toast>
-    
+<div class="file-upload-ui">    
     <p-fileUpload name="file[]" (uploadHandler)="onUpload($event)" accept="video/*" [maxFileSize]=52428800 [fileLimit]="1"
         [showCancelButton]="showCancel" (onSelect)="onSelectFile()" [customUpload]="true" [previewWidth]="50"
         chooseLabel="Browse" [multiple]="false" removeStyleClass="remove-cancel-button" life="3000">

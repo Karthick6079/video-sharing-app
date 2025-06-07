@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { VideoService } from '../../services/video/video.service';
 import { Observable } from 'rxjs';
 import { VideoDto, WatchedVideoDTO } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { AuthResult } from 'angular-auth-oidc-client/lib/flows/callback-context';
 import { UserService } from '../../services/user/user.service';
-import * as _ from 'lodash';
 import { KeyValue } from '@angular/common';
 import { AdvancedDateGroupService } from '../../services/advanced-date-group.service';
 
@@ -24,11 +21,10 @@ export class HistoryComponent implements OnInit {
   page: number = 0;
   size: number = 6;
   videos!: WatchedVideoDTO[];
-  sortedDate!: string[];
-  videosGroupedByDay!: Record<string, WatchedVideoDTO[]>;
 
-  groupedVideosMap = new Map<string, any[]>();
-  // mediumDate: string|undefined;
+  groupedVideosRecord: Record<string, WatchedVideoDTO[]> = {};
+
+  groupedVideosList: { label: string; videos: WatchedVideoDTO[] }[] = [];
 
   constructor(
     private userService: UserService,
@@ -42,26 +38,9 @@ export class HistoryComponent implements OnInit {
     );
   }
 
-  watchedVideos$!: Observable<VideoDto[]>;
-
   ngOnInit(): void {
     this.getWatchedVideos(true);
   }
-
-  reverseKeyOrder = (
-    a: KeyValue<string, WatchedVideoDTO[]>,
-    b: KeyValue<string, WatchedVideoDTO[]>
-  ): number => {
-    if (
-      a.key === 'Today' ||
-      a.key === 'Yesterday' ||
-      a.key === 'Last seven days'
-    ) {
-      return 1;
-    } else {
-      return Date.parse(b.key) - Date.parse(a.key);
-    }
-  };
 
   getWatchedVideos(isCompLoad: boolean) {
     if (this.isAuthenticated) {
@@ -87,70 +66,23 @@ export class HistoryComponent implements OnInit {
 
     const newGroupeVideos = this.groupingService.groupByAdvancedDate(videos, dateField as keyof typeof videos[0]);
     for (const [label, items] of newGroupeVideos) {
-      if (this.groupedVideosMap.has(label)) {
-        this.groupedVideosMap.set(label, [
-          ...this.groupedVideosMap.get(label)!,
+      if (this.groupedVideosRecord[label]) {
+        this.groupedVideosRecord[label] = [
+          ...this.groupedVideosRecord[label],
           ...items
-        ]);
+        ];
       } else {
-        this.groupedVideosMap.set(label, items);
+        this.groupedVideosRecord[label] = items;
       }
     }
 
+    this.updateGroupedVideosList();
+
   }
 
-  get groupedVideosList(): { label: string, videos: any[] }[] {
-    return Array.from(this.groupedVideosMap.entries()).map(([label, videos]) => ({
-      label,
-      videos
-    }));
-  }
-
-  groupByDays(videos: WatchedVideoDTO[]) {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const lastSevenDays = new Date(today);
-    lastSevenDays.setDate(today.getDate() - 7);
-
-    const groupByDay = _.groupBy(videos, (item) => {
-      const itemDate = new Date(item.watchedAt);
-      if (itemDate.toDateString() === today.toDateString()) {
-        return 'Today';
-      } else if (itemDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday';
-      } else if (itemDate > lastSevenDays) {
-        return 'Last seven days';
-      } else {
-        return `${itemDate.toLocaleString('default', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        })}`;
-      }
-    });
-
-    this.videosGroupedByDay = this.mergeDictionary(
-      this.videosGroupedByDay,
-      groupByDay
+  updateGroupedVideosList() {
+    this.groupedVideosList = Object.entries(this.groupedVideosRecord).map(
+      ([label, videos]) => ({ label, videos })
     );
-  }
-
-  mergeDictionary(existing: any, newDict: any) {
-    var returnDict: any = {};
-    if (existing) {
-      for (var key in existing) {
-        returnDict[key] = existing[key];
-      }
-    }
-
-    for (var key in newDict) {
-      if (existing && existing[key]) {
-        returnDict[key].push(...newDict[key]);
-      } else {
-        returnDict[key] = newDict[key];
-      }
-    }
-    return returnDict;
   }
 }

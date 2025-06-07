@@ -1,5 +1,7 @@
 package com.karthick.videosharingapp.repository;
 
+import com.karthick.videosharingapp.domain.dto.ReactionCountResponse;
+import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.entity.Video;
 import com.karthick.videosharingapp.interfaces.VideoRepositoryCustom;
 import com.karthick.videosharingapp.interfaces.VideoWatchRepositoryCustom;
@@ -14,11 +16,15 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.data.mongodb.core.aggregation.ConvertOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.karthick.videosharingapp.constants.DatabaseConstants.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,67 +50,18 @@ public class VideoRepositoryCustomImpl implements VideoRepositoryCustom {
         return trendingVideos;
     }
 
-//    @Override
-//    public List<Video> findTrendingVideos(int limit) {
-//        long now = System.currentTimeMillis(); // current time in ms
-//
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                // Step 1: Convert publishedAt to milliseconds and calculate age
-//                Aggregation.project("title", "views", "likes", "publishedAt", "videoUrl", "tags")
-//                        .and(ConvertOperators.ToLong.toLong("publishedAt")).as("publishedAtMillis")
-//                        .andExpression("views").as("views")
-//                        .andExpression("likes").as("likes"),
-//
-//                // Step 2: Calculate trending score = views * 0.5 + likes * 0.3 + freshness_score
-//                Aggregation.addFields()
-//                        .addField("trendingScore")
-//                        .withValue(
-//                                ArithmeticOperators.Add
-//                                        .addValueOf(
-//                                                ArithmeticOperators.Multiply.valueOf("views").multiplyBy(0.5)
-//                                        )
-//                                        .add(
-//                                                ArithmeticOperators.Multiply.valueOf("likes").multiplyBy(0.3)
-//                                        )
-//                                        .add(
-//                                                ArithmeticOperators.Multiply.valueOf(
-//                                                        ArithmeticOperators.Subtract.valueOf(now)
-//                                                                .subtract("publishedAtMillis")
-//                                                ).multiplyBy(0.0000002) // freshness decay
-//                                        )
-//                        ).build(),
-//
-//                // Step 3: Sort by score and limit
-//                Aggregation.sort(Sort.Direction.DESC, "trendingScore"),
-//                Aggregation.limit(limit)
-//        );
-//
-//        AggregationResults<Document> results = mongoTemplate.aggregate(aggregation, "videos", Document.class);
-//
-//        return results.getMappedResults().stream()
-//                .map(doc -> mongoTemplate.getConverter().read(Video.class, doc))
-//                .collect(Collectors.toList());
-//    }
-//}
+    @Transactional
+    public void updatedUserVideoReactions(String userId, String videoId, VideoUserInfoDTO videoUserInfoDTO){
 
-//    Aggregation aggregation = Aggregation.newAggregation(
-//            Aggregation.match(Criteria.where("status").is("PUBLIC")),
-//            Aggregation.project("title", "views", "likes", "publishedAt", "videoUrl", "tags")
-//                    .andExpression(
-//                            "((views * 0.5) + (likes * 0.3) + " +
-//                                    "((?0 - (?1 - publishedAt)) * 0.0000002))", // formula as string
-//                            THIRTY_DAYS_MS, now // ?0 and ?1 will be replaced with these values
-//                    ).as("trendingScore"),
-//            Aggregation.sort(Sort.by(Sort.Direction.DESC, "trendingScore")),
-//            Aggregation.limit(limit)
-//    );
-//
-//
-//    AggregationResults<Document> results = mongoTemplate.aggregate(
-//            aggregation, "videos", Document.class
-//    );
-//
-//        return results.getMappedResults().stream()
-//                .map(doc -> mongoTemplate.getConverter().read(Video.class, doc))
-//            .collect(Collectors.toList());
+        Query query = new Query(Criteria.where(USER_ID).is(userId).and(VIDEO_ID).is(videoId));
+
+        boolean isAlreadyLiked = mongoTemplate.exists(query, LIKED_VIDEOS_COLLECTION);
+        boolean isAlreadyDisliked = mongoTemplate.exists(query, DISLIKED_VIDEOS_COLLECTION);
+
+        videoUserInfoDTO.setUserLiked(isAlreadyLiked);
+        videoUserInfoDTO.setUserDisliked(isAlreadyDisliked);
+
+    }
+
+
 }

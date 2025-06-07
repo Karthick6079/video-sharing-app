@@ -1,16 +1,24 @@
 
 <div  *ngIf="isAuthenticated">
-    <div *ngIf="isDataAvailable" class="liked-video-container" infinite-scroll [infiniteScrollDistance]="1"
+
+    @if(isDataAvailable){
+        <div class="liked-video-container" infinite-scroll [infiniteScrollDistance]="1"
         (scrolled)="getLikedVideos(false)">
         <h1>Liked Videos</h1>
-        <div *ngFor=" let item of videosGroupedByDay | keyvalue:reverseKeyOrder">
-            <h2> {{item.key}}</h2>
-            <app-suggestion *ngFor="let video of item.value" [video]="video" [showDescription]="true"></app-suggestion>
-            <hr>
+        <div *ngFor=" let group of groupedVideosList">
+            <h2 class="sticky-header"> {{group.label}}</h2>
+            <app-suggestion *ngFor="let video of group.videos" [video]="video" [showDescription]="true"></app-suggestion>
+            <div class="bottom-space"></div>
         </div>
     </div>
+    }@else{
+        <div class="liked-video-container">
+            <app-video-card-skeleton2 *ngFor="let num of [1,2,3,4,5,6]" [myHeight]="120"></app-video-card-skeleton2>
+        </div>
+    }
+    
 
-    <div *ngIf="!videosGroupedByDay">
+    <div *ngIf="!groupedVideosList">
         <div class="not-subscribed-info-box">
             <app-unauth-ui
             materialIconName="thumb_up_off_alt"

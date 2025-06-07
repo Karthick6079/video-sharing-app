@@ -1,6 +1,7 @@
 package com.karthick.videosharingapp.controller;
 
 import com.karthick.videosharingapp.domain.CompleteMultipartRequest;
+import com.karthick.videosharingapp.domain.dto.ReactionCountResponse;
 import com.karthick.videosharingapp.domain.dto.UploadVideoResponse;
 import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.domain.dto.VideoDTO;
@@ -59,17 +60,17 @@ public class VideoController {
         return videoService.updateVideoWatchAndGetVideoDetails(videoId);
     }
 
-    @PutMapping("/watch/{videoId}/like")
+    @PutMapping("/watch/{videoId}/like/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO likeVideo(@PathVariable String videoId, @RequestParam String userId) {
+    public ReactionCountResponse likeVideo(@PathVariable String videoId, @PathVariable String userId) {
         logger.info("Update like count of video request received in  video controller");
         return videoService.likeVideo(videoId, userId);
     }
 
 
-    @PutMapping("/watch/{videoId}/dislike")
+    @PutMapping("/watch/{videoId}/dislike/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoDTO dislikeVideo(@PathVariable String videoId, @RequestParam String userId) {
+    public ReactionCountResponse dislikeVideo(@PathVariable String videoId, @PathVariable String userId) {
         logger.info("Update dislike count of video request received in video controller");
         return videoService.dislikeVideo(videoId, userId);
     }

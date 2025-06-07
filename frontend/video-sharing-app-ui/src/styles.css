@@ -95,3 +95,18 @@ html:has(.overlay-container) {
     font-size: 1.6rem;
     text-transform: uppercase;
 }
+
+.sticky-header {
+    position: sticky;
+    top: calc(var(--mat-toolbar-standard-height));
+    background: white;
+    z-index: 10;
+    padding: 8px;
+    font-weight: bold;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+.bottom-space{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}

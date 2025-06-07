@@ -1,26 +1,34 @@
-<div  *ngIf="isAuthenticated">
-    <div *ngIf="isDataAvailable" class="watched-video-container" infinite-scroll [infiniteScrollDistance]="1"
+<div *ngIf="isAuthenticated">
+
+    @if(isDataAvailable){
+  
+    <div class="watched-video-container" infinite-scroll [infiniteScrollDistance]="1"
         (scrolled)="getWatchedVideos(false)">
+        <h1>Watch history</h1>
         <div *ngFor="let group of groupedVideosList">
-            <h1> {{group.label}}</h1>
-            <app-suggestion *ngFor="let video of group.videos" [video]="video" [showDescription]="true"></app-suggestion>
-            <hr>
+            <h2 class="sticky-header"> {{group.label}}</h2>
+            <app-suggestion *ngFor="let video of group.videos" [video]="video"
+                [showDescription]="true"></app-suggestion>
+            <!-- <hr> -->
+             <div class="bottom-space"></div>
         </div>
     </div>
+    } @else{
+    <div class="watched-video-container">
+        <app-video-card-skeleton2 *ngFor="let num of [1,2,3,4,5,6]" [myHeight]="120"></app-video-card-skeleton2>
+    </div>
+    }
+
+
     <div *ngIf="!groupedVideosList">
         <div class="not-subscribed-info-box">
-            <app-unauth-ui
-            materialIconName="thumb_up_off_alt"
-            [infoTextTitle]="unAuthUIInfotitle"
-            [infoTextDesc]="unAuthUIInfoDesc"
-            [toHome]="true"></app-unauth-ui>
+            <app-unauth-ui materialIconName="thumb_up_off_alt" [infoTextTitle]="unAuthUIInfotitle"
+                [infoTextDesc]="unAuthUIInfoDesc" [toHome]="true"></app-unauth-ui>
         </div>
     </div>
 </div>
 
 <h1 *ngIf="!isAuthenticated">
-    <app-unauth-ui
-     materialIconName="history_toggle_off"
-     [infoTextTitle]="unAuthUIInfotitle"
-     [infoTextDesc]="unAuthUIInfoDesc"></app-unauth-ui>
+    <app-unauth-ui materialIconName="history_toggle_off" [infoTextTitle]="unAuthUIInfotitle"
+        [infoTextDesc]="unAuthUIInfoDesc"></app-unauth-ui>
 </h1>

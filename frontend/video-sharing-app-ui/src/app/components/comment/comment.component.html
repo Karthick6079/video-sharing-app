@@ -6,7 +6,7 @@
             <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
                 *ngIf="!avatarError" />
             <div class="user-avatar-fallback" *ngIf="avatarError">
-                {{ getUserInitials(video.userDisplayName) }}
+                {{ getUserInitials(currentUser.name) }}
             </div>
         </div>
         <span class="user-circle" *ngIf="!isAuthenticated" >

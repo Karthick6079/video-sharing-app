@@ -32,6 +32,6 @@ export class SuggestionComponent implements OnInit {
   displayVideo: boolean = true;
 
   watchVideo() {
-    this.router.navigate(['../../watch', this.video.id]);
+    this.router.navigate(['../../watch', this.video.videoId]);
   }
 }

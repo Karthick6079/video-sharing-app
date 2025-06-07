@@ -28,5 +28,6 @@ public class VideoUserInfoDTO {
     private String userPicture;
     private AtomicLong channelSubscribersCount = new AtomicLong(0);
     private boolean isCurrentUserSubscribedToChannel = false;
-
+    boolean isUserLiked;
+    boolean isUserDisliked;
 }

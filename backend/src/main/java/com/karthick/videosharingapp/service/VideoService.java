@@ -6,10 +6,7 @@ import com.karthick.videosharingapp.exceptions.BusinessException;
 import com.karthick.videosharingapp.exceptions.FileSizeExceededException;
 import com.karthick.videosharingapp.interfaces.MultiPartUploadService;
 import com.karthick.videosharingapp.interfaces.RecommendationService;
-import com.karthick.videosharingapp.repository.VideoLikeRepository;
-import com.karthick.videosharingapp.repository.SubscriptionRepository;
-import com.karthick.videosharingapp.repository.VideoRepository;
-import com.karthick.videosharingapp.repository.VideoWatchRepository;
+import com.karthick.videosharingapp.repository.*;
 import com.karthick.videosharingapp.servicelogic.RecommendationServiceFactory;
 import com.karthick.videosharingapp.servicelogic.VideoServiceLogic;
 import com.karthick.videosharingapp.util.MapperUtil;
@@ -72,6 +69,8 @@ public class VideoService {
     private final RecommendationServiceFactory recommendationServiceFactory;
 
     private final MultiPartUploadService multiPartUploadService;
+
+    private final VideoRepositoryCustomImpl videoRepositoryCustom;
 
     @Value("${spring.servlet.multipart.max-file-size}")
     private String allowedVideoFileSize;
@@ -185,6 +184,9 @@ public class VideoService {
             recommendationRefreshQueue.markUserForRefresh(currentUser.getId());
             boolean isCurrentUserSubscribed = subscriptionRepository.existsBySubscriberIdAndChannelId(currentUser.getId(), videoUploadUser.getId());
             videoUserInfoDTO.setCurrentUserSubscribedToChannel(isCurrentUserSubscribed);
+
+            //update user liked and disliked information DTO
+            videoRepositoryCustom.updatedUserVideoReactions(currentUser.getId(), videoUserInfoDTO.getVideoId(), videoUserInfoDTO);
         }
 
         // 4.Update video uploaded user subscribers count, is current user subscribed
@@ -208,17 +210,17 @@ public class VideoService {
     }
 
 
-    public VideoDTO likeVideo(String videoId, String userId) {
+    public ReactionCountResponse likeVideo(String videoId, String userId) {
 
-        VideoDTO videoDTO  = videoServiceLogic.likeVideo(videoId, userId);
+        ReactionCountResponse reactionCountResponse  = videoServiceLogic.likeVideo(videoId, userId);
         recommendationRefreshQueue.markUserForRefresh(userId);
-        return videoDTO;
+        return reactionCountResponse;
     }
 
-    public VideoDTO dislikeVideo(String videoId, String userId) {
-        VideoDTO videoDTO = videoServiceLogic.dislikeVideo(videoId, userId);
+    public ReactionCountResponse dislikeVideo(String videoId, String userId) {
+        ReactionCountResponse reactionCountResponse  = videoServiceLogic.dislikeVideo(videoId, userId);
         recommendationRefreshQueue.markUserForRefresh(userId);
-        return videoDTO;
+        return reactionCountResponse;
     }
 
 
@@ -277,13 +279,14 @@ public class VideoService {
 
         logger.info("Fetching videos from subscribed users");
         User user = userService.getCurrentUser();
-        List<String> subscribedChannelIds = new ArrayList<>(user.getSubscribedToUsers());
+        List<ChannelIdDTO> subscribedChannelIdDTOs = subscriptionRepository.findChannelIdBySubscriberId(user.getId());
 
-        if (subscribedChannelIds.isEmpty())
+        if (subscribedChannelIdDTOs.isEmpty())
             return null;
-
+        List<String> subscribedChannelIds = subscribedChannelIdDTOs.stream().map(ChannelIdDTO::getChannelId).toList();
         PageRequest pageRequest = PageRequest.of(page, size);
         logger.info("Find latest video from user, database query fetched this result");
+
         List<String> videoIdList = videoRepo.findLatestVideoFromUsers(subscribedChannelIds, pageRequest);
 
         return getVideosAndUser(videoIdList);

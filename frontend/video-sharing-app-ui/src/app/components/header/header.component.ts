@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
       if (response.userData) {
+        console.log(response.userData);
         this.name = response.userData.name;
         this.userPictureUrl = response.userData.picture;
       }

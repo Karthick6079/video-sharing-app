@@ -7,6 +7,8 @@ import { UserService } from '../../services/user/user.service';
 import { VideoService } from '../../services/video/video.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { IndianFormatViewCount } from '../../pipes/indianformatviewcount.pipe';
+import { debounceTime, Subject } from 'rxjs';
+import { ReactionResponse } from '../../dto/reaction-response';
 
 @Component({
   selector: 'app-channel-info',
@@ -29,9 +31,13 @@ export class ChannelInfoComponent implements OnInit {
 
   videoURL!: string;
 
-  isLikedVideo: boolean = false;
-  isDisLikedVideo: boolean = false;
+  isLiked: boolean = false;
+  isDisliked: boolean = false;
   avatarError = false;
+
+  private likeClick$ = new Subject<void>();
+  private dislikeClick$ = new Subject<void>();
+
 
   constructor(
     private loginService: LoginService,
@@ -56,33 +62,61 @@ export class ChannelInfoComponent implements OnInit {
     this.subscribersCount = this.video.channelSubscribersCount;
     this.subscribed = this.video.isCurrentUserSubscribedToChannel;
 
-    // console.log(this.video);
+
+    this.likeClick$.pipe(debounceTime(400)).subscribe(() => {
+      this.handleLike()
+    });
+
+    this.dislikeClick$.pipe(debounceTime(400)).subscribe(() => {
+      this.handleDislike()
+    });
+
+    this.isLiked = this.video.userLiked;
+    this.isDisliked = this.video.userDisliked;
   }
 
 
 
   likeVideo() {
-    if (!this.isUserLoggedIn())
-      return;
+    this.likeClick$.next();
+  }
 
-    this.videoService
-      .likeVideo(String(this.video?.id), this.currentUser.id)
-      .subscribe((video: VideoDto) => {
-        this.video.likes = video.likes;
-        this.video.dislikes = video.dislikes;
-      });
+  dislikeVideo() {
+    this.dislikeClick$.next();
   }
 
 
-  dislikeVideo() {
+  handleLike() {
     if (!this.isUserLoggedIn())
       return;
 
+    this.isLiked = !this.isLiked;
+    if (this.isLiked) {
+      this.isDisliked = false;
+    }
+
+    this.videoService
+      .likeVideo(String(this.video?.id), this.currentUser.id)
+      .subscribe((response: ReactionResponse) => {
+        this.video.likes = response.likes;
+        this.video.dislikes = response.dislikes;
+      });
+  }
+
+  handleDislike() {
+    if (!this.isUserLoggedIn())
+      return;
+
+    this.isDisliked = !this.isDisliked;
+    if (this.isDisliked) {
+      this.isLiked = false;
+    }
+
     this.videoService
       .dislikeVideo(String(this.video?.id), this.currentUser.id)
-      .subscribe((video: VideoDto) => {
-        this.video.dislikes = video.dislikes;
-        this.video.likes = video.likes
+      .subscribe((response: ReactionResponse) => {
+        this.video.dislikes = response.dislikes;
+        this.video.likes = response.likes
       });
   }
 

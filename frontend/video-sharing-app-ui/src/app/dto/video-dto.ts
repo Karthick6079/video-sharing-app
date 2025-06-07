@@ -17,6 +17,8 @@ export interface VideoDto {
   userPicture: string;
   channelSubscribersCount: number;
   isCurrentUserSubscribedToChannel: boolean
+  userLiked:boolean;
+  userDisliked:boolean;
 }
 
 export interface WatchedVideoDTO extends VideoDto {

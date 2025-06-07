@@ -20,43 +20,18 @@ import java.util.concurrent.atomic.AtomicLong;
 public class User {
     @Id
     private String id;
-    @JsonIgnore
-    private String firstName;
-    @JsonIgnore
-    private String lastName;
     private String name;
     private String picture;
     private String sub;
     private String email;
     @JsonProperty(value = "given_name")
-    private String givenName;
+    private String lastname;
     @JsonProperty(value = "family_name")
-    private String familyName;
+    private String firstname;
     @JsonProperty(value = "nickname")
     private String nickname;
-    @JsonIgnore
-    private Set<String> subscribedToUsers = ConcurrentHashMap.newKeySet();
-    private AtomicLong subscribedToCount = new AtomicLong(0);
-    @JsonIgnore
-    private Set<String> subscribers = ConcurrentHashMap.newKeySet();
-    private AtomicLong subscribersCount = new AtomicLong(0);
     private Instant createdAt;
 
-    public void incrementSubscriberCount(){
-        this.subscribersCount.incrementAndGet();
-    }
-
-    public void decrementSubscriberCount(){
-        this.subscribersCount.decrementAndGet();
-    }
-
-    public void incrementSubscribedToCount(){
-        this.subscribedToCount.incrementAndGet();
-    }
-
-    public void decrementSubscribedToCount(){
-        this.subscribedToCount.decrementAndGet();
-    }
 
 
 

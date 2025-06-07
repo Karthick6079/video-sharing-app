@@ -7,6 +7,8 @@ import { VideoService } from '../../services/video/video.service';
 import { LoginService } from '../../services/login/login.service';
 import { UserService } from '../../services/user/user.service';
 import { ShortsServiceService } from '../../services/shorts-service.service';
+import { debounceTime, Subject } from 'rxjs';
+import { ReactionResponse } from '../../dto/reaction-response';
 
 @Component({
   selector: 'app-shorts',
@@ -37,8 +39,12 @@ export class ShortsComponent implements OnInit {
 
   user: UserDto | undefined;
 
-  isLikedVideo: boolean = false;
-  isDisLikedVideo: boolean = false;
+
+  isLiked: boolean = false;
+  isDisliked: boolean = false;
+
+  private likeClick$ = new Subject<void>();
+  private dislikeClick$ = new Subject<void>();
 
   public isAuthenticated: boolean = false;
 
@@ -59,33 +65,9 @@ export class ShortsComponent implements OnInit {
     this.currentUser = this.userService.getCurrentUser();
   }
 
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   const videoEl = this.videoPlayerRef?.nativeElement;
-  //   // alert("playShorts : "+ this.activeIndex);
-  //   if (!videoEl) return;
-
-  //   console.log(this.playShorts)
-
-  //   console.log("playshort latest value", changes['playShorts']);
-
-  //   if (changes['playShorts'] && changes['playShorts'].currentValue === true) {
-  //     videoEl.currentTime = 0;
-  //     videoEl.play();
-  //   } else {
-  //     videoEl.pause();
-  //   }
-  // }
-
   handlePlayback(): void {
     const videoEl = this.videoPlayerRef?.nativeElement;
-    // alert("playShorts : "+ this.activeIndex);
     if (!videoEl) return;
-
-    console.log(this._playShorts)
-
-    // console.log("playshort latest value", changes['playShorts']);
-
     if (this._playShorts) {
       videoEl.currentTime = 0;
       videoEl.play().catch(() => {
@@ -102,6 +84,17 @@ export class ShortsComponent implements OnInit {
         this.isAuthenticated = isAuthenticated;
       }
     );
+
+    this.likeClick$.pipe(debounceTime(400)).subscribe(() => {
+      this.handleLike()
+    });
+
+    this.dislikeClick$.pipe(debounceTime(400)).subscribe(() => {
+      this.handleDislike()
+    });
+
+    this.isLiked = this.video.userLiked;
+    this.isDisliked = this.video.userDisliked;
   }
 
   showComments() {
@@ -109,24 +102,45 @@ export class ShortsComponent implements OnInit {
   }
 
   likeVideo() {
+    this.likeClick$.next();
+  }
+
+  dislikeVideo() {
+    this.dislikeClick$.next();
+  }
+
+
+  handleLike() {
     if (!this.isUserLoggedIn())
       return;
 
+    this.isLiked = !this.isLiked;
+    if (this.isLiked) {
+      this.isDisliked = false;
+    }
+
     this.videoService
       .likeVideo(String(this.video?.id), this.currentUser.id)
-      .subscribe((video: VideoDto) => {
-        this.isLikedVideo = true;
-        this.video.likes = video.likes;
+      .subscribe((response: ReactionResponse) => {
+        this.video.likes = response.likes;
+        this.video.dislikes = response.dislikes;
       });
   }
-  dislikeVideo() {
+
+  handleDislike() {
     if (!this.isUserLoggedIn())
       return;
+
+    this.isDisliked = !this.isDisliked;
+    if (this.isDisliked) {
+      this.isLiked = false;
+    }
+
     this.videoService
       .dislikeVideo(String(this.video?.id), this.currentUser.id)
-      .subscribe((video: VideoDto) => {
-        this.isDisLikedVideo = true;
-        this.video.dislikes = video.dislikes;
+      .subscribe((response: ReactionResponse) => {
+        this.video.dislikes = response.dislikes;
+        this.video.likes = response.likes
       });
   }
 

@@ -18,7 +18,7 @@ import { UserService } from '../../services/user/user.service';
 })
 export class FeaturedComponent implements OnInit {
   page: number = 0;
-  private SIZE: number = 3;
+  private SIZE: number = 6;
 
   topics!: string[];
 

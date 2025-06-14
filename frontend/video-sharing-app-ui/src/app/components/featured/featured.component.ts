@@ -22,7 +22,7 @@ export class FeaturedComponent implements OnInit {
 
   topics!: string[];
 
-  videos!: VideoDto[];
+  videos: VideoDto[] = [];
 
   isVideosAvailable: boolean = false;
 
@@ -86,7 +86,7 @@ export class FeaturedComponent implements OnInit {
   
   checkIfNeedMoreVideos() {
     if (document.body.scrollHeight <= window.innerHeight) {
-      // this.getSuggestionVideos();
+      this.getSuggestionVideos();
     }
   }
 
@@ -106,11 +106,12 @@ export class FeaturedComponent implements OnInit {
 
   getSuggestionVideos() {
     this.page = this.page + 1;
+    console.log("Page number for suggestion", this.page)
     this.videoService
       .getSuggestedVideos(this.page, this.SIZE)
       .subscribe((videos) => {
         if (videos) {
-          this.videos.push(...videos);
+          this.videos.push(...videos.filter((video) => video.id));
         } else {
           // If video null means no further video in DB. So reseting the page value to 0
           this.page = 0;

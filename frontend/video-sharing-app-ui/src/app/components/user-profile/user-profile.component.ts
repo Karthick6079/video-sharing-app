@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { LikedVideoDTO, VideoDto } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from '../../services/user/user.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import _ from 'lodash';
 import { KeyValue } from '@angular/common';
 import { AdvancedDateGroupService } from '../../services/advanced-date-group.service';
@@ -18,6 +18,7 @@ export class UserProfileComponent {
 
   likedVideos!: VideoDto[];
   isDataAvailable = false;
+  isApiCalling = false;
   isAuthenticated!: boolean;
   page: number = 0;
   size: number = 6;
@@ -48,11 +49,16 @@ export class UserProfileComponent {
       if (!isCompLoad) {
         this.page = this.page + 1;
       }
+      this.isApiCalling = true;
       this.userService
-        .getLikedVideos(this.page, this.size)
+        .getLikedVideos(this.page, this.size).pipe(catchError(
+          (error) => {
+            this.isApiCalling = false;
+            return throwError(() => error);
+          }))
         .subscribe((videos) => {
           this.likedVideos = videos;
-
+          this.isApiCalling = false;
           if (videos && videos.length > 0) {
             this.loadVideosOnScroll(videos, "likedAt");
             this.isDataAvailable = true;
@@ -60,7 +66,9 @@ export class UserProfileComponent {
             this.unAuthUIInfoDesc =
               'You yet to like videos. Like your favorite videos and get personalized recommendations';
           }
-        });
+        }
+
+        );
     }
   }
 

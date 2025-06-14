@@ -14,4 +14,12 @@ public class DatabaseConstants {
     public static final String LIKE_TOPICS_COLUMN = "likeTopics";
     public static final String DISLIKE_TOPICS_COLUMN = "dislikeTopics";
     public static final String TOPICS_ALIAS = "topics";
+    public static final String NAME_COLUMN = "name";
+    public static final String DISPLAY_NAME_COLUMN = "displayName";
+    public static final String PICTURE_COLUMN = "picture";
+    public static final String SUB_COLUMN = "sub";
+    public static final String EMAIL_COLUMN = "email";
+    public static final String FIRSTNAME_COLUMN = "firstname";
+    public static final String LASTNAME_COLUMN = "lastname";
+    public static final String USERS_COLLECTION = "users";
 }

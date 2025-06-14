@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
         let loginBeforeUrl = localStorage.getItem(this.LOGIN_BEFORE_URL);
 
         if (loginBeforeUrl) {
+          console.log("Navigating to previous url")
           localStorage.removeItem(this.LOGIN_BEFORE_URL); // removing login before url after sign navigate
           this.router.navigateByUrl(loginBeforeUrl);
         }

@@ -40,7 +40,7 @@ public class CommentService {
     public CommentDTO addComment(CommentDTO commentDto) {
         User user = userService.getCurrentUser();
         commentDto.setPicture(user.getPicture());
-        commentDto.setUsername(user.getName());
+        commentDto.setUsername(user.getDisplayName());
         Comment comment = mapper.map(commentDto, Comment.class);
         comment.setCreatedAt(Instant.now());
         Comment savedComment = commentRepository.save(comment);

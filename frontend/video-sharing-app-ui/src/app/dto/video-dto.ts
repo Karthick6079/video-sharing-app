@@ -34,11 +34,11 @@ export interface UserDto {
   id?: string;
   firstName?: string;
   lastName?: string;
-  name?: string;
+  displayName?: string;
   picture?: string;
   sub?: string;
   email?: string;
-  nickname?: string;
+  name?: string;
   subscribedToUsers: any[];
   subscribers?: any[];
   videoHistory?: any[];

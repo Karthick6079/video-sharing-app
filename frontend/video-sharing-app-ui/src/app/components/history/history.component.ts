@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { VideoDto, WatchedVideoDTO } from '../../dto/video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { UserService } from '../../services/user/user.service';
@@ -17,6 +17,7 @@ export class HistoryComponent implements OnInit {
 
   watchedVideos!: VideoDto[];
   isDataAvailable = false;
+  isApiCalling = false;
   isAuthenticated!: boolean;
   page: number = 0;
   size: number = 6;
@@ -47,10 +48,16 @@ export class HistoryComponent implements OnInit {
       if (!isCompLoad) {
         this.page = this.page + 1;
       }
+      this.isApiCalling = true;
       this.userService
-        .getWatchedVideos(this.page, this.size)
+        .getWatchedVideos(this.page, this.size).pipe(catchError(
+          (error) => {
+            this.isApiCalling = false;
+            return throwError(() => error);
+          }))
         .subscribe((videos) => {
           // videos = videos;
+          this.isApiCalling = false;
           if (videos && videos.length > 0) {
             this.loadVideosOnScroll(videos, "watchedAt");
             this.isDataAvailable = true;

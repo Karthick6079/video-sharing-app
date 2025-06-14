@@ -7,6 +7,8 @@ import com.karthick.videosharingapp.entity.Subscription;
 import com.karthick.videosharingapp.entity.User;
 import com.karthick.videosharingapp.repository.SubscriptionRepository;
 import com.karthick.videosharingapp.repository.UserRepository;
+import com.karthick.videosharingapp.util.AppUtil;
+import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
+
+import static com.karthick.videosharingapp.constants.DatabaseConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,26 +51,64 @@ public class UserService {
 
     private final MongoTemplate mongoTemplate;
 
+    private final AppUtil appUtil;
+
 
     public UserDTO registerUser(Jwt jwt) {
-        User user;
+        User userDetailsFromDB;
         logger.info("Fetching logged in user from database");
-        user = getUserFromDB(jwt.getSubject());
-//        if (user != null) {
-//            return convertUsertoUserDto(user, mapper);
-//        }
-        // Get User information from auth provider using jwt token
-        user = getUserInfoFromAuthProvider(jwt);
+        userDetailsFromDB = getUserFromDB(jwt.getSubject());
+        User userDetailsFromAuthProvider = getUserInfoFromAuthProvider(jwt);
+        User savedUser = updateLatestUserDetailsAndSaveInDB(userDetailsFromDB, userDetailsFromAuthProvider);
         logger.info("Store newly signed up user information into database ");
-        User savedUser = userRepository.save(user);
         return convertUsertoUserDto(savedUser, mapper);
     }
 
-    
-//    public boolean isUsernameAlreadyExist(String name){
-//
-//        Query query = new Query(Criteria.where())
-//    }
+
+    private User  updateLatestUserDetailsAndSaveInDB  (User userDetailsFromDB, User  userDetailsFromAuthProvider){
+
+
+        // User first time login into system
+        String name = "";
+
+        if(userDetailsFromDB == null){
+            String displayName = userDetailsFromAuthProvider.getDisplayName();
+            name = displayName.replaceAll("\\s","").toLowerCase();
+
+            // If no difference between name and display name means, display name can be name
+            if(name.equals(displayName))
+                name = displayName;
+
+            Query query = new Query(Criteria.where(NAME_COLUMN).is(name));
+            boolean isUsernameAlreadyExist = mongoTemplate.exists(query,USERS_COLLECTION);
+            if(isUsernameAlreadyExist){
+                String randomNumberString = appUtil.generateRandomFourDigitNumber();
+                name = name.concat(randomNumberString);
+            }
+        } else {
+            name = userDetailsFromDB.getName();
+            userDetailsFromAuthProvider.setId(userDetailsFromDB.getId());
+        }
+
+//        Update update = getUpdate(userDetailsFromAuthProvider, name);
+
+//        UpdateResult updateResult =  mongoTemplate.upsert(query,update, USERS_COLLECTION);
+
+        userDetailsFromAuthProvider.setName(name);
+        return userRepository.save(userDetailsFromAuthProvider);
+    }
+
+    private static Update getUpdate(User userDetailsFromAuthProvider, String name) {
+        Update update = new Update();
+        update.set(NAME_COLUMN, name);
+        update.set(DISPLAY_NAME_COLUMN, userDetailsFromAuthProvider.getDisplayName());
+        update.set(FIRSTNAME_COLUMN, userDetailsFromAuthProvider.getFirstname());
+        update.set(LASTNAME_COLUMN, userDetailsFromAuthProvider.getLastname());
+        update.set(PICTURE_COLUMN, userDetailsFromAuthProvider.getPicture());
+        update.set(SUB_COLUMN, userDetailsFromAuthProvider.getSub());
+        update.set(EMAIL_COLUMN, userDetailsFromAuthProvider.getEmail());
+        return update;
+    }
 
 
     private User getUserInfoFromAuthProvider(Jwt jwt) {
@@ -138,7 +182,7 @@ public class UserService {
 
         User currentUser = getCurrentUser();
         User channel = getUserById(userId);
-        logger.info("The user: {} subscribing to user: {}", currentUser.getName(), channel.getName());
+        logger.info("The user: {} subscribing to user: {}", currentUser.getDisplayName(), channel.getDisplayName());
         Subscription subscription = new Subscription();
         subscription.setSubscriberId(currentUser.getId());
         subscription.setChannelId(channel.getId());
@@ -156,7 +200,7 @@ public class UserService {
 
     private static ChannelInfoDTO getChannelInfoDTO(User channel, Long channelSubscribersCount, boolean isSubscribed) {
         ChannelInfoDTO channelInfoDTO = new ChannelInfoDTO();
-        channelInfoDTO.setName(channel.getName());
+        channelInfoDTO.setName(channel.getDisplayName());
         channelInfoDTO.setDisplayName(channel.getFirstname());
         channelInfoDTO.setSubscribersCount(channelSubscribersCount);
         channelInfoDTO.setUserSubscribed(isSubscribed);
@@ -168,7 +212,7 @@ public class UserService {
         User currentUser = getCurrentUser();
         User channel = getUserById(userId);
 
-        logger.info("The user: {} unsubscribing to user: {}", currentUser.getName(), channel.getName());
+        logger.info("The user: {} unsubscribing to user: {}", currentUser.getDisplayName(), channel.getDisplayName());
 
         subscriptionRepository.deleteBySubscriberIdAndChannelId(currentUser.getId(), channel.getId());
         logger.info("unsubscribed information updated in database");

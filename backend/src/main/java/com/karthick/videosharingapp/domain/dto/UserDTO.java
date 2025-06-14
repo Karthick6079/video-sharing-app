@@ -17,13 +17,13 @@ public class UserDTO {
 
     @Id
     private String id;
+    private String name;
+    private String displayName;
     private String firstname;
     private String lastname;
-    private String name;
     private String picture;
     private String sub;
     private String email;
-    private String nickname;
     private Set<String> subscribedToUsers;
     private Set<String> subscribers;
     private Long subscribedToCount;

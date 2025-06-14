@@ -238,9 +238,8 @@ public class VideoService {
                 .getRecommendationService(isUserLoggedIn);
 
         List<VideoUserInfoDTO> result = null;
-
-        if(isUserLoggedIn){
-            User currentUser = userService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
+        if(isUserLoggedIn && currentUser != null){
             result =  recommendationService.getRecommendationVideos(currentUser.getId(), pageable);
         } else{
             result =  recommendationService.getRecommendationVideos(pageable);

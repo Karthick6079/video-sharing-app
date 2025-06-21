@@ -137,8 +137,8 @@ public class VideoService {
         savedVideo.setCreatedAt(Instant.now());
         savedVideo.setUserId(currerntUser.getId());
 
-        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty())
-            multiPartUploadService.generateThumbnail(savedVideo);
+//        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty())
+//            multiPartUploadService.generateThumbnail(savedVideo);
 //        savedVideo.setUser(currerntUser);
 
         //update video url to video dto

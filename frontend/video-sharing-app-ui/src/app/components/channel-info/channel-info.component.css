@@ -18,12 +18,14 @@
 
 .channal-name .name{
     font-size: 1.6rem;
+    font-family: var(--app-font-family);
     font-weight: 500;
     color: var(--app-font-color);
 }
 
 .channal-name .subscribers-count{
     font-size: 1.2rem;
+    font-family: var(--app-font-family);
     font-weight: 400;
     color: var(--app-channal-font-color);
 }
@@ -37,22 +39,6 @@
     margin-left: 1.6em;
 }
 
-/* :host::ng-deep .like-button{
-    margin-right: 0.5em;
-    width: 9rem;
-}
-
-:host::ng-deep .dislike-button{
-    font-size: 3rem;
-    padding: 1.3em;
-}
-
-:host::ng-deep .like-count{
-    background-color: transparent;
-    font-size: 1.6rem;
-    color: aliceblue;
-    text-align: center;
-} */
 
 .likes-nd-share-container{
     display: flex;
@@ -128,6 +114,10 @@
     /* color: #8b5cf6; */
 }
 
+.divider-mobile{
+    display: none;
+}
+
 /*Mobile devices*/
 @media only screen and (min-width: 320px) and (max-width:480px){
 
@@ -167,6 +157,17 @@
     .app-dislike-button{
         height: 3.1em;
         width: 3.1em;
+    }
+    .engagement-button-group{
+        flex-wrap: nowrap;
+        width: 30%;
+    }
+
+    .divider-mobile{
+        display: block;
+        width: 100%;
+        border-bottom:  1px solid rgba(128, 128, 128, 0.45);
+        margin-bottom: 12px;
     }
 
 }

@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
     });
 
     this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated }) => {
-      console.log("isAuthenticated: ", isAuthenticated);
       if (isAuthenticated) {
         this.registerUserInDB();
       }
@@ -42,7 +41,6 @@ export class AppComponent implements OnInit {
         let loginBeforeUrl = localStorage.getItem(this.LOGIN_BEFORE_URL);
 
         if (loginBeforeUrl) {
-          console.log("Navigating to previous url")
           localStorage.removeItem(this.LOGIN_BEFORE_URL); // removing login before url after sign navigate
           this.router.navigateByUrl(loginBeforeUrl);
         }

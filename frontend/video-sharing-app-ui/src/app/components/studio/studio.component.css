@@ -51,10 +51,12 @@
 
      :host ::ng-deep .p-steps-title{
         font-size: 12px;
+        font-family: var(--app-font-family);
     }
     
     :host ::ng-deep .p-steps-number{
         font-size: 12px;
+        font-family: var(--app-font-family);
     }
 }
 

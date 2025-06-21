@@ -7,6 +7,7 @@
     border-radius: 12px;
     margin-bottom: 1em;
     font-size: 1.6rem;
+    font-family: var(--app-font-family);
   }
 
   :host::ng-deep vg-scrub-bar-current-time .background{

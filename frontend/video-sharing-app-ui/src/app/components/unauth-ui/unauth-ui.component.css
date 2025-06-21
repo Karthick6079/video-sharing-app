@@ -11,6 +11,7 @@
 
 .page-icon .material-icons{
     font-size: 120px;
+    /* font-family: var(--app-font-family); */
     margin-bottom: 20px;
 }
 
@@ -21,6 +22,7 @@
 
 .info-text-title{
     font-size: 32px;
+    font-family: var(--app-font-family);
     font-weight: 500;
     margin-bottom: 22px;
     text-align: center;
@@ -29,6 +31,7 @@
 .info-text-desc{
     display: block;
     font-size: 15px;
+    font-family: var(--app-font-family);
     margin: 0 auto;
     width: 100%;
     font-weight: 400;

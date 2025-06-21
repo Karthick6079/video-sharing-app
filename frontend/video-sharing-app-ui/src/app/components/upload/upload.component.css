@@ -6,6 +6,7 @@
 
 :host::ng-deep .p-component{
     font-size: 1.45rem;
+    font-family: var(--app-font-family);
 }
 
 

@@ -106,7 +106,6 @@ export class FeaturedComponent implements OnInit {
 
   getSuggestionVideos() {
     this.page = this.page + 1;
-    console.log("Page number for suggestion", this.page)
     this.videoService
       .getSuggestedVideos(this.page, this.SIZE)
       .subscribe((videos) => {

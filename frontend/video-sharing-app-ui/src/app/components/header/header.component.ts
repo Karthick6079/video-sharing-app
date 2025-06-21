@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.oidcSecurityService.userData$.subscribe((response) => {
       if (response.userData) {
-        console.log(response.userData);
         this.name = response.userData.name;
         this.userPictureUrl = response.userData.picture;
       }
@@ -90,10 +89,8 @@ export class HeaderComponent implements OnInit {
 
   searchVideos() {
     const searchText = this.searchControl.value;
-    console.log("Search method called");
     if(!searchText) return;
     this.searchControl.setValue(''); //empty after 
-    console.log("Navigating to search compoent");
     this.router
       .navigateByUrl(`/home/search-results?searchText=${searchText}`)
       .then((e) => {
@@ -107,8 +104,6 @@ export class HeaderComponent implements OnInit {
     const currentURL = this.router.routerState.snapshot.url;
 
     let isHomeRouteActivated = currentURL.indexOf('home') == -1 ? false : true;
-
-    console.log('it is in home page? ', isHomeRouteActivated);
 
     if (isHomeRouteActivated && !this.isMobileScreen) {
       this.userService.toggleSideBar();

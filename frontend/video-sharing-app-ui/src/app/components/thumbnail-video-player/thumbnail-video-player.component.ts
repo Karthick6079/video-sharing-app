@@ -36,7 +36,6 @@ export class ThumbnailVideoPlayerComponent implements OnInit, AfterViewInit {
   }
 
   playPreview() {
-    console.log('Hover triggered');
     this.isHovering = true;
     this.isVideoLoadError = false;
     setTimeout(() => {

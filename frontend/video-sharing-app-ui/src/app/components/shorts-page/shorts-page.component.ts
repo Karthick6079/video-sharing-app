@@ -67,8 +67,6 @@ export class ShortsPageComponent {
 
   onEnter(el: HTMLElement, index: number) {
 
-    // console.log("OnEnter Method called:", this.videos[index].title)
-
     this.activeIndex = index;
 
     const currentVideoId = this.videos[index].id;

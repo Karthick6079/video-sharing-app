@@ -9,14 +9,15 @@
 }
 
 .user-and-comment .name{
-    font-size: 1.3rem;
+    font-size: 1.345rem;
     font-weight: 500;
+    font-family: var(--app-font-family);
     margin-bottom: 0.4em;
     color: var(--app-font-color);
 }
 
 .user-and-comment .comment{
-    font-family: 'Arial', 'sans-serif';
+    font-family: var(--app-font-family);
     font-size: 1.4rem;
     font-weight: 400;
     color: var(--app-font-color);

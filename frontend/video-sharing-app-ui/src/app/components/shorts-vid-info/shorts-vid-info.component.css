@@ -5,27 +5,17 @@
 
 .channal-name{
     font-size: 1.3em;
+    font-family: var(--app-font-family);
     margin: 0 10px;
 }
 
 .video-title{
     margin: 5px 5px;
     font-size: 1.35em;
+    font-family: var(--app-font-family);
     overflow: hidden;
     line-height: 1.3;
     height: 35px;
-}
-
-.subscribe-button{
-    /* color: #FFF;
-    background: transparent; */
-    /* border: 1px solid; */
-}
-
-.unsubscribe-button{
-    /* color: #FFF;
-    background: transparent; */
-    /* border: 1px solid; */
 }
 
 /* Avatar */

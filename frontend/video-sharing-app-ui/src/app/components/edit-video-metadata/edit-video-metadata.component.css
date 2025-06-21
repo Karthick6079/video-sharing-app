@@ -28,6 +28,7 @@
 
 .input-label{
     font-size: 1.25em;
+    font-family: var(--app-font-family);
     margin-bottom: 5px;
 }
 
@@ -38,6 +39,7 @@
 
 .input-info{
     font-size: 11px;
+    font-family: var(--app-font-family);
 }
 
 
@@ -80,6 +82,7 @@
 .p-element.p-dropdown-label.p-inputtext.p-placeholder{
     margin: auto 10px;
     font-size: 18px;
+    font-family: var(--app-font-family);
 }
 
 :host ::ng-deep .p-element.p-inputwrapper.p-chips-clearable{

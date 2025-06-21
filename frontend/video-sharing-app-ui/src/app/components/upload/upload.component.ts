@@ -111,25 +111,21 @@ export class UploadComponent {
     const partSize = isMobile ? 1 * 1024 * 1024 : 6 * 1024 * 1024; 
     const numParts = Math.ceil(file.size / partSize);
 
-    console.log(file.name)
 
     const { key, uploadId } = await firstValueFrom(this.uploadVideoService.initiateUpload(file.name))
 
-    console.log("The multipart upload initiated")
 
     const parts: { partNumber: number; entityTag: string }[] = [];
 
     for (let part = 0; part < numParts; part++) {
       const start = part * partSize;
       const end = Math.min(start + partSize, file.size);
-      console.log(start, end);
       const blobPart = file.slice(start, end);
       const partNumber = part + 1;
 
       const {url} = await firstValueFrom (this.uploadVideoService
         .getPresignedUrl(key, uploadId, partNumber))
-        
-      console.log('Presigned URL:', url);
+
   
 
       const response = await fetch(url, {
@@ -145,11 +141,9 @@ export class UploadComponent {
       parts.push({ partNumber, entityTag });
     }
 
-    console.log("parts: ", parts)
 
     const response:UploadVideoResponse =  await firstValueFrom(this.uploadVideoService.completeUpload(key, uploadId, parts));
     this.handleResponse(response)
-    console.log('Upload complete!');
   }
 
   handleResponse(response: UploadVideoResponse){

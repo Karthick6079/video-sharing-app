@@ -17,27 +17,5 @@ export class RegisterUserComponent implements OnInit {
   isAPILoading = false;
 
   ngOnInit(): void {
-    // this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated }) => {
-    //   console.log("isAuthenticated: ", isAuthenticated);
-    //   if (isAuthenticated) {
-    //     this.registerUserInDB();
-    //   }
-    // })
   }
-
-  // registerUserInDB() {
-  //   this.isAPILoading = true;
-  //   this.userService.registerUser().subscribe((userDto) => {
-  //     if (userDto) {
-  //       this.isAPILoading = false;
-  //       this.userService.setCurrentUser(userDto);
-  //       let loginBeforeUrl = localStorage.getItem('loginBeforeUrl');
-
-  //       if (loginBeforeUrl) {
-  //         this.router.navigateByUrl(loginBeforeUrl);
-  //       }
-  //       // window.location.assign(loginBeforeUrl);
-  //     }
-  //   });
-  // }
 }

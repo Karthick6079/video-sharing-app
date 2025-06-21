@@ -108,7 +108,7 @@ export class UploadComponent {
     if (!file) return;
 
     const isMobile = /iPhone|Android|iPad/.test(navigator.userAgent);
-    const partSize = isMobile ? 4 * 1024 * 1024 : 8 * 1024 * 1024; 
+    const partSize = isMobile ? 1 * 1024 * 1024 : 6 * 1024 * 1024; 
     const numParts = Math.ceil(file.size / partSize);
 
     console.log(file.name)

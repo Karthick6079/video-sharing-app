@@ -133,11 +133,15 @@
   }
 
   :host::ng-deep .mat-mdc-icon-button.mat-mdc-button-base  {
-    padding:11px;
+    padding: 8px;
   }
 
+  :host::ng-deep .mat-mdc-icon-button.mat-mdc-button-base .material-icons {
+    font-size:20px;
+  } 
+
   .app-brand-name{
-    margin-top: 0;
+    margin-top: -6px;
   }
 }
 

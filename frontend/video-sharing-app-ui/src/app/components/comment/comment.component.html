@@ -3,7 +3,7 @@
       
         <!-- <p-avatar [image]="currentUser?.picture" styleClass="mr-2 items" shape="circle" size="xlarge" *ngIf="isAuthenticated"></p-avatar> -->
         <div class="user-avatar-wrapper" *ngIf="isAuthenticated">
-            <img [src]="video.userPicture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
+            <img [src]="currentUser.picture" alt="User Avatar" class="user-avatar" (error)="onAvatarError()"
                 *ngIf="!avatarError" />
             <div class="user-avatar-fallback" *ngIf="avatarError">
                 {{ getUserInitials(currentUser.displayName) }}

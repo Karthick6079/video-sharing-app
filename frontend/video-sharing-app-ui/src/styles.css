@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import url('https://fonts.googleapis.com/css2?family=Roboto');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
 @import "primeicons/primeicons.css";
 
 *,
@@ -18,13 +22,14 @@
 
 html{
     font-size: 10px;
-    font-family: 'Roboto', 'Arial', sans-serif, 'Poppins';
+    font-family: 'Roboto', 'Inter', 'Arial', 'sans-serif';
 }
 
 :root{
     --app-font-color: #0f0f0f;
     --app-channal-font-color: #606060;
-    --app-font-family: "Roboto","Arial",sans-serif;
+    --app-font-family: 'Roboto', 'Inter', 'Arial', 'sans-serif';
+    --app-secondary-font: 'Lexend';
     --video-description-color: #131313;
     --app-second-color: #ddd6fe;
     --app-light-background: #efefef;

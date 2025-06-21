@@ -164,6 +164,7 @@ import { GlobalerrorhandlerService } from './services/globalerrorhandler.service
         responseType: environment.AUTH0_CONFIG.RESPONSE_TYPE,
         silentRenew: environment.AUTH0_CONFIG.SILENT_RENEW,
         useRefreshToken: environment.AUTH0_CONFIG.USE_REFRESH_TOKEN,
+        renewTimeBeforeTokenExpiresInSeconds: 30,
         logLevel: environment.AUTH0_CONFIG.LOGLEVEL,
         secureRoutes: [environment.AUTH0_CONFIG.SECURE_ROUTES],
         customParamsAuthRequest: {

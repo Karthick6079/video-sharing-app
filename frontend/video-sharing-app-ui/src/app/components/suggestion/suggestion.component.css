@@ -21,10 +21,11 @@
 .video-title{
     font-size: 1.4rem;
     line-height: 1.3em;
+    font-family: var(--app-secondary-font);
     color: var(--app-font-color);
     font-weight: 500;
     margin-bottom: 10px;
-    height: 50px;
+    height: 75px;
     overflow: hidden;
 }
 

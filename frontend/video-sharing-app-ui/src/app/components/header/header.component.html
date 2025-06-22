@@ -21,7 +21,7 @@
             @if (isAuthenticated) {
 
               <div style="display: flex;">
-                <button mat-icon-button aria-label="Studio icon button to upload a video" routerLink="studio/upload" *ngIf="!hideStudioButton"> 
+                <button mat-icon-button aria-label="Studio icon button to upload a video" routerLink="studio/upload" *ngIf="!hideStudioButton&&!isNewMobileScreen"> 
                   <mat-icon>video_call</mat-icon>
                 </button>
   

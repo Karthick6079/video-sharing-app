@@ -26,6 +26,8 @@ export class HeaderComponent implements OnInit {
 
   isMobileScreen = false;
 
+  isNewMobileScreen = false;
+
   searchControl = new FormControl('');
 
   userData!: Observable<UserDataResult>;
@@ -57,6 +59,9 @@ export class HeaderComponent implements OnInit {
 
     if (window.matchMedia('(max-width: 770px)').matches) {
       this.isMobileScreen = true;
+      this.isNewMobileScreen = true;
+    } else{
+      this.isNewMobileScreen = false;
     }
 
     

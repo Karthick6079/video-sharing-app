@@ -48,7 +48,7 @@ export class EditVideoMetadataComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       tags: ['', Validators.required],
-      videoStatus: ['', Validators.required],
+      status: ['', Validators.required],
       videoUrl: [''],
       thumbnailUrl: [''],
     });
@@ -67,7 +67,8 @@ export class EditVideoMetadataComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onUpload(event: FileUploadHandlerEvent) {
     for (let file of event.files) {
@@ -123,12 +124,12 @@ export class EditVideoMetadataComponent implements OnInit {
 
   updateFormDetails() {
     let video: VideoStatus =
-      this.editVideoDetailsForm.get('videoStatus')?.value;
+      this.editVideoDetailsForm.get('status')?.value;
     this.editVideoDetailsForm.patchValue({
       id: this.videoId,
       videoUrl: this.videoUrl,
       thumbnailUrl: this.thumbnailUrl,
-      videoStatus: video.code,
+      status: video.code,
     });
   }
 

@@ -135,6 +135,7 @@ public class VideoService {
         savedVideo.setDescription(videoDto.getDescription());
         savedVideo.setTitle(videoDto.getTitle());
         savedVideo.setCreatedAt(Instant.now());
+        savedVideo.setPublishedAt(Instant.now());
         savedVideo.setUserId(currerntUser.getId());
 
 //        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty())

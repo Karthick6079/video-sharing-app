@@ -20,13 +20,12 @@ public interface VideoRepository extends MongoRepository<Video, String> {
 
 
     @Aggregation(pipeline = {
-            "{$match: { _id: ?0 , status:'PUBLIC'}}",
+            "{$match: { _id: ?0 }}",
             "{$lookup: {from: 'users',let: {userId: '$userId'},pipeline: [{$match: {$expr: {$eq: ['$_id',{$toObjectId: '$$userId'}]}}}],as: 'user_info'}}",
             "{$unwind: '$user_info'}",
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.displayName',userPicture: '$user_info.picture'}}"
     })
-    @ReadPreference("secondary")
     VideoUserInfo getVideoUserInfo(String videoId);
 
     @Aggregation(pipeline = {
@@ -36,7 +35,6 @@ public interface VideoRepository extends MongoRepository<Video, String> {
             "{$project: {_id: 1,videoId: '$_id', title: 1,description: 1,userId: 1,likes: 1,dislikes: 1,tags: 1,status: 1,videoUrl: 1,thumbnailUrl: 1,views: 1," +
                     "publishedAt: 1,username: '$user_info.name',userDisplayName: '$user_info.displayName',userPicture: '$user_info.picture'}}"
     })
-    @ReadPreference("secondary")
     List<VideoUserInfo> getVideoUserInfoByVideoIds(List<String> videoIds);
 
     @Query( value="{}", fields = "{_id:1}")

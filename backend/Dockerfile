@@ -30,6 +30,7 @@ RUN apk add --no-cache ffmpeg bash curl
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=cloud
-CMD ["java", "-jar", "app.jar"]
-EXPOSE 8081
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
 

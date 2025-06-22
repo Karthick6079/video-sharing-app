@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 
 @Component
-public class DoSSProtectionFilter extends OncePerRequestFilter {
+public class DoSSProtectionFilter {
 
 
     private final RedisTemplate<String, Integer> redisTemplate;
@@ -24,7 +24,7 @@ public class DoSSProtectionFilter extends OncePerRequestFilter {
         this.redisTemplate = redisTemplate;
     }
 
-    @Override
+
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 

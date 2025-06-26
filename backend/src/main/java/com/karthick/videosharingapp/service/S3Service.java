@@ -27,7 +27,7 @@ public class S3Service implements FileService {
 
 
     @Override
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String folder) {
 
         // Upload a file to AWS S3 Service
         var extension = StringUtils.getFilenameExtension(file.getOriginalFilename());

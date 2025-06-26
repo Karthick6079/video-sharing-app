@@ -93,12 +93,12 @@
 
     :host::ng-deep .engagement-panel .p-button.p-button-lg .p-button-icon{
         font-size: 1.25em;
-        font-family: var(--app-font-family);
+        /* font-family: var(--app-font-family); */
     }
 
     :host::ng-deep .p-component{
         font-size: 1.1rem;
-        font-family: var(--app-font-family);
+        /* font-family: var(--app-font-family); */
     }
 }
 

@@ -112,7 +112,11 @@ export class UploadComponent {
     const numParts = Math.ceil(file.size / partSize);
 
 
-    const { key, uploadId } = await firstValueFrom(this.uploadVideoService.initiateUpload(file.name))
+
+    const fileExtension = file.type.replace('video/',"");
+
+
+    const { key, uploadId } = await firstValueFrom(this.uploadVideoService.initiateUpload(file.name, fileExtension))
 
 
     const parts: { partNumber: number; entityTag: string }[] = [];

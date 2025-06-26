@@ -12,13 +12,13 @@ public interface MultiPartUploadService {
 
 
 
-    Map<String, Object> initiateUpload(String filename) throws AWSUploadException;
+    Map<String, Object> initiateUpload(String filename, String fileExtension) throws AWSUploadException;
 
     String generatePreSignedUrl(String key, String uploadId, int partNumber);
 
     UploadVideoResponse completeUpload(CompleteMultipartRequest request);
 
-   void generateThumbnail(Video video);
+   String generateThumbnail(Video video);
 
 
 

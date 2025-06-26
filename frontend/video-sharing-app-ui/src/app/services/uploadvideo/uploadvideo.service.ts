@@ -17,10 +17,10 @@ export class UploadVideoService {
     constructor(private http: HttpClient) { }
 
 
-    initiateUpload(filename: String) {
+    initiateUpload(filename: string, fileExtension: string) {
         const baseUrl = this.getVideoBaseUrl();
         return this.http.post<{ key: string; uploadId: string }>(
-            `${baseUrl}initiate?filename=${filename}`, {}
+            `${baseUrl}initiate?filename=${filename}&fileExtension=${fileExtension}`, {}
           )
     }
 

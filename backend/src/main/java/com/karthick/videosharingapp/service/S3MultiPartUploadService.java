@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -21,10 +21,11 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 import software.amazon.awssdk.services.s3.presigner.model.PresignedUploadPartRequest;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -52,10 +53,11 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
 
 
     @Override
-    public Map<String, Object> initiateUpload(String filename) throws AWSUploadException {
+    public Map<String, Object> initiateUpload(String filename, String fileExtension) throws AWSUploadException {
 
         String uniqueId = String.valueOf(UUID.randomUUID());
-        String key = BUCKET_VIDEO_FOLDER + uniqueId;
+        String extension = fileExtension != null && fileExtension.isEmpty() ? fileExtension:"mp4";
+        String key = BUCKET_VIDEO_FOLDER + uniqueId + "." + extension;
 
         logger.info("key {} generated for filename: {}", key, filename);
 
@@ -162,24 +164,31 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
         return String.format("https://%s.s3.%s.amazonaws.com/%s", BUCKET_NAME, REGION, key);
     }
 
-    public void generateThumbnail(Video video){
-        String uniqueId = getKeyFromVideoUrl(video.getVideoUrl());
-        String key = BUCKET_VIDEO_FOLDER + uniqueId + ".mp4";
-        String outputKey = THUMBNAILS + uniqueId + ".jpg";
-        generateThumbnail(key, outputKey);
+    public String generateThumbnail(Video video){
+        logger.info("Thumbnail generation process initiated");
+        String keyForThumbnail = getKeyWithoutExtensionFromVideoUrl(video.getVideoUrl());
+        String keyForVideo = getKeyWithExtensionFromVideoUrl(video.getVideoUrl());
+        String key = BUCKET_VIDEO_FOLDER + keyForVideo;
+        String outputKey = THUMBNAILS + keyForThumbnail + ".jpg";
+        return generateThumbnail(key, outputKey);
     }
 
-    private void generateThumbnail(String key, String outputKey) {
+    private String generateThumbnail(String key, String outputKey) {
         File thumbnail = null;
+        File inputFile = null;
         try {
-            URL presignedUrl = generatePresignedUrl(BUCKET_NAME, key, Duration.ofMinutes(5));
+
+
 
             thumbnail = File.createTempFile("thumb", ".jpg");
-
+            thumbnail.deleteOnExit();
+            inputFile = File.createTempFile("input", ".mp4");
+            inputFile.deleteOnExit();
+            downloadObjectFromS3(BUCKET_NAME, key, inputFile);
             ProcessBuilder pb = new ProcessBuilder(
                     "ffmpeg",
                     "-ss", "00:00:03",
-                    "-i", presignedUrl.toString(),
+                    "-i", inputFile.getAbsolutePath(),
                     "-vframes", "1",
                     "-q:v", "2",
                     "-y",
@@ -202,15 +211,17 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
                     .build();
 
             s3Client.putObject(putRequest, RequestBody.fromFile(thumbnail));
-
-
+            logger.info("Thumbnail generation process completed");
+            return getS3FileUrl(outputKey);
         } catch (Exception e) {
             logger.error("Exception occurred during default thumbnail generation", e);
             throw new RuntimeException("Thumbnail generation failed", e);
         }
         finally {
-            if(thumbnail != null)
-                thumbnail.delete();
+            if(thumbnail != null && thumbnail.exists())
+                logger.debug("Thumbnail temp file deleted: {}", thumbnail.delete());
+            if(inputFile != null)
+                logger.debug("Video temp file deleted: {}", inputFile.delete());
 
         }
     }
@@ -232,13 +243,41 @@ public class S3MultiPartUploadService implements MultiPartUploadService {
     }
 
 
-    private String getBaseName(String key) {
-        return key.substring(key.lastIndexOf('/') + 1).replace(".mp4", "");
+    private String getKeyWithExtensionFromVideoUrl(String key) {
+        return key.substring(key.lastIndexOf('/') + 1);
     }
 
-    private  String getKeyFromVideoUrl(String videoUrl){
-        int index = videoUrl.lastIndexOf("/") + 1;
-        return videoUrl.substring(index).replace(".mp4", "");
+    private  String getKeyWithoutExtensionFromVideoUrl(String videoUrl){
+        int keyStartIndex = videoUrl.lastIndexOf("/") + 1;
+        int keyEndIndex = videoUrl.lastIndexOf(".");
+        return videoUrl.substring(keyStartIndex, keyEndIndex);
+    }
+
+
+    public void downloadObjectFromS3(String bucketName, String key, File tempInputFile){
+
+        GetObjectRequest request = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        try (ResponseInputStream<GetObjectResponse> s3Stream = s3Client.getObject(request);
+             FileOutputStream fos = new FileOutputStream(tempInputFile)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = s3Stream.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("FileNotFoundException while downloading s3 Object for thumbnail generation", e);
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            logger.error("IOException while downloading s3 Object for thumbnail generation", e);
+            throw new RuntimeException(e);
+        }
+
+//        s3Client.getObject(request, tempInputFile.toPath());
+        logger.info("Video file downloaded and stored in temp file");
     }
 
 

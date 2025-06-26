@@ -127,8 +127,8 @@ public class VideoController {
     /* Multi part video upload request mapping follows */
 
     @PostMapping("/upload/multipart/initiate")
-    public ResponseEntity<Map<String, Object>> initiateMultiPart(@RequestParam String filename){
-        return ResponseEntity.ok(multiPartUploadService.initiateUpload(filename));
+    public ResponseEntity<Map<String, Object>> initiateMultiPart(@RequestParam String filename, @RequestParam String fileExtension){
+        return ResponseEntity.ok(multiPartUploadService.initiateUpload(filename, fileExtension));
     }
 
     @GetMapping("/upload/multipart/url")

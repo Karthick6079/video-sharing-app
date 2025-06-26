@@ -79,7 +79,7 @@ public class VideoService {
     public UploadVideoResponse uploadFile(MultipartFile file) {
         logger.info("Validating video file before it uploaded to AWS S3");
         validateUploadedFileSize(file, allowedVideoFileSize);
-        String url = s3Service.uploadFile(file);
+        String url = s3Service.uploadFile(file,"videos/");
         logger.info("Video file uploaded successfully!");
         Video video = new Video();
         video.setVideoUrl(url);
@@ -93,7 +93,7 @@ public class VideoService {
     public UploadVideoResponse uploadThumbnail(MultipartFile file, String videoId) {
         logger.info("Validating video thumbnail file before it uploaded to AWS S3");
         validateUploadedFileSize(file, allowedVideoFileSize);
-        String url = s3Service.uploadFile(file);
+        String url = s3Service.uploadFile(file,"thumbnails/");
 
         logger.info("The video information fetched from database to update thumbnail url");
         Video savedVideo = findVideoById(videoId)
@@ -138,12 +138,16 @@ public class VideoService {
         savedVideo.setPublishedAt(Instant.now());
         savedVideo.setUserId(currerntUser.getId());
 
-//        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty())
-//            multiPartUploadService.generateThumbnail(savedVideo);
+        if(videoDto.getThumbnailUrl() == null || videoDto.getThumbnailUrl().isEmpty()){
+            String thumbnailUrl  = multiPartUploadService.generateThumbnail(savedVideo);
+            savedVideo.setThumbnailUrl(thumbnailUrl);
+        }
+
 //        savedVideo.setUser(currerntUser);
 
         //update video url to video dto
         videoDto.setVideoUrl(savedVideo.getVideoUrl());
+        videoDto.setThumbnailUrl(savedVideo.getThumbnailUrl());
         logger.info("Saving the updated video metadata to database");
 
         videoRepo.save(savedVideo);

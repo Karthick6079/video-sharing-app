@@ -9,7 +9,7 @@
 }
 
 .user-and-comment .name{
-    font-size: 1.345rem;
+    font-size: 1.34rem;
     font-weight: 500;
     font-family: var(--app-font-family);
     margin-bottom: 0.4em;
@@ -18,7 +18,8 @@
 
 .user-and-comment .comment{
     font-family: var(--app-font-family);
-    font-size: 1.4rem;
+    font-size: 1.325rem;
+    line-height: 1.6;
     font-weight: 400;
     color: var(--app-font-color);
 }
@@ -45,11 +46,13 @@
 @media only screen and (min-width: 320px) and (max-width:480px){
     .user-and-comment .comment{
         font-size: 1.3rem;
-        font-weight: 500;
+        
     }
 
     .user-and-comment .name{
         font-size: 1.175rem;
+        font-weight: 500;
+        line-height: 1.3;
     }
 }
 

@@ -22,4 +22,5 @@ public class DatabaseConstants {
     public static final String FIRSTNAME_COLUMN = "firstname";
     public static final String LASTNAME_COLUMN = "lastname";
     public static final String USERS_COLLECTION = "users";
+    public static final String CREATED_AT_COLUMN = "createdAt";
 }

@@ -1,5 +1,6 @@
 package com.karthick.videosharingapp.service;
 
+import com.karthick.videosharingapp.constants.DatabaseConstants;
 import com.karthick.videosharingapp.entity.Comment;
 import com.karthick.videosharingapp.entity.CommentDislike;
 import com.karthick.videosharingapp.entity.CommentLike;
@@ -20,6 +21,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +51,10 @@ public class CommentService {
 
     public List<CommentDTO> getAllComments(String videoId, int page, int size) {
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "likes")
-                .and(Sort.by(Sort.Direction.ASC, "dislikes"))
-                .and(Sort.by(Sort.Direction.DESC, "commentCreatedTime"));
+        Sort sort = Sort.by(Sort.Direction.DESC, DatabaseConstants.CREATED_AT_COLUMN)
+                .and(Sort.by(Sort.Direction.DESC, DatabaseConstants.LIKES_COLUMN))
+                .and(Sort.by(Sort.Direction.ASC, "disLikes"));
+
 
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Comment> commentsPage = commentRepository.findByVideoId(videoId, pageable);

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #2E86C1;
+        }
+        .button {
+            background-color: #2E86C1;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #999;
+            margin-top: 40px;
+        }
+    </style>
+    <title>Avk Video Sharing App</title>
+</head>
+<body>
+<div class="container">
+    <div class="header">Welcome to AVK Video Sharing App, <span th:text="${name}">User</span>! 🎬</div>
+    <p>Thanks for joining our video sharing community.</p>
+    <p>You can now upload, share, and explore videos from across the globe.</p><hr>
+
+    <p>What you can do:</p>
+    <ul>
+        <li>📤 Upload and share your own videos</li>
+        <li>🎥 Discover trending shorts and content</li>
+        <li>💬 Comment and interact with creators</li>
+    </ul>
+
+    <a class="button" href="https://avkarthick.in">Go to Application</a>
+
+    <div class="footer">
+        If you did not sign up for AVK Video Sharing app, please ignore this email.<br>
+        &copy; 2025 AVK Tech
+    </div>
+</div>
+</body>
+</html>

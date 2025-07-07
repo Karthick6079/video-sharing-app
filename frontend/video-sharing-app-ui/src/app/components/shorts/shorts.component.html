@@ -10,13 +10,14 @@
             <div class="engage-comp">
                <p-button icon="pi pi-thumbs-up" size="large" [rounded]="true" severity="primary" (click)="likeVideo()" [text]="true" 
                styleClass="like-button" pTooltip="Likes" />
-               <span class="info-text">{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span> 
+               <span class="info-text" *ngIf="video.likes == 0">Yet to be liked</span> 
+               <span class="info-text" *ngIf="video.likes >= 1">{{video.likes}}{{video.likes == 1 ? ' like' :' likes'}}</span> 
             </div> 
        
             <div class="engage-comp">
                    <p-button icon="pi pi-thumbs-down"  [text]="true" [rounded]="true" size="large"
-                   styleClass="dislike-button" pTooltip="DisLikes" />
-                   <span class="info-text" >DisLike</span>
+                   styleClass="dislike-button" pTooltip="Dislike" />
+                   <span class="info-text" >Dislike</span>
                </div>
        
                <div class="engage-comp">
@@ -56,7 +57,8 @@
         <div class="video-infos">
             <span>{{video.publishedAt | timeago}}</span> |
             <span>{{video.views}}{{video.views == 0 ||  video.views == 1 ? ' view' :' views'}}</span> |
-            <span>{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' like'}}</span>
+            <span *ngIf="video.likes == 0">Yet to be liked</span>
+            <span *ngIf="video.likes >= 1">{{video.likes}}{{video.likes == 0 ||  video.likes == 1 ? ' like' :' likes'}}</span>
         </div>
     </ng-template>
 

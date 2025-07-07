@@ -33,6 +33,7 @@ public class User {
     private String sub;
     private String email;
     private Instant createdAt;
+    private Instant updatedAt;
 
 
 

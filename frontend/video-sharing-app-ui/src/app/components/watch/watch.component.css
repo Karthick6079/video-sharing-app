@@ -178,7 +178,13 @@ figure {
     }
 
     .show-desc-less, .show-desc-more{
-        font-size: 1.2rem;
+        font-size: 1.25rem;
+    }
+
+    .video-info .video-tags{
+        font-size: 1.175rem;
+        font-family: "Saira Semi Condensed", sans-serif;
+        /* font-weight: 600; */
     }
 
 }

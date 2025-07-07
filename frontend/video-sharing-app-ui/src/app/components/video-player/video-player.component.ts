@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'app-video-player',
@@ -11,6 +11,11 @@ export class VideoPlayerComponent {
 
   @Input()
   autoplay: boolean = false;
+
+  hideControls = false;
+  private hideControlsTimeout: any;
+
+  
 
   data: any;
   constructor() {}
@@ -27,6 +32,40 @@ export class VideoPlayerComponent {
 
   initVdo() {
     this.data.play();
+  }
+
+  onPlay() {
+    this.startHideTimer();
+  }
+
+  onPause() {
+    this.showControls();
+    clearTimeout(this.hideControlsTimeout);
+  }
+
+  @HostListener('document:mousemove')
+  @HostListener('document:touchstart')
+  onUserInteraction() {
+    this.showControls();
+    if (this.isVideoPlaying()) {
+      this.startHideTimer();
+    }
+  }
+
+  private startHideTimer() {
+    clearTimeout(this.hideControlsTimeout);
+    this.hideControlsTimeout = setTimeout(() => {
+      this.hideControls = true;
+    }, 2000); // hide after 2 seconds
+  }
+
+  private showControls() {
+    this.hideControls = false;
+  }
+
+  private isVideoPlaying(): boolean {
+    const videoElement = document.getElementById('singleVideo') as HTMLVideoElement;
+    return videoElement && !videoElement.paused;
   }
   // startPlaylistVdo(item: any, index: number) {
   //   this.activeIndex = index;

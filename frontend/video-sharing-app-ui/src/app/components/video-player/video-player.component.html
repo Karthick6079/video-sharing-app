@@ -1,14 +1,14 @@
 <div class="video-player-wrapper">
-  <vg-player>
+  <vg-player (onPlay)="onPlay()" (onPause)="onPause()">
     <vg-overlay-play></vg-overlay-play>
     <vg-buffering></vg-buffering>
 
-    <vg-scrub-bar>
+    <vg-scrub-bar [ngClass]="{ 'hide-controls': hideControls }">
         <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
         <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
     </vg-scrub-bar>
 
-    <vg-controls>
+    <vg-controls [ngClass]="{ 'hide-controls': hideControls }">
         <vg-play-pause></vg-play-pause>
         <vg-playback-button></vg-playback-button>
 

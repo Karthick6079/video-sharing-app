@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import static com.karthick.videosharingapp.constants.DatabaseConstants.*;
@@ -53,6 +54,8 @@ public class UserService {
 
     private final AppUtil appUtil;
 
+    private final EmailSendService emailSendService;
+
 
     public UserDTO registerUser(Jwt jwt) {
         User userDetailsFromDB;
@@ -71,7 +74,10 @@ public class UserService {
         // User first time login into system
         String name = "";
 
+        boolean isNewSignUp = false;
+
         if(userDetailsFromDB == null){
+            isNewSignUp = true;
             String displayName = userDetailsFromAuthProvider.getDisplayName();
             name = displayName.replaceAll("\\s","").toLowerCase();
 
@@ -85,17 +91,24 @@ public class UserService {
                 String randomNumberString = appUtil.generateRandomFourDigitNumber();
                 name = name.concat(randomNumberString);
             }
+            userDetailsFromAuthProvider.setCreatedAt(Instant.now());
         } else {
             name = userDetailsFromDB.getName();
+            userDetailsFromAuthProvider.setCreatedAt(userDetailsFromDB.getCreatedAt());
             userDetailsFromAuthProvider.setId(userDetailsFromDB.getId());
         }
-
-//        Update update = getUpdate(userDetailsFromAuthProvider, name);
-
-//        UpdateResult updateResult =  mongoTemplate.upsert(query,update, USERS_COLLECTION);
+        userDetailsFromAuthProvider.setUpdatedAt(Instant.now());
 
         userDetailsFromAuthProvider.setName(name);
-        return userRepository.save(userDetailsFromAuthProvider);
+        User user = userRepository.save(userDetailsFromAuthProvider);
+
+        if(isNewSignUp){
+            // Sending new user welcome email after user information stored in DB
+            // TO-DO Need to decouple this by implement using message broker i.e Apache Kafka, literally it takes 4 secs to complete this process
+            emailSendService.sendWelcomeEmail(userDetailsFromAuthProvider.getEmail(), userDetailsFromAuthProvider.getDisplayName());
+        }
+
+        return user;
     }
 
     private static Update getUpdate(User userDetailsFromAuthProvider, String name) {

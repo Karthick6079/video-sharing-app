@@ -6,6 +6,7 @@ import com.karthick.videosharingapp.domain.dto.UploadVideoResponse;
 import com.karthick.videosharingapp.domain.dto.VideoUserInfoDTO;
 import com.karthick.videosharingapp.domain.dto.VideoDTO;
 import com.karthick.videosharingapp.interfaces.MultiPartUploadService;
+import com.karthick.videosharingapp.service.EmailSendService;
 import com.karthick.videosharingapp.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ import java.util.Map;
 public class VideoController {
 
     private final VideoService videoService;
+
+    private final EmailSendService emailSendService;
 
     private final MultiPartUploadService multiPartUploadService;
 
@@ -143,6 +146,12 @@ public class VideoController {
     public UploadVideoResponse completeMultipartUpload(@RequestBody CompleteMultipartRequest request){
         return multiPartUploadService.completeUpload(request);
     }
+
+//    @PostMapping("/send-welcome-email")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void sendWelcomeEmail(@RequestParam String toEmail, @RequestParam String username){
+//        emailSendService.sendWelcomeEmail(toEmail, username);
+//    }
 
 
 

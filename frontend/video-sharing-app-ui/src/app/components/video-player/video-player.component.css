@@ -14,5 +14,15 @@
     background-color: var(--primary-400);
   }
 
+  .hide-controls {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  vg-controls {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
  
   

@@ -17,9 +17,9 @@ It allows users to upload, watch, and interact with videos through a mobile-firs
 - **Angular 17**
 - Scroll-snap autoplay feed (like Reels/Shorts)
 - Hover-to-play thumbnails (desktop)
-- **Fully responsive design** — works seamlessly on mobile, laptops, and larger screens
+- Fully responsive design — works seamlessly on mobile, laptops, and larger screens
 - OIDC authentication (angular-auth-oidc-client)
-- **Client-side pagination** for optimized feed loading
+- Client-side pagination for optimized feed loading
 - Secure multipart S3 uploads using pre-signed URLs
 
 ### 🔹 Backend
@@ -99,3 +99,29 @@ It allows users to upload, watch, and interact with videos through a mobile-firs
 git clone https://github.com/Karthick6079/video-sharing-app.git
 cd video-sharing-app
 docker-compose up --build
+```
+---
+
+## 🔮 Future Enhancements
+
+- Adaptive bitrate / quality switch options  
+- AI-based personalized recommendations  
+- Live video engagement (comments, reactions)  
+- Kafka-based async processing (e.g., view count pipeline)
+
+---
+
+## 🙌 Feedback & Contributions
+
+This was built as a passion project — learning, experimenting, and building with intention.  
+If you try it out and have ideas, suggestions, or spot issues — **contributions and feedback are most welcome**!
+
+Feel free to raise issues, fork the repo, or reach out directly.
+
+---
+
+## 📩 Contact
+
+📧 karthick.vasudevan07@gmail.com
+
+🔗 [LinkedIn](https://www.linkedin.com/in/karthick-vasudevan/) | [Github](https://github.com/Karthick6079/video-sharing-app)
